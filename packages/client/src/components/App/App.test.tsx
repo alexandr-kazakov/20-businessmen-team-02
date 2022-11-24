@@ -1,7 +1,8 @@
 import App from './App'
-import { render, screen } from '@testing-library/react'
-
-const appContent = 'Вот тут будет жить ваше приложение :)'
+import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { render } from '@testing-library/react'
+import { createStore } from '../../app/redux/store'
 
 // @ts-ignore
 global.fetch = jest.fn(() =>
@@ -9,6 +10,11 @@ global.fetch = jest.fn(() =>
 )
 
 test('Example test', async () => {
-  render(<App />)
-  expect(screen.getByText(appContent)).toBeDefined()
+  render(
+    <BrowserRouter>
+      <Provider store={createStore()}>
+        <App />
+      </Provider>
+    </BrowserRouter>
+  )
 })
