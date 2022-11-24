@@ -1,0 +1,10 @@
+@import './normalize.css';
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #204969;
+  font-family: 'Inter', 'Times New Roman', Times, serif;
+}
