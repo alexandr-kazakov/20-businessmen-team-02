@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAppDispatch } from '../../../../app/redux/hooks'
-import { setIsSignin } from '../../redux/authSlice'
+import { signup, setIsSigninView } from '../../redux/authSlice'
 import Input from '../../../../components/UI/Input'
 import Button from '../../../../components/UI/Button'
 import styles from './styles.module.scss'
@@ -16,6 +16,8 @@ export const AuthSignup = () => {
     password: '',
     check_password: '',
   })
+  const [disabled, setDisabled] = useState(true)
+  const [isValidPasswords, setIsValidPasswords] = useState(true)
 
   const handlerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
@@ -24,20 +26,49 @@ export const AuthSignup = () => {
 
   const handlerSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    console.log(values)
+
+    if (values.password !== values.check_password) {
+      setIsValidPasswords(false)
+    } else {
+      const { email, login, first_name, second_name, phone, password } = values
+      dispatch(
+        signup({ email, login, first_name, second_name, phone, password })
+      )
+    }
   }
 
   const handlerToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
-    dispatch(setIsSignin())
+    dispatch(setIsSigninView())
   }
+
+  const resetErrors = () => {
+    if (!isValidPasswords) {
+      setIsValidPasswords(true)
+    }
+  }
+
+  useEffect(() => {
+    if (
+      !values.email ||
+      !values.login ||
+      !values.first_name ||
+      !values.second_name ||
+      !values.phone ||
+      !values.password ||
+      !values.check_password
+    ) {
+      setDisabled(true)
+    } else {
+      setDisabled(false)
+    }
+  }, [values])
 
   return (
     <form className={styles.form} onSubmit={handlerSubmit}>
       <span className={styles.title}>Регистрация</span>
       <div className={styles.inputs}>
         <Input
-          className={styles.input}
           onChange={handlerChange}
           type="email"
           name="email"
@@ -45,7 +76,6 @@ export const AuthSignup = () => {
           placeholder="Почта"
         />
         <Input
-          className={styles.input}
           onChange={handlerChange}
           type="text"
           name="login"
@@ -53,7 +83,6 @@ export const AuthSignup = () => {
           placeholder="Логин"
         />
         <Input
-          className={styles.input}
           onChange={handlerChange}
           type="text"
           name="first_name"
@@ -61,7 +90,6 @@ export const AuthSignup = () => {
           placeholder="Имя"
         />
         <Input
-          className={styles.input}
           onChange={handlerChange}
           type="text"
           name="second_name"
@@ -69,7 +97,6 @@ export const AuthSignup = () => {
           placeholder="Фамилия"
         />
         <Input
-          className={styles.input}
           onChange={handlerChange}
           type="text"
           name="phone"
@@ -77,29 +104,29 @@ export const AuthSignup = () => {
           placeholder="Телефон"
         />
         <Input
-          className={styles.input}
           onChange={handlerChange}
+          onFocus={resetErrors}
           type="password"
           name="password"
           value={values.password}
           placeholder="Пароль"
+          isValid={isValidPasswords}
         />
         <Input
-          className={styles.input}
           onChange={handlerChange}
+          onFocus={resetErrors}
           type="password"
           name="check_password"
           value={values.check_password}
           placeholder="Пароль (ещё раз)"
+          isValid={isValidPasswords}
         />
       </div>
       <div className={styles.buttons}>
-        <Button className={`${styles.button} ${styles.button_primary}`}>
+        <Button primary disabled={disabled}>
           Авторизоваться
         </Button>
-        <Button
-          className={`${styles.button} ${styles.button_secondary}`}
-          onClick={handlerToggle}>
+        <Button onClick={handlerToggle} secondary>
           Нет аккаунта?
         </Button>
       </div>

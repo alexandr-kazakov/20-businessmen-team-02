@@ -1,10 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { api } from '../../../app/api'
 
-export const login: any = createAsyncThunk(
-  'auth/login',
-  async (data: { [key: string]: any }) => {
-    return await api.post('/auth/login/', data)
+export const signin: any = createAsyncThunk(
+  'auth/signin',
+  async (data: { [key: string]: string }) => {
+    return await api.post('auth/signin/', data)
+  }
+)
+
+export const signup: any = createAsyncThunk(
+  'auth/signup',
+  async (data: { [key: string]: string }) => {
+    return await api.post('auth/signup/', data)
   }
 )
 
@@ -13,47 +20,49 @@ interface IInitialState {
   isLoading: boolean
   status: string
   message: string
-  isSignin: boolean
+  isSigninView: boolean
 }
 
 const initialState: IInitialState = {
-  isAuth: false,
-  isLoading: false,
   status: '',
   message: '',
-  isSignin: true,
+  isLoading: false,
+  isAuth: false,
+  isSigninView: true,
 }
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setLogin(state, { payload }) {
-      api.setUserToken(payload)
-      state.isAuth = true
-    },
-    setIsSignin(state) {
-      state.isSignin = !state.isSignin
+    setIsSigninView(state) {
+      state.isSigninView = !state.isSigninView
     },
   },
-  extraReducers: {
-    [login.pending]: state => {
+  extraReducers: builder => {
+    builder.addCase(signin.pending, state => {
       state.status = 'loading'
-    },
-    [login.fulfilled]: (state, { payload }) => {
-      const { data } = payload
-      localStorage.setItem('JWT', JSON.stringify(data))
-      api.setUserToken(data.access)
-      state.isAuth = true
+    })
+    builder.addCase(signin.fulfilled, (state, { payload }) => {
+      console.log(payload)
       state.status = 'success'
-    },
-    [login.rejected]: state => {
-      state.message = 'Ошибка авторизации'
+    })
+    builder.addCase(signin.rejected, state => {
       state.status = 'error'
-    },
+    })
+    builder.addCase(signup.pending, state => {
+      state.status = 'loading'
+    })
+    builder.addCase(signup.fulfilled, (state, { payload }) => {
+      console.log(payload)
+      state.status = 'success'
+    })
+    builder.addCase(signup.rejected, state => {
+      state.status = 'error'
+    })
   },
 })
 
-export const { setLogin, setIsSignin } = authSlice.actions
+export const { setIsSigninView } = authSlice.actions
 
 export default authSlice.reducer
