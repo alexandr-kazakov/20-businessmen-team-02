@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { api } from '../../../app/api'
+import { StatusType } from '../../../app/apiTypes'
 
 export const signin: any = createAsyncThunk(
   'auth/signin',
@@ -39,24 +40,24 @@ export const authSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(signin.pending, state => {
-      state.status = 'loading'
+      state.status = StatusType.loading
     })
     builder.addCase(signin.fulfilled, (state, { payload }) => {
       console.log(payload)
-      state.status = 'success'
+      state.status = StatusType.success
     })
     builder.addCase(signin.rejected, state => {
-      state.status = 'error'
+      state.status = StatusType.error
     })
     builder.addCase(signup.pending, state => {
-      state.status = 'loading'
+      state.status = StatusType.loading
     })
     builder.addCase(signup.fulfilled, (state, { payload }) => {
       console.log(payload)
-      state.status = 'success'
+      state.status = StatusType.success
     })
     builder.addCase(signup.rejected, state => {
-      state.status = 'error'
+      state.status = StatusType.error
     })
   },
 })

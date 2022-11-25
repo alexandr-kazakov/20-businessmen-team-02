@@ -7,7 +7,6 @@ const getURL = (path: string) => `https://ya-praktikum.tech/api/v2/${path}`
 /**
  * возвращает header для запроса
  */
-
 const getHeaders = (userToken: string | null) => {
   const headers = {
     Authorization: <string | undefined>undefined,
