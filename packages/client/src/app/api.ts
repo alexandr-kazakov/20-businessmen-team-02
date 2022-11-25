@@ -37,7 +37,7 @@ export const api = {
   setUserToken: (token: string | null) => {
     api.userToken = token
     if (DEV) {
-      // console.info('[API] change token', getHeaders(token))
+      console.info('[API] change token', getHeaders(token))
     }
     return api
   },
@@ -45,7 +45,7 @@ export const api = {
   request: <T>(method: Method, path: string, params?: AxiosRequestConfig) => {
     const url = getURL(path)
     if (DEV) {
-      // console.info('[API] ->', method, url, params || '')
+      console.info('[API] ->', method, url, params || '')
     }
     const authHeaders = getHeaders(api.userToken)
     return axios
@@ -57,13 +57,13 @@ export const api = {
       })
       .then(resp => {
         if (DEV) {
-          // console.info('[API] <- ok', method, url, resp.data)
+          console.info('[API] <- ok', method, url, resp.data)
         }
         return resp
       })
       .catch(err => {
         if (DEV) {
-          // console.error('[API] <- error', method, url, err)
+          console.error('[API] <- error', method, url, err)
         }
         throw err
       })
