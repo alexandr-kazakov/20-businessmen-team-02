@@ -1,0 +1,14 @@
+.input {
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 13px;
+  color: #1e1e1e;
+
+  &_error {
+    background-color: rgb(204, 85, 85);
+  }
+}
