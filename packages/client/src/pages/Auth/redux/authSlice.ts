@@ -21,7 +21,7 @@ export const signup: any = createAsyncThunk(
 )
 
 interface IInitialState {
-  status: string
+  status: StatusType | ''
   message: string
   isAuthenticated: boolean
   isSigninView: boolean

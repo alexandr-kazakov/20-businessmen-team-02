@@ -1,10 +1,10 @@
 import React, { ButtonHTMLAttributes, memo } from 'react'
 import classnames from 'classnames'
-import { ButtonStyles } from '../../../types'
+import { ButtonStyles } from './types'
 import styles from './styles.module.scss'
 
 type OwnProps = {
-  variant: string
+  variant: ButtonStyles
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
 type Props = OwnProps
