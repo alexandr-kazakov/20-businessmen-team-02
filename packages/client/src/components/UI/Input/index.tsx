@@ -1,4 +1,5 @@
 import React, { InputHTMLAttributes, memo } from 'react'
+import classnames from 'classnames'
 import styles from './styles.module.scss'
 
 type OwnProps = {
@@ -10,17 +11,11 @@ type Props = OwnProps
 const Input: React.FC<Props> = props => {
   const { isValid = true, ...inputProps } = props
 
-  const className = [styles.input]
+  const className = classnames(styles.input, {
+    [styles.input_error]: !isValid,
+  })
 
-  if (inputProps.className) {
-    className.push(inputProps.className)
-  }
-
-  if (!isValid) {
-    className.push(styles.input_error)
-  }
-
-  return <input {...inputProps} className={className.join(' ')} />
+  return <input {...inputProps} className={className} />
 }
 
 export default memo(Input)

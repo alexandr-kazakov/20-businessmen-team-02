@@ -3,6 +3,7 @@ import { useAppDispatch } from '../../../../app/redux/hooks'
 import { signup, setIsSigninView } from '../../redux/authSlice'
 import Input from '../../../../components/UI/Input'
 import Button from '../../../../components/UI/Button'
+import { ButtonStyles } from '../../../../types'
 import styles from './styles.module.scss'
 
 export const AuthSignup = () => {
@@ -123,10 +124,13 @@ export const AuthSignup = () => {
         />
       </div>
       <div className={styles.buttons}>
-        <Button primary disabled={disabled}>
+        <Button
+          variant={ButtonStyles.primary}
+          type="submit"
+          disabled={disabled}>
           Авторизоваться
         </Button>
-        <Button onClick={handlerToggle} secondary>
+        <Button onClick={handlerToggle} variant={ButtonStyles.secondary}>
           Нет аккаунта?
         </Button>
       </div>

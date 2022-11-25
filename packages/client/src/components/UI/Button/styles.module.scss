@@ -1,18 +1,18 @@
 .button {
   background: none;
   border: none;
+  padding: 10px;
   color: #fff;
   cursor: pointer;
 
   &_primary {
-    padding: 10px;
     width: 100%;
     background-color: #d9534f;
     border-radius: 10px;
   }
 
   &_secondary {
-    padding: 10px;
+    background-color: transparent;
   }
 
   &:disabled {

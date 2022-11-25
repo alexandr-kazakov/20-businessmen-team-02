@@ -1,17 +1,21 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { api } from '../../../app/api'
-import { StatusType } from '../../../app/apiTypes'
+import {
+  StatusType,
+  AuthSigninType,
+  AuthSignupType,
+} from '../../../app/apiTypes'
 
 export const signin: any = createAsyncThunk(
   'auth/signin',
-  async (data: { [key: string]: string }) => {
+  async (data: AuthSigninType) => {
     return await api.post('auth/signin/', data)
   }
 )
 
 export const signup: any = createAsyncThunk(
   'auth/signup',
-  async (data: { [key: string]: string }) => {
+  async (data: AuthSignupType) => {
     return await api.post('auth/signup/', data)
   }
 )
