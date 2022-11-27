@@ -49,7 +49,7 @@ const CanvasComponent: React.FC<Props> = ({setScores}) => {
 							const origY = y * (IMG_SIZE_Y + IMG_DIVIDER) + IMG_BORDER;
 							let pos: Position;
 							if(startPos.length === 1){
-								pos = startPos.pop();
+								pos = startPos[0];
 							} else {
 								const rnd = getRandomInt(startPos.length);
 								pos = startPos[rnd];
