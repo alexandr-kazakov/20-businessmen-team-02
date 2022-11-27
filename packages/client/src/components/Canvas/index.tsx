@@ -1,30 +1,20 @@
 import React, { useRef, useEffect } from 'react';
-import styles from './styles.module.scss';
+import { getRandomInt } from './helper';
+import { Position, ImageObj, Props } from './types';
 
 const CANVAS_HEIGHT	= 644,
 	CANVAS_WIDTH	= 644,
 	IMG_X_AMOUNT	= 3,
 	IMG_Y_AMOUNT	= 3,
-	IMG_SIZE		= 200,
+	IMG_SIZE_X		= 200,
+	IMG_SIZE_Y		= 200,
 	IMG_BORDER		= 20,
 	IMG_DIVIDER		= 2,
-	CANVAS_COLOR	= 'gray';
+	CANVAS_COLOR	= 'gray',
+	INTERVAL		= 100,
+	DELAY			= 200;
 
-type Position = {
-	posX: number,
-	posY: number
-}
-type ImageObj = {
-	imageElement: HTMLImageElement,
-	posX: number,
-	posY: number,
-	origX: number,
-	origY: number,
-	currX?: number,
-	currY?: number,
-}
-
-const CanvasComponent: React.FC = () => {
+const CanvasComponent: React.FC<Props> = ({setScores}) => {
 	const ref = useRef(null);
 
 	useEffect(() => {
@@ -43,8 +33,8 @@ const CanvasComponent: React.FC = () => {
 				for (let x = 0; x < IMG_X_AMOUNT; x++) {
 					for (let y = 0; y < IMG_Y_AMOUNT; y++) {
 						startPos.push({
-							posX: x * (IMG_SIZE + IMG_DIVIDER) + IMG_BORDER, 
-							posY: y * (IMG_SIZE + IMG_DIVIDER) + IMG_BORDER
+							posX: x * (IMG_SIZE_X + IMG_DIVIDER) + IMG_BORDER, 
+							posY: y * (IMG_SIZE_Y + IMG_DIVIDER) + IMG_BORDER
 						});
 					}
 				}
@@ -55,8 +45,8 @@ const CanvasComponent: React.FC = () => {
 						const imageElement = new Image();
 				
 						imageElement.onload = function() {
-							const origX = x * (IMG_SIZE + IMG_DIVIDER) + IMG_BORDER;
-							const origY = y * (IMG_SIZE + IMG_DIVIDER) + IMG_BORDER;
+							const origX = x * (IMG_SIZE_X + IMG_DIVIDER) + IMG_BORDER;
+							const origY = y * (IMG_SIZE_Y + IMG_DIVIDER) + IMG_BORDER;
 							let pos: Position;
 							if(startPos.length === 1){
 								pos = startPos.pop();
@@ -77,11 +67,11 @@ const CanvasComponent: React.FC = () => {
 				canvas.onmousedown = (e) => {
 					if(!finished){
 						for (const imgObj of imgArr) {
-							if(e.offsetX > imgObj.posX && e.offsetX < imgObj.posX + IMG_SIZE &&
-								e.offsetY > imgObj.posY && e.offsetY < imgObj.posY + IMG_SIZE){
+							if(e.offsetX > imgObj.posX && e.offsetX < imgObj.posX + IMG_SIZE_X &&
+								e.offsetY > imgObj.posY && e.offsetY < imgObj.posY + IMG_SIZE_Y){
 									draggable = imgObj;
-									draggable.currX = e.offsetX - IMG_SIZE / 2;
-									draggable.currY = e.offsetY - IMG_SIZE / 2;
+									draggable.currX = e.offsetX - IMG_SIZE_X / 2;
+									draggable.currY = e.offsetY - IMG_SIZE_Y / 2;
 									break;
 							}
 						}
@@ -90,8 +80,8 @@ const CanvasComponent: React.FC = () => {
 				
 				canvas.onmousemove = (e) => {
 					if(draggable){
-						draggable.currX = e.offsetX - IMG_SIZE / 2;
-						draggable.currY = e.offsetY - IMG_SIZE / 2;
+						draggable.currX = e.offsetX - IMG_SIZE_X / 2;
+						draggable.currY = e.offsetY - IMG_SIZE_Y / 2;
 					}
 				}
 				
@@ -99,8 +89,8 @@ const CanvasComponent: React.FC = () => {
 					if(draggable){
 						let second: ImageObj|null = null;
 						for (const imgObj of imgArr) {
-							if(e.offsetX > imgObj.posX && e.offsetX < imgObj.posX + IMG_SIZE &&
-								e.offsetY > imgObj.posY && e.offsetY < imgObj.posY + IMG_SIZE){
+							if(e.offsetX > imgObj.posX && e.offsetX < imgObj.posX + IMG_SIZE_X &&
+								e.offsetY > imgObj.posY && e.offsetY < imgObj.posY + IMG_SIZE_Y){
 									second = imgObj;
 									break;
 							}
@@ -131,7 +121,7 @@ const CanvasComponent: React.FC = () => {
 					if(draggable){
 						refreshCanvas();
 					}
-				}, 100);
+				}, INTERVAL);
 				
 				const refreshCanvas = () => {
 					ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -151,23 +141,21 @@ const CanvasComponent: React.FC = () => {
 						ctx.drawImage(imageElement, currX, currY);
 					}
 					if(result){
-						const seconds = (Date.now() - start) / 1000;
+						let scores = 20000 - (Date.now() - start);
+						scores < 0 && (scores = 0);
 						finished = true;
 						clearInterval(intervalId);
 						setTimeout(()=>{
-							alert(`Ура!!! ${seconds} секунд`);
-						}, 200);
+							// TODO - переход на страницу окончания игры
+							setScores(scores);
+						}, DELAY);
 					}
 				}
 			}
 		}
 	}, []);
 
-	return <canvas className={styles.canvas} ref={ref} width={CANVAS_WIDTH} height={CANVAS_HEIGHT}/>;
-}
-
-function getRandomInt(max: number) {
-	return Math.floor(Math.random() * max);
+	return <canvas ref={ref} width={CANVAS_WIDTH} height={CANVAS_HEIGHT}/>;
 }
 
 export default CanvasComponent;
