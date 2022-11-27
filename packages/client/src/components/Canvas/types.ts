@@ -1,5 +1,3 @@
-import { FC } from "react"
-
 export type Position = {
 	posX: number,
 	posY: number
