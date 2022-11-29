@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { FC, useState } from 'react'
 import CanvasComponent from '../../components/Canvas'
 import styles from './styles.module.scss'
 
-const GamePage: React.FC = () => {
-  const [scores, setScores] = React.useState(-1)
+const GamePage: FC = () => {
+  const [scores, setScores] = useState(-1)
   const header =
     scores < 0
       ? null
@@ -15,7 +15,7 @@ const GamePage: React.FC = () => {
       <div className={styles.container}>
         <CanvasComponent setScores={setScores} />
       </div>
-      <h1 className={styles.congrat}>{header}</h1>
+      { header && <h1 className={styles.congrat}>{header}</h1> }
     </>
   )
 }
