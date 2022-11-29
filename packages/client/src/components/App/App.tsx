@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import AuthPage from '../../pages/Auth'
+import GamePage from '../../pages/Game'
 import styles from './styles.module.scss'
 
 const App: React.FC = () => {
@@ -19,6 +20,7 @@ const App: React.FC = () => {
     <div className={styles.app}>
       <Switch>
         <Route path="/" exact component={AuthPage} />
+        <Route path="/game" component={GamePage} />
       </Switch>
     </div>
   )
