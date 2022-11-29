@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import AuthPage from '../../pages/Auth'
 import GamePage from '../../pages/Game'
+import ErrorBoundary from '../UI/Error'
+
 import styles from './styles.module.scss'
 
 const App: React.FC = () => {
@@ -18,10 +20,12 @@ const App: React.FC = () => {
 
   return (
     <div className={styles.app}>
-      <Switch>
-        <Route path="/" exact component={AuthPage} />
-        <Route path="/game" component={GamePage} />
-      </Switch>
+      <ErrorBoundary>
+        <Switch>
+          <Route path="/" exact component={AuthPage} />
+          <Route path="/game" component={GamePage} />
+        </Switch>
+      </ErrorBoundary>
     </div>
   )
 }
