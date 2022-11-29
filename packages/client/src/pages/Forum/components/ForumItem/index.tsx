@@ -1,25 +1,25 @@
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../../../app/redux/hooks'
-import { setSelectedForum } from '../../redux/forumSlice'
+import { setSelectedIdForum } from '../../redux/forumSlice'
 import { ForumType } from '../../types'
 import styles from './styles.module.scss'
 
-interface IComponent {
+type Props = {
   forum: ForumType
 }
 
-export const ForumItem: React.FC<IComponent> = props => {
+export const ForumItem: React.FC<Props> = props => {
   const { forum } = props
 
   const dispatch = useAppDispatch()
-  const { selectedForum } = useAppSelector(state => state.forum)
+  const { selectedIdForum } = useAppSelector(state => state.forum)
 
   const handlerClick = () => {
-    if (!selectedForum) {
-      dispatch(setSelectedForum(forum))
+    if (!selectedIdForum) {
+      dispatch(setSelectedIdForum(forum.id))
     } else {
-      if (selectedForum.id !== forum.id) {
-        dispatch(setSelectedForum(forum))
+      if (selectedIdForum !== forum.id) {
+        dispatch(setSelectedIdForum(forum.id))
       }
     }
   }

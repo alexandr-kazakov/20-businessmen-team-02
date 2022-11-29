@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { api } from '../../../app/api'
 import { StatusType } from '../../../app/apiTypes'
+import { list } from '../../Forum/const'
 import { ForumType } from '../types'
 
 export const getForums: any = createAsyncThunk('forum/getForums', () => {
@@ -11,13 +12,15 @@ interface IInitialState {
   status: StatusType | ''
   message: string
   listForums: ForumType[]
+  selectedIdForum: number | null
   selectedForum: ForumType | null
 }
 
 const initialState: IInitialState = {
   status: '',
   message: '',
-  listForums: [],
+  listForums: list,
+  selectedIdForum: null,
   selectedForum: null,
 }
 
@@ -25,8 +28,14 @@ export const forumSlice = createSlice({
   name: 'forum',
   initialState,
   reducers: {
-    setSelectedForum(state, { payload }) {
-      state.selectedForum = payload
+    setSelectedIdForum(state, { payload }) {
+      state.selectedIdForum = payload
+
+      const foundedForum = state.listForums.find(forum => forum.id === payload)
+
+      if (foundedForum) {
+        state.selectedForum = foundedForum
+      }
     },
   },
   extraReducers: builder => {
@@ -43,6 +52,6 @@ export const forumSlice = createSlice({
   },
 })
 
-export const { setSelectedForum } = forumSlice.actions
+export const { setSelectedIdForum } = forumSlice.actions
 
 export default forumSlice.reducer

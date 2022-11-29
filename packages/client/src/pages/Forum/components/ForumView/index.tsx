@@ -16,9 +16,7 @@ export const ForumView: React.FC = () => {
           <p className={styles.description}>{selectedForum.description}</p>
         </>
       ) : (
-        <>
-          <p className={styles.description}>Выберите форум</p>
-        </>
+        <p className={styles.description}>Выберите форум</p>
       )}
     </div>
   )
