@@ -4,11 +4,11 @@ export enum StatusType {
   error = 'error',
 }
 
-export interface AuthSigninType {
+export interface IAuthSignin {
   login: string
   password: string
 }
-export interface AuthSignupType extends AuthSigninType {
+export interface IAuthSignup extends IAuthSignin {
   first_name: string
   second_name: string
   email: string
