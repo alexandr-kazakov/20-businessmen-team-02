@@ -1,8 +1,9 @@
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { ErrorPageProps as ErrorPageProps } from './types'
 import styles from './styles.module.scss'
 
-export const ErrorPage = function (props: ErrorPageProps) {
+export const ErrorPage: React.FC<ErrorPageProps> = (props: ErrorPageProps) => {
   return (
     <div className={styles.container}>
       <h1 className={styles.code}>{props.code}</h1>

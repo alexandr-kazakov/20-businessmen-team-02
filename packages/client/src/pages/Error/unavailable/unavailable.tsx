@@ -1,7 +1,8 @@
+import React from 'react'
 import { ErrorPage } from '..'
 import { ErrorPageProps } from '../types'
 
-export const UnavailablePage = function () {
+export const UnavailablePage: React.FC = function () {
   const errorPageProps: ErrorPageProps = {
     code: '500',
     description: 'Server error',

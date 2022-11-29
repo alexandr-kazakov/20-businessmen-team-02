@@ -1,7 +1,8 @@
+import React from 'react'
 import { ErrorPage } from '..'
 import { ErrorPageProps } from '../types'
 
-export const NotFoundPage = function () {
+export const NotFoundPage: React.FC = () => {
   const errorPageProps: ErrorPageProps = {
     code: '404',
     description: 'Page not found',
