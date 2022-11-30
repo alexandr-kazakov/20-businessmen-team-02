@@ -28,7 +28,7 @@ const App: React.FC = () => {
         <Route path="/500" exact component={UnavailablePage} />
         <Route path="/game" component={GamePage} />
       </Switch>
-     <ErrorBoundary />
+     </ErrorBoundary>
     </div>
   )
 }
