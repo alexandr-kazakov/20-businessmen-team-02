@@ -5,6 +5,7 @@ import styles from './styles.module.scss'
 const GamePage: FC = () => {
   const [scores, setScores] = useState(-1)
   const header = scores < 0 ? null : scores === 0 ? 'У Вас 0 очков' : `Поздравляем у Вас ${scores} очков!`
+
   return (
     <>
       <div className={styles.container}>
