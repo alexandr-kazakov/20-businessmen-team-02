@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import AuthPage from '../../pages/Auth'
 import { NotFoundPage, UnavailablePage } from '../../pages/Error'
+import GamePage from '../../pages/Game'
 import styles from './styles.module.scss'
 
 const App: React.FC = () => {
@@ -22,6 +23,7 @@ const App: React.FC = () => {
         <Route path="/" exact component={AuthPage} />
         <Route path="/404" exact component={NotFoundPage} />
         <Route path="/500" exact component={UnavailablePage} />
+        <Route path="/game" component={GamePage} />
       </Switch>
     </div>
   )
