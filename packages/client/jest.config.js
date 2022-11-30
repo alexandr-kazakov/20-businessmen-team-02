@@ -8,6 +8,7 @@ export default {
   moduleNameMapper: {
     '\\.(css|less|scss)$': 'identity-obj-proxy',
   },
+  setupFilesAfterEnv: ['./jest.setup.js'],
   globals: {
     __SERVER_PORT__: process.env.SERVER_PORT,
   },

@@ -3,6 +3,8 @@ import { Switch, Route } from 'react-router-dom'
 import AuthPage from '../../pages/Auth'
 import { NotFoundPage, UnavailablePage } from '../../pages/Error'
 import GamePage from '../../pages/Game'
+import { ErrorBoundary } from '../UI/Error'
+
 import styles from './styles.module.scss'
 
 const App: React.FC = () => {
@@ -19,12 +21,14 @@ const App: React.FC = () => {
 
   return (
     <div className={styles.app}>
+    <ErrorBoundary>
       <Switch>
         <Route path="/" exact component={AuthPage} />
         <Route path="/404" exact component={NotFoundPage} />
         <Route path="/500" exact component={UnavailablePage} />
         <Route path="/game" component={GamePage} />
       </Switch>
+     </ErrorBoundary>
     </div>
   )
 }
