@@ -7,37 +7,37 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
 
-  & .code {
-    font-size: 10rem;
-    color: $primary;
-    margin-top: 0;
-    margin-bottom: 1rem;
-  }
+.code {
+  font-size: 10rem;
+  color: $primary;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
 
-  & .description {
-    color: $primary;
-    font-weight: 700;
-    margin-top: 0;
-    margin-bottom: 1rem;
-  }
+.description {
+  color: $primary;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
 
-  & .message {
-    font-weight: 600;
-    margin: 0 0 3rem;
-  }
+.message {
+  font-weight: 600;
+  margin: 0 0 3rem;
+}
 
-  & .link {
-    display: inline-block;
-    width: 15rem;
-    padding: 0.6rem 1rem;
-    background-color: $ruby;
-    border-radius: 10px;
-    text-decoration: none;
-    color: $primary;
-  }
+.link {
+  display: inline-block;
+  width: 15rem;
+  padding: 0.6rem 1rem;
+  background-color: $ruby;
+  border-radius: 10px;
+  text-decoration: none;
+  color: $primary;
 
-  &__link:hover {
+  &:hover {
     background-color: $ruby-light;
   }
 }
