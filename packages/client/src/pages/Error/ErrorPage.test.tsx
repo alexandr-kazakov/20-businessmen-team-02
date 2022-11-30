@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
-import { NotFoundPage } from './not-found/not-found'
-import { UnavailablePage } from './unavailable/unavailable'
+import { NotFoundPage } from './components/NotFound'
+import { UnavailablePage } from './components/Unavailable'
 import { ErrorPageProps } from './types'
 import { BrowserRouter } from 'react-router-dom'
 

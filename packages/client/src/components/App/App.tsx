@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import AuthPage from '../../pages/Auth'
-import { NotFoundPage } from '../../pages/Error/not-found/not-found'
-import { UnavailablePage } from '../../pages/Error/unavailable/unavailable'
+import { NotFoundPage, UnavailablePage } from '../../pages/Error'
 import styles from './styles.module.scss'
 
 const App: React.FC = () => {

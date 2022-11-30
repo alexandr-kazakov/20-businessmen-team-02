@@ -1,8 +1,8 @@
 import React from 'react'
-import { ErrorPage } from '..'
+import { AbstractError } from './AbstractError'
 import { ErrorPageProps } from '../types'
 
-export const UnavailablePage: React.FC = function () {
+export const UnavailablePage: React.FC = () => {
   const errorPageProps: ErrorPageProps = {
     code: '500',
     description: 'Server error',
@@ -10,5 +10,5 @@ export const UnavailablePage: React.FC = function () {
     showRedirect: false,
   }
 
-  return <ErrorPage {...errorPageProps} />
+  return <AbstractError {...errorPageProps} />
 }

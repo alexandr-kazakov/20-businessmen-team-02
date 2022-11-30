@@ -1,5 +1,5 @@
 import React from 'react'
-import { ErrorPage } from '..'
+import { AbstractError } from './AbstractError'
 import { ErrorPageProps } from '../types'
 
 export const NotFoundPage: React.FC = () => {
@@ -11,5 +11,5 @@ export const NotFoundPage: React.FC = () => {
     showRedirect: true,
   }
 
-  return <ErrorPage {...errorPageProps} />
+  return <AbstractError {...errorPageProps} />
 }
