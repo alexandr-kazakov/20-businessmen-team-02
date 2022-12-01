@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, FC } from 'react'
 import { useAppDispatch } from '../../../../app/redux/hooks'
 import { signup, setIsSigninView } from '../../redux/authSlice'
 import Input from '../../../../components/UI/Input'
@@ -6,7 +6,7 @@ import Button from '../../../../components/UI/Button'
 import { ButtonStyles } from '../../../../components/UI/Button/types'
 import styles from './styles.module.scss'
 
-export const AuthSignup = () => {
+export const AuthSignup: FC = () => {
   const dispatch = useAppDispatch()
   const [values, setValues] = useState({
     email: '',
@@ -32,9 +32,7 @@ export const AuthSignup = () => {
       setIsValidPasswords(false)
     } else {
       const { email, login, first_name, second_name, phone, password } = values
-      dispatch(
-        signup({ email, login, first_name, second_name, phone, password })
-      )
+      dispatch(signup({ email, login, first_name, second_name, phone, password }))
     }
   }
 
@@ -69,27 +67,9 @@ export const AuthSignup = () => {
     <form className={styles.form} onSubmit={handlerSubmit}>
       <span className={styles.title}>Регистрация</span>
       <div className={styles.inputs}>
-        <Input
-          onChange={handlerChange}
-          type="email"
-          name="email"
-          value={values.email}
-          placeholder="Почта"
-        />
-        <Input
-          onChange={handlerChange}
-          type="text"
-          name="login"
-          value={values.login}
-          placeholder="Логин"
-        />
-        <Input
-          onChange={handlerChange}
-          type="text"
-          name="first_name"
-          value={values.first_name}
-          placeholder="Имя"
-        />
+        <Input onChange={handlerChange} type="email" name="email" value={values.email} placeholder="Почта" />
+        <Input onChange={handlerChange} type="text" name="login" value={values.login} placeholder="Логин" />
+        <Input onChange={handlerChange} type="text" name="first_name" value={values.first_name} placeholder="Имя" />
         <Input
           onChange={handlerChange}
           type="text"
@@ -97,13 +77,7 @@ export const AuthSignup = () => {
           value={values.second_name}
           placeholder="Фамилия"
         />
-        <Input
-          onChange={handlerChange}
-          type="text"
-          name="phone"
-          value={values.phone}
-          placeholder="Телефон"
-        />
+        <Input onChange={handlerChange} type="text" name="phone" value={values.phone} placeholder="Телефон" />
         <Input
           onChange={handlerChange}
           onFocus={resetErrors}
@@ -124,10 +98,7 @@ export const AuthSignup = () => {
         />
       </div>
       <div className={styles.buttons}>
-        <Button
-          variant={ButtonStyles.primary}
-          type="submit"
-          disabled={disabled}>
+        <Button variant={ButtonStyles.primary} type="submit" disabled={disabled}>
           Авторизоваться
         </Button>
         <Button onClick={handlerToggle} variant={ButtonStyles.secondary}>

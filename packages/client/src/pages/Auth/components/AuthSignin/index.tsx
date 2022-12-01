@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, FC } from 'react'
 import { useAppDispatch } from '../../../../app/redux/hooks'
 import { signin, setIsSigninView } from '../../redux/authSlice'
 import Input from '../../../../components/UI/Input'
@@ -6,7 +6,7 @@ import Button from '../../../../components/UI/Button'
 import { ButtonStyles } from '../../../../components/UI/Button/types'
 import styles from './styles.module.scss'
 
-export const AuthSignin = () => {
+export const AuthSignin: FC = () => {
   const dispatch = useAppDispatch()
   const [values, setValues] = useState({ login: '', password: '' })
   const [disabled, setDisabled] = useState(true)

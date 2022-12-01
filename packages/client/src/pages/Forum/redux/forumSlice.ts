@@ -1,5 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit'
 import { api } from '../../../app/api'
+import { RootState } from '../../../app/redux/store'
 import { StatusType } from '../../../app/apiTypes'
 import { list } from '../../Forum/const'
 import { ForumType } from '../types'
@@ -13,7 +14,6 @@ interface IInitialState {
   message: string
   listForums: ForumType[]
   selectedIdForum: number | null
-  selectedForum: ForumType | null
 }
 
 const initialState: IInitialState = {
@@ -21,7 +21,6 @@ const initialState: IInitialState = {
   message: '',
   listForums: list,
   selectedIdForum: null,
-  selectedForum: null,
 }
 
 export const forumSlice = createSlice({
@@ -30,12 +29,6 @@ export const forumSlice = createSlice({
   reducers: {
     setSelectedIdForum(state, { payload }) {
       state.selectedIdForum = payload
-
-      const foundedForum = state.listForums.find(forum => forum.id === payload)
-
-      if (foundedForum) {
-        state.selectedForum = foundedForum
-      }
     },
   },
   extraReducers: builder => {
@@ -51,6 +44,12 @@ export const forumSlice = createSlice({
     })
   },
 })
+
+const forumState = (state: RootState) => state.forum
+
+export const getSelectedForum = createSelector(forumState, state =>
+  state.listForums.find((forum: ForumType) => forum.id === state.selectedIdForum)
+)
 
 export const { setSelectedIdForum } = forumSlice.actions
 

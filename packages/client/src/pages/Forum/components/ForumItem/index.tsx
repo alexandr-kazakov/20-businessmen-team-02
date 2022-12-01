@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../../app/redux/hooks'
 import { setSelectedIdForum } from '../../redux/forumSlice'
 import { ForumType } from '../../types'
@@ -8,19 +8,15 @@ type Props = {
   forum: ForumType
 }
 
-export const ForumItem: React.FC<Props> = props => {
+export const ForumItem: FC<Props> = props => {
   const { forum } = props
 
   const dispatch = useAppDispatch()
   const { selectedIdForum } = useAppSelector(state => state.forum)
 
   const handlerClick = () => {
-    if (!selectedIdForum) {
+    if (selectedIdForum !== forum.id) {
       dispatch(setSelectedIdForum(forum.id))
-    } else {
-      if (selectedIdForum !== forum.id) {
-        dispatch(setSelectedIdForum(forum.id))
-      }
     }
   }
 

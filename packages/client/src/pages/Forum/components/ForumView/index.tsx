@@ -1,9 +1,10 @@
-import React from 'react'
-import { useAppSelector } from '../../../../app/redux/hooks'
+import React, { FC } from 'react'
+import { useSelector } from 'react-redux'
+import { getSelectedForum } from '../../redux/forumSlice'
 import styles from './styles.module.scss'
 
-export const ForumView: React.FC = () => {
-  const { selectedForum } = useAppSelector(state => state.forum)
+export const ForumView: FC = () => {
+  const selectedForum = useSelector(getSelectedForum)
 
   return (
     <div className={styles.view}>

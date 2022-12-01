@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { useAppSelector } from '../../../../app/redux/hooks'
 import { ForumItem } from '../ForumItem'
 import styles from './styles.module.scss'
 
-export const ForumList: React.FC = () => {
+export const ForumList: FC = () => {
   const { listForums } = useAppSelector(state => state.forum)
 
   return (
