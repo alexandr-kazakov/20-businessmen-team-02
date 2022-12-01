@@ -1,0 +1,18 @@
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  & .title {
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 30px;
+  }
+
+  & .error {
+    font-size: 20px;
+    color: #fff;
+  }
+}
