@@ -38,26 +38,11 @@ export const AuthSignin: FC = () => {
     <form className={styles.form} onSubmit={handlerSubmit}>
       <span className={styles.title}>Вход</span>
       <div className={styles.inputs}>
-        <Input
-          onChange={handlerChange}
-          type="text"
-          name="login"
-          value={values.login}
-          placeholder="Логин"
-        />
-        <Input
-          onChange={handlerChange}
-          type="password"
-          name="password"
-          value={values.password}
-          placeholder="Пароль"
-        />
+        <Input onChange={handlerChange} type="text" name="login" value={values.login} placeholder="Логин" />
+        <Input onChange={handlerChange} type="password" name="password" value={values.password} placeholder="Пароль" />
       </div>
       <div className={styles.buttons}>
-        <Button
-          variant={ButtonStyles.primary}
-          type="submit"
-          disabled={disabled}>
+        <Button variant={ButtonStyles.primary} type="submit" disabled={disabled}>
           Авторизоваться
         </Button>
         <Button onClick={handlerToggle} variant={ButtonStyles.secondary}>
