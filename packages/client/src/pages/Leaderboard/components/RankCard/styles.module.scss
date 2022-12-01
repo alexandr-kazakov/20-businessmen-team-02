@@ -1,0 +1,48 @@
+@import '../../../../styles/mixins.scss';
+@import '../../../../styles/variables.scss';
+
+.container {
+  margin: 1rem 0;
+  padding: 0 1rem;
+}
+
+.box {
+  @include align-flex-container;
+  border-radius: 1rem;
+  background: $black-light;
+  padding: 1rem;
+
+  &:hover {
+    cursor: pointer;
+    background: linear-gradient(135deg, #ce9ffc 0%, #7367f0 100%);
+  }
+
+  & > * {
+    margin-right: 10px;
+  }
+
+  & > *:last-child {
+    margin-right: 0;
+  }
+}
+
+.avatar {
+  @include align-flex-container;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+
+  & > img {
+    max-width: 100%;
+    height: 100%;
+  }
+}
+
+.fullname {
+  text-align: left;
+  margin-top: 0;
+  margin-bottom: 0;
+  color: $primary;
+  font-size: 1.5rem;
+  flex-grow: 1;
+}
