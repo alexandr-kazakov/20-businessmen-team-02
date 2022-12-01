@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { ForumList } from './components/ForumList'
 import { ForumView } from './components/ForumView'
 import styles from './styles.module.scss'
 
-const ForumPage: React.FC = () => {
+const ForumPage: FC = () => {
   return (
     <div className={styles.forum}>
       <ForumList />
