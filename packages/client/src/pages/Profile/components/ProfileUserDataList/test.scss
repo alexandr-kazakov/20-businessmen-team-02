@@ -1,0 +1,21 @@
+.profile_user_data {
+    color: #fff;
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eaeaea;
+    padding: 8px 0;
+  }
+
+  &__profile_user_data_col_left{
+    text-align: left;
+  }
+
+  &__iprofile_user_data_col_right {
+    color: #999;
+    text-align: right;
+  }
+}
+
+

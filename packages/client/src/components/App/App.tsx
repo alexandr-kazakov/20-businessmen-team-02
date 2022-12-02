@@ -4,6 +4,7 @@ import AuthPage from '../../pages/Auth'
 import { NotFoundPage, UnavailablePage } from '../../pages/Error'
 import GamePage from '../../pages/Game'
 import ForumPage from '../../pages/Forum'
+import ProfilePage from '../../pages/Profile'
 import { ErrorBoundary } from '../UI/Error'
 import styles from './styles.module.scss'
 
@@ -28,6 +29,7 @@ const App: React.FC = () => {
           <Route path="/500" exact component={UnavailablePage} />
           <Route path="/game" component={GamePage} />
           <Route path="/forum" component={ForumPage} />
+          <Route path="/profile" component={ProfilePage} />
         </Switch>
       </ErrorBoundary>
     </div>
