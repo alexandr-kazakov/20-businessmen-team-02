@@ -9,7 +9,7 @@ export const ProfileUserDataList: FC = () => {
     <ul className={`${styles.profile_user_data} clear-list`}>
       {listProfile.length !== 0 ? (
         <>
-          {Object.entries(listProfile[0]).map(([key, value]:[any,any]) => (
+          {Object.entries(listProfile[0]).map(([key, value]: [any, any]) => (
             <li key={key} className={styles.profile_user_data__item}>
               <div className={`${styles.profileuser_data__item_col} ${styles.profile_user_data__item_col_left}`}>
                 {key}
