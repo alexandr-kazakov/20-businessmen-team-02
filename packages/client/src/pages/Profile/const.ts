@@ -6,7 +6,7 @@ export const list = [
     display_name: 'alex',
     login: 'alex',
     avatar: null,
-    email: 'alexandr.kazakov1@gmail.com',
+    email: 'xx123abcgmail.com',
     phone: '1000000000',
   },
 ]

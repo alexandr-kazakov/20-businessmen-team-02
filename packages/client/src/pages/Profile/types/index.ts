@@ -1,4 +1,4 @@
-export type ForumType = {
+export type ProfileTypes = {
   id: number
   first_name: string
   second_name: string

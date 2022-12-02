@@ -3,7 +3,7 @@ import { api } from '../../../app/api'
 import { RootState } from '../../../app/redux/store'
 import { StatusType } from '../../../app/apiTypes'
 import { list } from '../../Profile/const'
-import { ProfileType } from '../types'
+import { ProfileTypes } from '../types'
 
 export const getProfile: any = createAsyncThunk('forum/getProfile', () => {
   return api.get('forum/')
@@ -11,7 +11,7 @@ export const getProfile: any = createAsyncThunk('forum/getProfile', () => {
 
 interface IInitialState {
   status: StatusType | ''
-  listProfile: ProfileType[]
+  listProfile: ProfileTypes[]
 }
 
 const initialState: IInitialState = {
