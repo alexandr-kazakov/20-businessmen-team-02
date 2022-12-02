@@ -6,7 +6,7 @@ import { list } from '../../Profile/const'
 import { ProfileTypes } from '../types'
 
 export const getProfile: any = createAsyncThunk('forum/getProfile', () => {
-  return api.get('forum/')
+  return api.get('profile/')
 })
 
 interface IInitialState {
