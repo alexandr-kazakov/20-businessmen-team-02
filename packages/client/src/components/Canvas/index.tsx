@@ -11,10 +11,10 @@ const CANVAS_HEIGHT = 644,
   IMG_BORDER = 20,
   IMG_DIVIDER = 2,
   CANVAS_COLOR = 'gray',
-  INTERVAL = 100,
+  INTERVAL = 20,
   DELAY = 200
 
-const CanvasComponent: FC<Props> = ({ setScores, initStart }) => {
+const CanvasComponent: FC<Props> = ({ setScores }) => {
   const ref = useRef(null)
 
   useEffect(() => {
@@ -161,7 +161,7 @@ const CanvasComponent: FC<Props> = ({ setScores, initStart }) => {
         }
       }
     }
-  }, [initStart])
+  }, [])
 
   return <canvas ref={ref} width={CANVAS_WIDTH} height={CANVAS_HEIGHT} />
 }
