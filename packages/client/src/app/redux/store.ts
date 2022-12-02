@@ -8,7 +8,7 @@ export const createStore = () => {
     reducer: {
       auth: authSlice,
       forum: forumSlice,
-      profile: profileSlice
+      profile: profileSlice,
     },
     devTools: process.env.NODE_ENV !== 'production',
   })

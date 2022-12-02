@@ -1,6 +1,10 @@
-export type ProfileType = {
+export type ForumType = {
   id: number
-  title: string
-  description: string
-  date: string
+  first_name: string
+  second_name: string
+  display_name: string
+  login: string
+  avatar: string | null
+  email: string
+  phone: string
 }

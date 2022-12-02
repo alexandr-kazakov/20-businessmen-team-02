@@ -8,19 +8,19 @@ import styles from './styles.module.scss'
 const ProfilePage: FC = () => {
   return (
     <div className={styles.page_profile}>
-        <div className="container">
-            <section className={styles.page_profile__user_avatar}>
-                <img src="https://via.placeholder.com/130" alt="User avatar" />
-            </section>
-            <section className={styles.page_profile__user_data_list}>
-                <ProfileUserDataList/>
-            </section>
-            <section className={styles.page_profile__user_data_list}>
-                <Button variant={ButtonStyles.primary} type="button">
-                    Изменить
-                </Button>
-            </section>
-        </div>
+      <div className="container">
+        <section className={styles.page_profile__user_avatar}>
+          <img src="https://via.placeholder.com/130" alt="User avatar" />
+        </section>
+        <section className={styles.page_profile__user_data_list}>
+          <ProfileUserDataList />
+        </section>
+        <section className={styles.page_profile__user_data_list}>
+          <Button variant={ButtonStyles.primary} type="button">
+            Изменить
+          </Button>
+        </section>
+      </div>
     </div>
   )
 }

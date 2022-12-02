@@ -22,9 +22,7 @@ const initialState: IInitialState = {
 export const profileSlice = createSlice({
   name: 'profile',
   initialState,
-  reducers: {
-
-  },
+  reducers: {},
   extraReducers: builder => {
     builder.addCase(getProfile.pending, state => {
       state.status = StatusType.loading
