@@ -1,4 +1,4 @@
-export type ForumsType = {
+export type ForumType = {
   id: number
   title: string
   description: string
