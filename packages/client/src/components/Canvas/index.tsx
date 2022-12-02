@@ -14,7 +14,7 @@ const CANVAS_HEIGHT = 644,
   INTERVAL = 100,
   DELAY = 200
 
-const CanvasComponent: FC<Props> = ({ setScores }) => {
+const CanvasComponent: FC<Props> = ({ setScores, initStart }) => {
   const ref = useRef(null)
 
   useEffect(() => {
@@ -161,7 +161,7 @@ const CanvasComponent: FC<Props> = ({ setScores }) => {
         }
       }
     }
-  }, [])
+  }, [initStart])
 
   return <canvas ref={ref} width={CANVAS_WIDTH} height={CANVAS_HEIGHT} />
 }
