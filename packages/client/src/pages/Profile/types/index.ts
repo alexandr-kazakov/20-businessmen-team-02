@@ -1,4 +1,4 @@
-export type ProfileTypes = {
+export type ProfileType = {
   id: number
   first_name: string
   second_name: string

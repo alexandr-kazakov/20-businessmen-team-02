@@ -1,9 +1,8 @@
 import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit'
 import { api } from '../../../app/api'
-import { RootState } from '../../../app/redux/store'
 import { StatusType } from '../../../app/apiTypes'
 import { list } from '../../Profile/const'
-import { ProfileTypes } from '../types'
+import { ProfileType } from '../types'
 
 export const getProfile: any = createAsyncThunk('forum/getProfile', () => {
   return api.get('profile/')
@@ -11,7 +10,7 @@ export const getProfile: any = createAsyncThunk('forum/getProfile', () => {
 
 interface IInitialState {
   status: StatusType | ''
-  listProfile: ProfileTypes[]
+  listProfile: ProfileType[]
 }
 
 const initialState: IInitialState = {
