@@ -1,9 +1,9 @@
 import { FC } from 'react'
+import { Link } from 'react-router-dom'
 import { RankCard } from './components/RankCard/RankCard'
 import { Leaders } from './components/Leaders/Leaders'
 import styles from './styles.module.scss'
-import { User } from './type'
-import { WithRedirectTo } from '../../decorators/WithRedirectTo'
+import { User } from '../../domain/intefaceses/user'
 
 // mock data
 const users: User[] = [
@@ -98,9 +98,9 @@ export const Leaderboard: FC = () => {
 
       <div className={styles.ranks}>
         {users.slice(3).map(user => (
-          <WithRedirectTo url={`/users/${user.id}/profile`} key={user.id}>
+          <Link to={`/users/${user.id}/profile`} key={user.id}>
             <RankCard {...user} />
-          </WithRedirectTo>
+          </Link>
         ))}
       </div>
     </article>

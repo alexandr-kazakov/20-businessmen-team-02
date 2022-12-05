@@ -4,29 +4,26 @@
 .scores {
   color: $primary;
   position: relative;
-  margin-right: 30px;
+  padding-right: 30px;
 }
 
+.scores_desc::before,
 .scores_asc::before {
   content: '';
   position: absolute;
-  right: 0;
-  transform: translate(30px, 50%);
+  right: 30px;
   width: 0px;
   height: 0px;
   border-style: solid;
   border-width: 0px 10px 10px 10px;
+}
+
+.scores_asc::before {
+  transform: translate(30px, 50%);
   border-color: transparent transparent $green transparent;
 }
 
 .scores_desc::before {
-  content: '';
-  position: absolute;
-  right: 0;
   transform: translate(30px, 50%) rotate(180deg);
-  width: 0px;
-  height: 0px;
-  border-style: solid;
-  border-width: 0px 10px 10px 10px;
   border-color: transparent transparent $red transparent;
 }

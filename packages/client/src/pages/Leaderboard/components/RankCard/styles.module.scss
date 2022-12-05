@@ -6,7 +6,7 @@
   padding: 0 1rem;
 }
 
-.box {
+.card {
   @include align-flex-container;
   border-radius: 1rem;
   background: $black-light;
@@ -38,7 +38,7 @@
   }
 }
 
-.fullname {
+.name {
   text-align: left;
   margin-top: 0;
   margin-bottom: 0;

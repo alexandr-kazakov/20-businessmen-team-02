@@ -1,5 +1,3 @@
-// Temporary interface describe how user can be described
-
 export interface User {
   id: number
   alias: string

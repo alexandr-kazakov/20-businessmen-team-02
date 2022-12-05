@@ -1,7 +1,11 @@
 import classnames from 'classnames'
 import { FC } from 'react'
 import styles from './styles.module.scss'
-import { ScoreProps } from './type'
+
+interface ScoreProps {
+  direction: 'acs' | 'desc'
+  scores: number
+}
 
 export const Score: FC<ScoreProps> = ({ scores, direction }: ScoreProps) => {
   const className = classnames(styles.scores, {
@@ -9,9 +13,5 @@ export const Score: FC<ScoreProps> = ({ scores, direction }: ScoreProps) => {
     [styles.scores_desc]: direction === 'desc',
   })
 
-  return (
-    <div>
-      <div className={className}>Scores: {scores}</div>
-    </div>
-  )
+  return <div className={className}>Scores: {scores}</div>
 }
