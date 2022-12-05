@@ -90,19 +90,39 @@ const users: User[] = [
 ]
 
 export const Leaderboard: FC = () => {
-  return (
-    <article className={styles.container}>
-      <h1 className={styles.headline}>Leaderboard</h1>
+  let leadersAllocationTemplate
 
-      <Leaders users={users.slice(0, 3)} />
+  if (users?.length > 3) {
+    leadersAllocationTemplate = (
+      <>
+        <Leaders users={users.slice(0, 3)} />
 
+        <div className={styles.ranks}>
+          {users.slice(3).map(user => (
+            <Link to={`/users/${user.id}/profile`} key={user.id}>
+              <RankCard {...user} />
+            </Link>
+          ))}
+        </div>
+      </>
+    )
+  } else {
+    leadersAllocationTemplate = (
       <div className={styles.ranks}>
-        {users.slice(3).map(user => (
+        {users.map(user => (
           <Link to={`/users/${user.id}/profile`} key={user.id}>
             <RankCard {...user} />
           </Link>
         ))}
       </div>
+    )
+  }
+
+  return (
+    <article className={styles.container}>
+      <h1 className={styles.headline}>Leaderboard</h1>
+
+      {leadersAllocationTemplate}
     </article>
   )
 }

@@ -10,7 +10,7 @@ export const RankCard: FC<RankCardProps> = ({ alias, scores, avatar, first_name,
     <article className={styles.container}>
       <div className={styles.card}>
         <span className={styles.avatar}>
-          <img src={avatar ? avatar : '/avatar.svg'} alt="user"></img>
+          <img src={avatar || '/avatar.svg'} alt="user"></img>
         </span>
 
         <p className={styles.name}> {alias || first_name}</p>

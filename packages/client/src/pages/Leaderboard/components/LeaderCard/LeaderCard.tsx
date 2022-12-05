@@ -25,7 +25,7 @@ export const LeaderCard: FC<LeaderCardProps> = ({ name, scores, variant, avatar 
   return (
     <div className={className}>
       <span className={styles.avatar}>
-        <img src={avatar ? avatar : '/avatar.svg'} alt="user"></img>
+        <img src={avatar || '/avatar.svg'} alt="user"></img>
       </span>
       <p className={styles.name}>{name}</p>
       <p className={styles.score}>Score: {scores}</p>

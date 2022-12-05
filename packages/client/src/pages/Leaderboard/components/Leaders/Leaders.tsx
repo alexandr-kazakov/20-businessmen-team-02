@@ -20,14 +20,14 @@ export const Leaders: FC<LeadersProps> = ({ users: [firstUser, secondUser, third
     name: secondUser.alias || secondUser.first_name,
     scores: secondUser.scores,
     variant: LeaderVariant.SECOND,
-    avatar: firstUser.avatar ?? '',
+    avatar: secondUser.avatar ?? '',
   }
 
   const thirdLeader: LeaderCardProps = {
     name: thirdUser.alias || thirdUser.first_name,
     scores: thirdUser.scores,
     variant: LeaderVariant.THIRD,
-    avatar: firstUser.avatar ?? '',
+    avatar: thirdUser.avatar ?? '',
   }
 
   return (
