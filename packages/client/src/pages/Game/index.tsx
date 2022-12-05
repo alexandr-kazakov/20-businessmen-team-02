@@ -1,17 +1,40 @@
 import React, { FC, useState } from 'react'
 import CanvasComponent from '../../components/Canvas'
+import Button from '../../components/UI/Button'
+import { ButtonStyles } from '../../components/UI/Button/types'
 import styles from './styles.module.scss'
 
 const GamePage: FC = () => {
-  const [scores, setScores] = useState(-1)
+  const [initStart, setInitStart] = useState<number>(0)
+  const [scores, setScores] = useState<number>(-1)
   const header = scores < 0 ? null : scores === 0 ? 'У Вас 0 очков' : `Поздравляем у Вас ${scores} очков!`
+  const clickStart = () => {
+    setInitStart(Date.now())
+  }
+  const clickPlayAgain = () => {
+    setInitStart(0)
+    setScores(-1)
+  }
+  const startButton = (
+    <div className={styles.start}>
+      <Button variant={ButtonStyles.primary} onClick={clickStart}>
+        Старт
+      </Button>
+    </div>
+  )
+  const playAgainButton = (
+    <div className={styles.restart}>
+      <Button variant={ButtonStyles.primary} onClick={clickPlayAgain}>
+        Играть ещё
+      </Button>
+    </div>
+  )
 
   return (
     <>
-      <div className={styles.container}>
-        <CanvasComponent setScores={setScores} />
-      </div>
+      <div className={styles.container}>{initStart ? <CanvasComponent setScores={setScores} /> : startButton}</div>
       {header && <h1 className={styles.congrat}>{header}</h1>}
+      {header && playAgainButton}
     </>
   )
 }

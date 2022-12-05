@@ -1,0 +1,14 @@
+.page_profile {
+    padding-top: 50px;
+
+    &__user_avatar{
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 30px;
+        max-width: 130px;
+    }
+
+    &__user_data_list {
+        margin-bottom: 30px;
+    }
+}

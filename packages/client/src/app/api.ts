@@ -38,7 +38,7 @@ export const api = {
     return api
   },
 
-  request: <T>(method: Method, path: string, params?: AxiosRequestConfig) => {
+  request: (method: Method, path: string, params?: AxiosRequestConfig) => {
     const url = getURL(path)
     if (DEV) {
       console.info('[API] ->', method, url, params || '')
@@ -46,22 +46,22 @@ export const api = {
     const authHeaders = getHeaders(api.userToken)
     return axios
       .create({ headers: authHeaders })
-      .request<T>({
+      .request({
         method,
         url,
         ...params,
       })
-      .then(resp => {
+      .then(response => {
         if (DEV) {
-          console.info('[API] <- ok', method, url, resp.data)
+          console.info('[API] <- ok', method, url, response.data)
         }
-        return resp
+        return response
       })
-      .catch(err => {
+      .catch(error => {
         if (DEV) {
-          console.error('[API] <- error', method, url, err)
+          console.error('[API] <- error', method, url, error)
         }
-        throw err
+        throw error
       })
   },
 

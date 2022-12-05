@@ -11,7 +11,7 @@ const CANVAS_HEIGHT = 644,
   IMG_BORDER = 20,
   IMG_DIVIDER = 2,
   CANVAS_COLOR = 'gray',
-  INTERVAL = 100,
+  INTERVAL = 20,
   DELAY = 200
 
 const CanvasComponent: FC<Props> = ({ setScores }) => {
