@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit'
-import { api } from '../../../app/api'
-import { StatusType } from '../../../app/apiTypes'
-import { list } from '../../Profile/const'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { api } from '@/app/api'
+import { StatusType } from '@/app/apiTypes'
+import { list } from '../const'
 import { ProfileType } from '../types'
 
 export const getProfile: any = createAsyncThunk('forum/getProfile', () => {

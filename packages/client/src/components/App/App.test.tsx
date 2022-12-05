@@ -5,9 +5,7 @@ import { render } from '@testing-library/react'
 import { createStore } from '../../app/redux/store'
 
 // @ts-ignore
-global.fetch = jest.fn(() =>
-  Promise.resolve({ json: () => Promise.resolve('hey') })
-)
+global.fetch = jest.fn(() => Promise.resolve({ json: () => Promise.resolve('hey') }))
 
 test('Example test', async () => {
   render(

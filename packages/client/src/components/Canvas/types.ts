@@ -2,6 +2,7 @@ export type Position = {
   posX: number
   posY: number
 }
+
 export type ImageObj = {
   imageElement: HTMLImageElement
   posX: number
@@ -11,7 +12,9 @@ export type ImageObj = {
   currX?: number
   currY?: number
 }
+
 type OwnProps = {
   setScores: (value: number) => void
 }
+
 export type Props = OwnProps
