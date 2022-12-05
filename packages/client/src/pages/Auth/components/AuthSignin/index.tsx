@@ -1,9 +1,9 @@
 import React, { useEffect, useState, FC } from 'react'
-import { useAppDispatch } from '../../../../app/redux/hooks'
+import { useAppDispatch } from '@/app/redux/hooks'
 import { signin, setIsSigninView } from '../../redux/authSlice'
-import Input from '../../../../components/UI/Input'
-import Button from '../../../../components/UI/Button'
-import { ButtonStyles } from '../../../../components/UI/Button/types'
+import Input from '@/components/UI/Input'
+import Button from '@/components/UI/Button'
+import { ButtonStyles } from '@/components/UI/Button/types'
 import styles from './styles.module.scss'
 
 export const AuthSignin: FC = () => {

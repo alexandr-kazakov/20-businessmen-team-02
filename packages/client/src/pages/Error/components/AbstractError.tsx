@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom'
 import { ErrorPageProps as ErrorPageProps } from '../types'
 import styles from '.././styles.module.scss'
 
-export const AbstractError: React.FC<ErrorPageProps> = (
-  props: ErrorPageProps
-) => {
+export const AbstractError: React.FC<ErrorPageProps> = (props: ErrorPageProps) => {
   return (
     <div className={styles.container}>
       <h1 className={styles.code}>{props.code}</h1>

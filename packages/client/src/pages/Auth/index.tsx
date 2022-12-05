@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { useAppSelector } from '../../app/redux/hooks'
+import { useAppSelector } from '@/app/redux/hooks'
 import { AuthSignin } from './components/AuthSignin'
 import { AuthSignup } from './components/AuthSignup'
 import styles from './styles.module.scss'

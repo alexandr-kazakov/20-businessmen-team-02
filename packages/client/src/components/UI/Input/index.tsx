@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes, memo } from 'react'
+import React, { InputHTMLAttributes, memo, FC } from 'react'
 import classnames from 'classnames'
 import styles from './styles.module.scss'
 
@@ -8,7 +8,7 @@ type OwnProps = {
 
 type Props = OwnProps
 
-const Input: React.FC<Props> = props => {
+const Input: FC<Props> = props => {
   const { isValid = true, ...inputProps } = props
 
   const className = classnames(styles.input, {
