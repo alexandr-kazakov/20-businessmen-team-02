@@ -2,6 +2,7 @@ import React, { useEffect, FC } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import AuthPage from '@/pages/Auth'
 import { NotFoundPage, UnavailablePage } from '@/pages/Error'
+import { Leaderboard } from '@/pages/Leaderboard'
 import MainPage from '@/pages/Main'
 import GamePage from '@/pages/Game'
 import ForumPage from '@/pages/Forum'
@@ -32,6 +33,7 @@ const App: FC = () => {
           <Route path="/game" exact component={GamePage} />
           <Route path="/forum" exact component={ForumPage} />
           <Route path="/profile" exact component={ProfilePage} />
+           <Route path="/leaderboard" exact component={Leaderboard} />
         </Switch>
       </ErrorBoundary>
     </div>
