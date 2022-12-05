@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes, memo } from 'react'
+import React, { ButtonHTMLAttributes, memo, FC } from 'react'
 import classnames from 'classnames'
 import { ButtonStyles } from './types'
 import styles from './styles.module.scss'
@@ -9,7 +9,7 @@ type OwnProps = {
 
 type Props = OwnProps
 
-const Button: React.FC<Props> = props => {
+const Button: FC<Props> = props => {
   const { variant, children, ...buttonProps } = props
 
   const className = classnames(styles.button, {

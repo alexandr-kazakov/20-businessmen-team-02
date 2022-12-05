@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
-import Button from '../../components/UI/Button'
-import { ButtonStyles } from '../../components/UI/Button/types'
-
+import Button from '@/components/UI/Button'
+import { ButtonStyles } from '@/components/UI/Button/types'
 import { ProfileUserDataList } from './components/ProfileUserDataList'
 import styles from './styles.module.scss'
 

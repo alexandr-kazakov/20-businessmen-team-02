@@ -65,17 +65,13 @@ export const api = {
       })
   },
 
-  get: (path: string, params?: AxiosRequestConfig['params']) =>
-    api.request('GET', path, { params }),
+  get: (path: string, params?: AxiosRequestConfig['params']) => api.request('GET', path, { params }),
 
-  post: (path: string, data: AxiosRequestConfig['data']) =>
-    api.request('POST', path, { data }),
+  post: (path: string, data: AxiosRequestConfig['data']) => api.request('POST', path, { data }),
 
-  patch: (path: string, data: AxiosRequestConfig['data']) =>
-    api.request('PATCH', path, { data }),
+  patch: (path: string, data: AxiosRequestConfig['data']) => api.request('PATCH', path, { data }),
 
-  put: (path: string, data: AxiosRequestConfig['data']) =>
-    api.request('PUT', path, { data }),
+  put: (path: string, data: AxiosRequestConfig['data']) => api.request('PUT', path, { data }),
 
   delete: (path: string) => api.request('DELETE', path),
 
