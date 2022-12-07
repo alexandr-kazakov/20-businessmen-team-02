@@ -1,14 +1,21 @@
 import React, { useEffect, useState, FC } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useAppDispatch } from '@/app/redux/hooks'
 import { signup, setIsSigninView } from '../../redux/authSlice'
 import Input from '@/components/UI/Input'
 import Button from '@/components/UI/Button'
+import { IAuthSignup } from '../../types'
 import { ButtonStyles } from '@/components/UI/Button/types'
 import styles from './styles.module.scss'
 
+interface IValues extends IAuthSignup {
+  check_password: string
+}
+
 export const AuthSignup: FC = () => {
+  const history = useHistory()
   const dispatch = useAppDispatch()
-  const [values, setValues] = useState({
+  const [values, setValues] = useState<IValues>({
     email: '',
     login: '',
     first_name: '',
@@ -17,22 +24,27 @@ export const AuthSignup: FC = () => {
     password: '',
     check_password: '',
   })
-  const [disabled, setDisabled] = useState(true)
-  const [isValidPasswords, setIsValidPasswords] = useState(true)
+  const [disabled, setDisabled] = useState<boolean>(true)
+  const [isValidPasswords, setIsValidPasswords] = useState<boolean>(true)
 
   const handlerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
     setValues({ ...values, [name]: value })
   }
 
-  const handlerSubmit = (event: React.FormEvent) => {
+  const handlerSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    if (values.password !== values.check_password) {
-      setIsValidPasswords(false)
-    } else {
-      const { email, login, first_name, second_name, phone, password } = values
-      dispatch(signup({ email, login, first_name, second_name, phone, password }))
+    try {
+      if (values.password !== values.check_password) {
+        setIsValidPasswords(false)
+      } else {
+        const { email, login, first_name, second_name, phone, password } = values
+        await dispatch(signup({ email, login, first_name, second_name, phone, password }))
+        history.push('/')
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 

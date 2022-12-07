@@ -1,5 +1,6 @@
 import React, { useEffect, FC } from 'react'
 import { Switch, Route } from 'react-router-dom'
+import ProtectedRoute from '../Routers/ProtectedRoute'
 import AuthPage from '@/pages/Auth'
 import { NotFoundPage, UnavailablePage } from '@/pages/Error'
 import { Leaderboard } from '@/pages/Leaderboard'
@@ -8,6 +9,7 @@ import GamePage from '@/pages/Game'
 import ForumPage from '@/pages/Forum'
 import ProfilePage from '@/pages/Profile'
 import { ErrorBoundary } from '../UI/Error'
+import { RoutersPaths } from '../Routers/types'
 import styles from './styles.module.scss'
 
 const App: FC = () => {
@@ -26,14 +28,14 @@ const App: FC = () => {
     <div className={styles.app}>
       <ErrorBoundary>
         <Switch>
-          <Route path="/" exact component={AuthPage} />
-          <Route path="/404" exact component={NotFoundPage} />
-          <Route path="/500" exact component={UnavailablePage} />
-          <Route path="/main" exact component={MainPage} />
-          <Route path="/game" exact component={GamePage} />
-          <Route path="/forum" exact component={ForumPage} />
-          <Route path="/profile" exact component={ProfilePage} />
-           <Route path="/leaderboard" exact component={Leaderboard} />
+          <Route path={RoutersPaths.main} exact component={MainPage} />
+          <Route path={RoutersPaths.auth} exact component={AuthPage} />
+          <ProtectedRoute path={RoutersPaths.game} exact component={GamePage} />
+          <ProtectedRoute path={RoutersPaths.forum} exact component={ForumPage} />
+          <ProtectedRoute path={RoutersPaths.profile} exact component={ProfilePage} />
+          <ProtectedRoute path={RoutersPaths.leaderboard} exact component={Leaderboard} />
+          <Route path={RoutersPaths.errorServer} exact component={UnavailablePage} />
+          <Route path={['/*', `${RoutersPaths.errorClient}`]} exact component={NotFoundPage} />
         </Switch>
       </ErrorBoundary>
     </div>
