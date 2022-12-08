@@ -1,24 +1,33 @@
 import React, { useEffect, useState, FC } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useAppDispatch } from '@/app/redux/hooks'
 import { signin, setIsSigninView } from '../../redux/authSlice'
 import Input from '@/components/UI/Input'
 import Button from '@/components/UI/Button'
+import { IAuthSignin } from '../../types'
 import { ButtonStyles } from '@/components/UI/Button/types'
 import styles from './styles.module.scss'
 
 export const AuthSignin: FC = () => {
+  const history = useHistory()
   const dispatch = useAppDispatch()
-  const [values, setValues] = useState({ login: '', password: '' })
-  const [disabled, setDisabled] = useState(true)
+  const [values, setValues] = useState<IAuthSignin>({ login: '', password: '' })
+  const [disabled, setDisabled] = useState<boolean>(true)
 
   const handlerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
     setValues({ ...values, [name]: value })
   }
 
-  const handlerSubmit = (event: React.FormEvent) => {
+  const handlerSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-    dispatch(signin(values))
+
+    try {
+      await dispatch(signin(values))
+      history.push('/')
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const handlerToggle = (event: React.MouseEvent<HTMLButtonElement>) => {

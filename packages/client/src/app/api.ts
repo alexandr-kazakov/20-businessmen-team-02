@@ -25,7 +25,6 @@ export const api = {
    * токен юзера
    */
   userToken: <string | null>null,
-
   /**
    * проставить токен юзера
    * @param {String} token
@@ -43,9 +42,8 @@ export const api = {
     if (DEV) {
       console.info('[API] ->', method, url, params || '')
     }
-    const authHeaders = getHeaders(api.userToken)
     return axios
-      .create({ headers: authHeaders })
+      .create({ withCredentials: true })
       .request({
         method,
         url,
@@ -67,7 +65,7 @@ export const api = {
 
   get: (path: string, params?: AxiosRequestConfig['params']) => api.request('GET', path, { params }),
 
-  post: (path: string, data: AxiosRequestConfig['data']) => api.request('POST', path, { data }),
+  post: (path: string, data?: AxiosRequestConfig['data']) => api.request('POST', path, { data }),
 
   patch: (path: string, data: AxiosRequestConfig['data']) => api.request('PATCH', path, { data }),
 

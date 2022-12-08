@@ -1,11 +1,11 @@
 import React, { FC } from 'react'
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
 import { setSelectedIdForum } from '../../redux/forumSlice'
-import { ForumType } from '../../types'
+import { TForum } from '../../types'
 import styles from './styles.module.scss'
 
 type Props = {
-  forum: ForumType
+  forum: TForum
 }
 
 export const ForumItem: FC<Props> = props => {

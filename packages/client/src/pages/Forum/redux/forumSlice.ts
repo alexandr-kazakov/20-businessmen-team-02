@@ -3,7 +3,7 @@ import { api } from '@/app/api'
 import { RootState } from '@/app/redux/store'
 import { StatusType } from '@/app/apiTypes'
 import { list } from '../const'
-import { ForumType } from '../types'
+import { TForum } from '../types'
 
 export const getForums: any = createAsyncThunk('forum/getForums', () => {
   return api.get('forum/')
@@ -12,7 +12,7 @@ export const getForums: any = createAsyncThunk('forum/getForums', () => {
 interface IInitialState {
   status: StatusType | ''
   message: string
-  listForums: ForumType[]
+  listForums: TForum[]
   selectedIdForum: number | null
 }
 
@@ -45,10 +45,9 @@ export const forumSlice = createSlice({
   },
 })
 
-const forumState = (state: RootState) => state.forum
-
-export const getSelectedForum = createSelector(forumState, state =>
-  state.listForums.find((forum: ForumType) => forum.id === state.selectedIdForum)
+export const getSelectedForum = createSelector(
+  (state: RootState) => state.forum,
+  stateForum => stateForum.listForums.find((forum: TForum) => forum.id === stateForum.selectedIdForum)
 )
 
 export const { setSelectedIdForum } = forumSlice.actions
