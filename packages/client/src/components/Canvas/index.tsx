@@ -11,7 +11,6 @@ const CANVAS_HEIGHT = 644,
   IMG_BORDER = 20,
   IMG_DIVIDER = 2,
   CANVAS_COLOR = 'gray',
-  INTERVAL = 20,
   DELAY = 200
 
 const CanvasComponent: FC<Props> = ({ setScores }) => {
@@ -45,6 +44,12 @@ const CanvasComponent: FC<Props> = ({ setScores }) => {
             const imageElement = new Image()
 
             imageElement.onload = function () {
+              const sourceX = x * 200
+              const sourceY = y * 200
+              const sourceWidth = IMG_SIZE_X
+              const sourceHeight = IMG_SIZE_Y
+              const destWidth = sourceWidth
+              const destHeight = sourceHeight
               const origX = x * (IMG_SIZE_X + IMG_DIVIDER) + IMG_BORDER
               const origY = y * (IMG_SIZE_Y + IMG_DIVIDER) + IMG_BORDER
               let pos: Position
@@ -56,11 +61,33 @@ const CanvasComponent: FC<Props> = ({ setScores }) => {
                 startPos.splice(rnd, 1)
               }
               const { posX, posY } = pos
-              imgArr.push({ imageElement, posX, posY, origX, origY })
-              ctx.drawImage(imageElement, posX, posY)
+              imgArr.push({
+                imageElement,
+                sourceX,
+                sourceY,
+                sourceWidth,
+                sourceHeight,
+                posX,
+                posY,
+                destWidth,
+                destHeight,
+                origX,
+                origY,
+              })
+              ctx.drawImage(
+                imageElement,
+                sourceX,
+                sourceY,
+                sourceWidth,
+                sourceHeight,
+                posX,
+                posY,
+                destWidth,
+                destHeight
+              )
               start = Date.now()
             }
-            imageElement.src = `src/assets/images/ch${x}${y}.png`
+            imageElement.src = `src/assets/images/cheburashka.png`
           }
         }
 
@@ -86,6 +113,7 @@ const CanvasComponent: FC<Props> = ({ setScores }) => {
           if (draggable) {
             draggable.currX = e.offsetX - IMG_SIZE_X / 2
             draggable.currY = e.offsetY - IMG_SIZE_Y / 2
+            requestAnimationFrame(refreshCanvas)
           }
         }
 
@@ -111,7 +139,6 @@ const CanvasComponent: FC<Props> = ({ setScores }) => {
               draggable.posY = posY
             }
 
-            // draggable.
             draggable = null
             refreshCanvas()
           }
@@ -125,12 +152,6 @@ const CanvasComponent: FC<Props> = ({ setScores }) => {
           }
         }
 
-        const intervalId = setInterval(() => {
-          if (draggable) {
-            refreshCanvas()
-          }
-        }, INTERVAL)
-
         const refreshCanvas = () => {
           ctx.fillRect(0, 0, canvas.width, canvas.height)
           let result = true
@@ -138,21 +159,52 @@ const CanvasComponent: FC<Props> = ({ setScores }) => {
             if (imgObj === draggable) {
               continue
             }
-            const { imageElement, posX, posY, origX, origY } = imgObj
-            ctx.drawImage(imageElement, posX, posY)
+            const {
+              imageElement,
+              posX,
+              posY,
+              origX,
+              origY,
+              sourceX,
+              sourceY,
+              sourceWidth,
+              sourceHeight,
+              destWidth,
+              destHeight,
+            } = imgObj
+            ctx.drawImage(imageElement, sourceX, sourceY, sourceWidth, sourceHeight, posX, posY, destWidth, destHeight)
             if (result && (posX !== origX || posY !== origY)) {
               result = false
             }
           }
           if (draggable) {
-            const { imageElement, currX = 0, currY = 0 } = draggable
-            ctx.drawImage(imageElement, currX, currY)
+            const {
+              imageElement,
+              currX = 0,
+              currY = 0,
+              sourceX,
+              sourceY,
+              sourceWidth,
+              sourceHeight,
+              destWidth,
+              destHeight,
+            } = draggable
+            ctx.drawImage(
+              imageElement,
+              sourceX,
+              sourceY,
+              sourceWidth,
+              sourceHeight,
+              currX,
+              currY,
+              destWidth,
+              destHeight
+            )
           }
           if (result) {
             let scores = 20000 - (Date.now() - start)
             scores < 0 && (scores = 0)
             finished = true
-            clearInterval(intervalId)
             setTimeout(() => {
               // TODO - переход на страницу окончания игры
               setScores(scores)

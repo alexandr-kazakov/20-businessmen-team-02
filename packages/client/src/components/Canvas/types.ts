@@ -11,6 +11,12 @@ export type ImageObj = {
   origY: number
   currX?: number
   currY?: number
+  sourceX: number
+  sourceY: number
+  sourceWidth: number
+  sourceHeight: number
+  destWidth: number
+  destHeight: number
 }
 
 type OwnProps = {
