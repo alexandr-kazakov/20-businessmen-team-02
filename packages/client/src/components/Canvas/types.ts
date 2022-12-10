@@ -17,6 +17,8 @@ export type ImageObj = {
   sourceHeight: number
   destWidth: number
   destHeight: number
+  fromX?: number
+  fromY?: number
 }
 
 type OwnProps = {

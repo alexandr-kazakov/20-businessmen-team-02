@@ -28,6 +28,10 @@ const CanvasComponent: FC<Props> = ({ setScores }) => {
         let finished = false
         let start = 0
         const startPos: Position[] = []
+        let draggable: ImageObj | null = null,
+          first: ImageObj | null = null,
+          second: ImageObj | null = null
+        let startAnimate = 0
 
         for (let x = 0; x < IMG_X_AMOUNT; x++) {
           for (let y = 0; y < IMG_Y_AMOUNT; y++) {
@@ -38,7 +42,6 @@ const CanvasComponent: FC<Props> = ({ setScores }) => {
           }
         }
         const imgArr: ImageObj[] = []
-        let draggable: ImageObj | null = null
         for (let x = 0; x < IMG_X_AMOUNT; x++) {
           for (let y = 0; y < IMG_Y_AMOUNT; y++) {
             const imageElement = new Image()
@@ -119,7 +122,7 @@ const CanvasComponent: FC<Props> = ({ setScores }) => {
 
         canvas.onmouseup = e => {
           if (draggable) {
-            let second: ImageObj | null = null
+            startAnimate = performance.now()
             for (const imgObj of imgArr) {
               if (
                 e.offsetX > imgObj.posX &&
@@ -131,24 +134,34 @@ const CanvasComponent: FC<Props> = ({ setScores }) => {
                 break
               }
             }
+            first = draggable
+            first.fromX = first.currX
+            first.fromY = first.currY
+
             if (second) {
               const { posX, posY } = second
+              second.fromX = posX
+              second.fromY = posY
+
               second.posX = draggable.posX
               second.posY = draggable.posY
+
               draggable.posX = posX
               draggable.posY = posY
             }
 
             draggable = null
-            refreshCanvas()
+            animate()
           }
         }
         canvas.onmouseout = () => {
           if (draggable) {
-            draggable.currX = draggable.posX
-            draggable.currY = draggable.posY
+            startAnimate = performance.now()
+            first = draggable
+            first.fromX = first.currX
+            first.fromY = first.currY
             draggable = null
-            refreshCanvas()
+            animate()
           }
         }
 
@@ -156,7 +169,7 @@ const CanvasComponent: FC<Props> = ({ setScores }) => {
           ctx.fillRect(0, 0, canvas.width, canvas.height)
           let result = true
           for (const imgObj of imgArr) {
-            if (imgObj === draggable) {
+            if (imgObj === draggable || imgObj === first || imgObj === second) {
               continue
             }
             const {
@@ -177,38 +190,79 @@ const CanvasComponent: FC<Props> = ({ setScores }) => {
               result = false
             }
           }
-          if (draggable) {
-            const {
-              imageElement,
-              currX = 0,
-              currY = 0,
-              sourceX,
-              sourceY,
-              sourceWidth,
-              sourceHeight,
-              destWidth,
-              destHeight,
-            } = draggable
-            ctx.drawImage(
-              imageElement,
-              sourceX,
-              sourceY,
-              sourceWidth,
-              sourceHeight,
-              currX,
-              currY,
-              destWidth,
-              destHeight
-            )
-          }
-          if (result) {
+          ;[second, first, draggable].map(moved => {
+            if (moved) {
+              const {
+                imageElement,
+                currX = 0,
+                currY = 0,
+                sourceX,
+                sourceY,
+                sourceWidth,
+                sourceHeight,
+                destWidth,
+                destHeight,
+              } = moved
+              ctx.drawImage(
+                imageElement,
+                sourceX,
+                sourceY,
+                sourceWidth,
+                sourceHeight,
+                currX,
+                currY,
+                destWidth,
+                destHeight
+              )
+            }
+          })
+          if (result && !finished) {
             let scores = 20000 - (Date.now() - start)
             scores < 0 && (scores = 0)
             finished = true
             setTimeout(() => {
-              // TODO - переход на страницу окончания игры
+              // окончание игры
               setScores(scores)
             }, DELAY)
+          }
+        }
+
+        const animate = () => {
+          const now = performance.now()
+
+          if (now >= startAnimate + DELAY) {
+            first = null
+            second = null
+          } else {
+            const t = now - startAnimate
+            if (first && first.fromX && first.fromY) {
+              first.currX = Math.round(
+                first.fromX +
+                  (2 * (first.posX - first.fromX) * t) / DELAY -
+                  ((first.posX - first.fromX) * t * t) / (DELAY * DELAY)
+              )
+              first.currY = Math.round(
+                first.fromY +
+                  (2 * (first.posY - first.fromY) * t) / DELAY -
+                  ((first.posY - first.fromY) * t * t) / (DELAY * DELAY)
+              )
+            }
+            if (second && second.fromX && second.fromY) {
+              second.currX = Math.round(
+                second.fromX +
+                  (2 * (second.posX - second.fromX) * t) / DELAY -
+                  ((second.posX - second.fromX) * t * t) / (DELAY * DELAY)
+              )
+              second.currY = Math.round(
+                second.fromY +
+                  (2 * (second.posY - second.fromY) * t) / DELAY -
+                  ((second.posY - second.fromY) * t * t) / (DELAY * DELAY)
+              )
+            }
+          }
+          refreshCanvas()
+          if (first) {
+            requestAnimationFrame(animate)
           }
         }
       }
