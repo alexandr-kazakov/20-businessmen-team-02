@@ -227,6 +227,10 @@ const CanvasComponent: FC<Props> = ({ setScores }) => {
           }
         }
 
+        const calculateCoord = (from: number, to: number, t: number) => {
+          return Math.round(from + (2 * (to - from) * t) / DELAY - ((to - from) * t * t) / (DELAY * DELAY))
+        }
+
         const animate = () => {
           const now = performance.now()
 
@@ -236,28 +240,12 @@ const CanvasComponent: FC<Props> = ({ setScores }) => {
           } else {
             const t = now - startAnimate
             if (first && first.fromX && first.fromY) {
-              first.currX = Math.round(
-                first.fromX +
-                  (2 * (first.posX - first.fromX) * t) / DELAY -
-                  ((first.posX - first.fromX) * t * t) / (DELAY * DELAY)
-              )
-              first.currY = Math.round(
-                first.fromY +
-                  (2 * (first.posY - first.fromY) * t) / DELAY -
-                  ((first.posY - first.fromY) * t * t) / (DELAY * DELAY)
-              )
+              first.currX = calculateCoord(first.fromX, first.posX, t)
+              first.currY = calculateCoord(first.fromY, first.posY, t)
             }
             if (second && second.fromX && second.fromY) {
-              second.currX = Math.round(
-                second.fromX +
-                  (2 * (second.posX - second.fromX) * t) / DELAY -
-                  ((second.posX - second.fromX) * t * t) / (DELAY * DELAY)
-              )
-              second.currY = Math.round(
-                second.fromY +
-                  (2 * (second.posY - second.fromY) * t) / DELAY -
-                  ((second.posY - second.fromY) * t * t) / (DELAY * DELAY)
-              )
+              second.currX = calculateCoord(second.fromX, second.posX, t)
+              second.currY = calculateCoord(second.fromY, second.posY, t)
             }
           }
           refreshCanvas()
