@@ -8,6 +8,7 @@ import MainPage from '@/pages/Main'
 import GamePage from '@/pages/Game'
 import ForumPage from '@/pages/Forum'
 import ProfilePage from '@/pages/Profile'
+import ChangePassword from '@/pages/ChangePassword'
 import { ErrorBoundary } from '../UI/Error'
 import { RoutersPaths } from '../Routers/types'
 import styles from './styles.module.scss'
@@ -34,6 +35,7 @@ const App: FC = () => {
           <ProtectedRoute path={RoutersPaths.forum} exact component={ForumPage} />
           <ProtectedRoute path={RoutersPaths.profile} exact component={ProfilePage} />
           <ProtectedRoute path={RoutersPaths.leaderboard} exact component={Leaderboard} />
+          <ProtectedRoute path={RoutersPaths.changePassword} exact component={ChangePassword} />
           <Route path={RoutersPaths.errorServer} exact component={UnavailablePage} />
           <Route path={['/*', `${RoutersPaths.errorClient}`]} exact component={NotFoundPage} />
         </Switch>
