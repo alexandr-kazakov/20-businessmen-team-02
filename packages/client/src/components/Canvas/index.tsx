@@ -1,6 +1,6 @@
-import React, { useRef, useEffect, FC } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { getRandomInt } from './helper'
-import { Position, ImageObj, Props } from './types'
+import type { Position, ImageObj, Props } from './types'
 
 const CANVAS_HEIGHT = 644,
   CANVAS_WIDTH = 644,
@@ -14,7 +14,7 @@ const CANVAS_HEIGHT = 644,
   INTERVAL = 20,
   DELAY = 200
 
-const CanvasComponent: FC<Props> = ({ setScores }) => {
+const CanvasComponent: React.FC<Props> = ({ setScores }) => {
   const ref = useRef(null)
 
   useEffect(() => {

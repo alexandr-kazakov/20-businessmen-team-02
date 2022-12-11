@@ -1,8 +1,10 @@
 import { render, screen } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
+
 import { NotFoundPage } from './components/NotFound'
 import { UnavailablePage } from './components/Unavailable'
-import { ErrorPageProps } from './types'
-import { BrowserRouter } from 'react-router-dom'
+
+import type { ErrorPageProps } from './components/AbstractError'
 
 describe('Check properties passing - NotFoundPage', () => {
   const notFoundProps: ErrorPageProps = {

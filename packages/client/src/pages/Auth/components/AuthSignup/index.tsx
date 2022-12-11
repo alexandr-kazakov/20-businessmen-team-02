@@ -1,36 +1,44 @@
-import React, { useEffect, useState, FC } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+
 import { useAppDispatch } from '@/app/redux/hooks'
+import { Input } from '@/components/UI/Input'
+import { Button } from '@/components/UI/Button'
 import { signup, setIsSigninView } from '../../redux/authSlice'
-import Input from '@/components/UI/Input'
-import Button from '@/components/UI/Button'
-import { IAuthSignup } from '../../types'
-import { ButtonStyles } from '@/components/UI/Button/types'
+
+import type { IAuthSignup } from '../../types'
+
 import styles from './styles.module.scss'
 
 interface IValues extends IAuthSignup {
   check_password: string
 }
 
-export const AuthSignup: FC = () => {
+const INIT_VALUES: IValues = {
+  email: '',
+  login: '',
+  first_name: '',
+  second_name: '',
+  phone: '',
+  password: '',
+  check_password: '',
+}
+
+export const AuthSignUp: React.FC = () => {
   const history = useHistory()
   const dispatch = useAppDispatch()
-  const [values, setValues] = useState<IValues>({
-    email: '',
-    login: '',
-    first_name: '',
-    second_name: '',
-    phone: '',
-    password: '',
-    check_password: '',
-  })
-  const [disabled, setDisabled] = useState<boolean>(true)
-  const [isValidPasswords, setIsValidPasswords] = useState<boolean>(true)
 
-  const handlerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target
-    setValues({ ...values, [name]: value })
-  }
+  const [values, setValues] = useState(INIT_VALUES)
+  const [disabled, setDisabled] = useState(true)
+  const [isValidPasswords, setIsValidPasswords] = useState(true)
+
+  const handlerChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = event.target
+      setValues({ ...values, [name]: value })
+    },
+    [values]
+  )
 
   const handlerSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -110,10 +118,10 @@ export const AuthSignup: FC = () => {
         />
       </div>
       <div className={styles.buttons}>
-        <Button variant={ButtonStyles.primary} type="submit" disabled={disabled}>
+        <Button type="submit" disabled={disabled}>
           Авторизоваться
         </Button>
-        <Button onClick={handlerToggle} variant={ButtonStyles.secondary}>
+        <Button onClick={handlerToggle} variant="secondary">
           Нет аккаунта?
         </Button>
       </div>

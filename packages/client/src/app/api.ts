@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, Method } from 'axios'
+import axios, { type AxiosRequestConfig, type Method } from 'axios'
 
 const DEV = process.env.NODE_ENV !== 'production'
 

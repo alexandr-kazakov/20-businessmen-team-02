@@ -1,6 +1,5 @@
-import React, { FC } from 'react'
+import React from 'react'
+
 import styles from './styles.module.scss'
 
-export const Spinner: FC = () => {
-  return <div className={styles.spinner}></div>
-}
+export const Spinner: React.FC = () => <div className={styles.spinner} />

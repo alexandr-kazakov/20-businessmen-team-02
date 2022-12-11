@@ -1,17 +1,16 @@
-import React, { useEffect, useState, useCallback, FC } from 'react'
-import { Route, Redirect, RouteProps, RouteComponentProps } from 'react-router-dom'
+import React, { useEffect, useState, useCallback } from 'react'
+import { Route, Redirect, type RouteProps, type RouteComponentProps } from 'react-router-dom'
+
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
 import { setUser } from '@/pages/Auth/redux/authSlice'
 import { Spinner } from '@/components/Spinner'
 import { RoutersPaths } from './types'
 
-type Props = RouteProps & {
+type ProtectedRouteProps = RouteProps & {
   component: React.ElementType
 }
 
-export const ProtectedRoute: FC<Props> = props => {
-  const { component: Component, ...rest } = props
-
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ component: Component, ...rest }) => {
   const dispatch = useAppDispatch()
   const { user } = useAppSelector(state => state.auth)
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -46,5 +45,3 @@ export const ProtectedRoute: FC<Props> = props => {
 
   return isLoading ? <Spinner /> : <Route {...rest} render={renderComponent} />
 }
-
-export default ProtectedRoute

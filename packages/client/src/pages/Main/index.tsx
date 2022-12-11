@@ -1,10 +1,10 @@
-import React, { FC } from 'react'
-import { useAppDispatch } from '@/app/redux/hooks'
-import { logout } from '@/pages/Auth/redux/authSlice'
+import React from 'react'
+// import { useAppDispatch } from '@/app/redux/hooks'
+// import { logout } from '@/pages/Auth/redux/authSlice'
 import styles from './styles.module.scss'
 
-const MainPage: FC = () => {
-  const dispatch = useAppDispatch()
+const MainPage: React.FC = () => {
+  // const dispatch = useAppDispatch()
 
   // пока нужно :)
   // dispatch(logout())
