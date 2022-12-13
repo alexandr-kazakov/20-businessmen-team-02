@@ -1,13 +1,16 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import CanvasComponent from '@/components/Canvas'
 import Button from '@/components/UI/Button'
 import { ButtonStyles } from '@/components/UI/Button/types'
+import { eventCodes } from './const'
 import styles from './styles.module.scss'
 
 const GamePage: FC = () => {
+  const elementRef = useRef<HTMLDivElement | null>(null)
   const [initStart, setInitStart] = useState<number>(0)
   const [scores, setScores] = useState<number>(-1)
   const header = scores < 0 ? null : scores === 0 ? 'У Вас 0 очков' : `Поздравляем у Вас ${scores} очков!`
+  const pressedKey = new Set()
 
   const clickStart = () => {
     setInitStart(Date.now())
@@ -34,12 +37,66 @@ const GamePage: FC = () => {
     </div>
   )
 
+  const requestFullscreen = (element: HTMLDivElement) => {
+    if (element.requestFullscreen) {
+      element.requestFullscreen()
+    }
+  }
+
+  const exitFullScreen = () => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen()
+    }
+  }
+
+  const isFullScreen = () => {
+    return document.fullscreenElement
+  }
+
+  const toggleFullScreen = (element: HTMLDivElement) => {
+    if (isFullScreen()) {
+      exitFullScreen()
+    } else {
+      requestFullscreen(element)
+    }
+  }
+
+  const handlerKeyDown = (event: any) => {
+    pressedKey.add(event.code)
+
+    for (const code of eventCodes) {
+      if (!pressedKey.has(code)) {
+        return
+      }
+    }
+
+    pressedKey.clear()
+
+    if (elementRef.current) {
+      toggleFullScreen(elementRef.current)
+    }
+  }
+
+  const handlerOnKeyUp = (event: any) => {
+    pressedKey.delete(event.code)
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', event => handlerKeyDown(event))
+    document.addEventListener('keyup', event => handlerOnKeyUp(event))
+
+    return () => {
+      document.removeEventListener('keydown', event => handlerKeyDown(event))
+      document.removeEventListener('keyup', event => handlerOnKeyUp(event))
+    }
+  }, [])
+
   return (
-    <>
+    <div className={styles.game} ref={elementRef}>
       <div className={styles.container}>{initStart ? <CanvasComponent setScores={setScores} /> : startButton}</div>
       {header && <h1 className={styles.congrat}>{header}</h1>}
       {header && playAgainButton}
-    </>
+    </div>
   )
 }
 
