@@ -68,10 +68,10 @@ const GamePage: FC = () => {
   }
 
   useEffect(() => {
-    document.addEventListener('keydown', event => handlerKeyDown(event))
+    document.addEventListener('keydown', handlerKeyDown)
 
     return () => {
-      document.removeEventListener('keydown', event => handlerKeyDown(event))
+      document.removeEventListener('keydown', handlerKeyDown)
     }
   }, [])
 
