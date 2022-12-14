@@ -35,16 +35,18 @@ export const AuthSignup: FC = () => {
   const handlerSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    try {
-      if (values.password !== values.check_password) {
-        setIsValidPasswords(false)
+    if (values.password !== values.check_password) {
+      setIsValidPasswords(false)
+    } else {
+      const { email, login, first_name, second_name, phone, password } = values
+
+      const response = await dispatch(signup({ email, login, first_name, second_name, phone, password }))
+
+      if (response.error) {
+        console.log(response.error)
       } else {
-        const { email, login, first_name, second_name, phone, password } = values
-        await dispatch(signup({ email, login, first_name, second_name, phone, password }))
         history.push('/')
       }
-    } catch (error) {
-      console.log(error)
     }
   }
 

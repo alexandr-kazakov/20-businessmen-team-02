@@ -1,5 +1,6 @@
 import React, { useEffect, FC } from 'react'
 import { Switch, Route } from 'react-router-dom'
+import { Navigation } from '../Navigation'
 import ProtectedRoute from '../Routers/ProtectedRoute'
 import AuthPage from '@/pages/Auth'
 import { NotFoundPage, UnavailablePage } from '@/pages/Error'
@@ -27,6 +28,7 @@ const App: FC = () => {
   return (
     <div className={styles.app}>
       <ErrorBoundary>
+        <Navigation />
         <Switch>
           <Route path={RoutersPaths.main} exact component={MainPage} />
           <Route path={RoutersPaths.auth} exact component={AuthPage} />

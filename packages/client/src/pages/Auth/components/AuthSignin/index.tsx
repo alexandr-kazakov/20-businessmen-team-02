@@ -22,11 +22,12 @@ export const AuthSignin: FC = () => {
   const handlerSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    try {
-      await dispatch(signin(values))
+    const response = await dispatch(signin(values))
+
+    if (response.error) {
+      console.log(response.error)
+    } else {
       history.push('/')
-    } catch (error) {
-      console.log(error)
     }
   }
 
