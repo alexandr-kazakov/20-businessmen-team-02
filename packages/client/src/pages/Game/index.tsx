@@ -59,7 +59,7 @@ const GamePage: FC = () => {
     }
   }
 
-  const handlerKeyDown = (event: any) => {
+  const handlerKeyDown = (event: KeyboardEvent) => {
     if (event.ctrlKey && event.code === 'KeyQ') {
       if (elementRef.current) {
         toggleFullScreen(elementRef.current)
