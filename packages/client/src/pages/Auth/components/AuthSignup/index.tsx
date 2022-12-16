@@ -6,6 +6,7 @@ import Input from '@/components/UI/Input'
 import Button from '@/components/UI/Button'
 import { IAuthSignup } from '../../types'
 import { ButtonStyles } from '@/components/UI/Button/types'
+import { RoutersPaths } from '@/components/Routers/types'
 import styles from './styles.module.scss'
 
 interface IValues extends IAuthSignup {
@@ -45,7 +46,7 @@ export const AuthSignup: FC = () => {
       if (response.error) {
         console.log(response.error)
       } else {
-        history.push('/')
+        history.push(RoutersPaths.main)
       }
     }
   }
