@@ -42,6 +42,7 @@ export const ProtectedRoute: FC<Props> = props => {
     }
 
     setIsLoading(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return isLoading ? <Spinner /> : <Route {...rest} render={renderComponent} />

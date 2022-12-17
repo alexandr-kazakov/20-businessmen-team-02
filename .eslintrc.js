@@ -16,6 +16,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'react-hooks'],
   rules: {
     '@typescript-eslint/ban-ts-comment': 1,
-    'react-hooks/exhaustive-deps': 'warn'
+    '@typescript-eslint/no-unused-vars': 'error',
+    'react-hooks/exhaustive-deps': 'error'
   }
 }
