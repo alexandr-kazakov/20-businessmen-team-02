@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 import classnames from 'classnames'
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
 import { logout } from '@/pages/Auth/redux/authSlice'
-import { ClickOutside } from '../ClickOutside'
 import { RoutersPaths } from '../Routers/types'
 import { links } from './const'
 import styles from './styles.module.scss'
@@ -23,6 +22,17 @@ export const Navigation: React.FC = () => {
     setIsHide(prev => !prev)
   }
 
+  const handlerClick = (event: MouseEvent) => {
+    const navigationElement = document.getElementById('navigation') as Element
+    const target = event.target as Element
+
+    const isClickOutside = !navigationElement.contains(target)
+
+    if (isClickOutside) {
+      handlerToggle()
+    }
+  }
+
   const handlerLogout = async () => {
     try {
       await dispatch(logout())
@@ -33,29 +43,43 @@ export const Navigation: React.FC = () => {
     }
   }
 
+  const listNodes = useMemo(
+    () =>
+      links.map(link => (
+        <NavLink
+          key={link.to}
+          className={`${styles.link} ${user && link.to === RoutersPaths.auth ? styles.link_hide : ''}`}
+          activeClassName={styles.active}
+          onClick={handlerToggle}
+          to={link.to}
+          exact>
+          {link.name}
+        </NavLink>
+      )),
+    [links, user]
+  )
+
+  useEffect(() => {
+    if (!isHide) {
+      document.addEventListener('click', handlerClick)
+    }
+
+    return () => {
+      document.removeEventListener('click', handlerClick)
+    }
+  }, [isHide])
+
   return (
-    <ClickOutside isActive={!isHide} onClick={handlerToggle}>
-      <nav className={className}>
-        {links.map(link => (
-          <NavLink
-            key={link.to}
-            className={`${styles.link} ${user && link.to === RoutersPaths.auth ? styles.link_hide : ''}`}
-            activeClassName={styles.active}
-            onClick={handlerToggle}
-            to={link.to}
-            exact>
-            {link.name}
-          </NavLink>
-        ))}
-        {user && (
-          <button className={styles.auth} onClick={handlerLogout}>
-            Выйти
-          </button>
-        )}
-        <button className={styles.button} onClick={handlerToggle}>
-          {isHide ? '>>' : '<<'}
+    <nav id="navigation" className={className}>
+      {listNodes}
+      {user && (
+        <button className={styles.auth} onClick={handlerLogout}>
+          Выйти
         </button>
-      </nav>
-    </ClickOutside>
+      )}
+      <button className={styles.button} onClick={handlerToggle}>
+        {isHide ? '>>' : '<<'}
+      </button>
+    </nav>
   )
 }
