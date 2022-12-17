@@ -1,12 +1,175 @@
-.container {
-  width: fit-content;
-  margin: 0 auto;
+@import '../../styles/variables.scss';
+
+.pagelanding {
+  color: $primary;
+  padding-top: 130px;
 }
-.title {
-  color: red;
+
+.link {
+  display: inline-block;
+  width: 220px;
+  padding: 15px;
+  background-color: $ruby;
+  border-radius: 10px;
+  font-size: 18px;
+  text-decoration: none;
   text-align: center;
-  font-size: 4rem;
+  color: $primary;
+
+  &:hover {
+    background-color: $ruby-light;
+  }
 }
-.description {
-  color: wheat;
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.col {
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+
+  &_left {
+    max-width: calc(100% - 480px);
+  }
+
+  &_right {
+    flex: 0 0 480px;
+    max-width: 480px;
+  }
+}
+
+.highlight-box {
+  padding-top: 20px;
+}
+
+.highlight-box__button {
+  max-width: 220px;
+}
+
+.highlight-box__preheader {
+  color: $ruby;
+  display: block;
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.highlight-box__header {
+  font-size: 90px;
+  font-weight: bold;
+  line-height: 1.1;
+  margin-top: 0;
+  margin-bottom: 25px;
+}
+
+.highlight-box__desc {
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 45px;
+}
+
+.puzzle-promo {
+  border-radius: 100%;
+  border: 10px solid white;
+  background-color: #183851;
+  height: 450px;
+  overflow: hidden;
+  position: relative;
+  width: 450px;
+}
+
+.puzzle-promo__item {
+  position: absolute;
+  width: 150px;
+}
+
+$boxWidth: 150px;
+$animationDuration: 10s;
+$animationStepDuration: calc($animationDuration / 7);
+
+@keyframes slide {
+  0% {
+    transform: translate(0, 0);
+  }
+  2% {
+    transform: translate($boxWidth, 0);
+  }
+  12.5% {
+    transform: translate($boxWidth, 0);
+  }
+  15.5% {
+    transform: translate(2 * $boxWidth, 0);
+  }
+  25% {
+    transform: translate(2 * $boxWidth, 0);
+  }
+  27% {
+    transform: translate(2 * $boxWidth, $boxWidth);
+  }
+  37.5% {
+    transform: translate(2 * $boxWidth, $boxWidth);
+  }
+  39.5% {
+    transform: translate($boxWidth, $boxWidth);
+  }
+  50% {
+    transform: translate($boxWidth, $boxWidth);
+  }
+  52% {
+    transform: translate($boxWidth, 2 * $boxWidth);
+  }
+  62.5% {
+    transform: translate($boxWidth, 2 * $boxWidth);
+  }
+  64.5% {
+    transform: translate(0, 2 * $boxWidth);
+  }
+  75% {
+    transform: translate(0, 2 * $boxWidth);
+  }
+  77% {
+    transform: translate(0, $boxWidth);
+  }
+  87.5% {
+    transform: translate(0, $boxWidth);
+  }
+  89.5% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.puzzle-promo__item {
+  animation: slide $animationDuration ease infinite;
+
+  &_1 {
+    animation-delay: -0 * $animationStepDuration;
+  }
+  &_2 {
+    animation-delay: -1 * $animationStepDuration;
+  }
+  &_3 {
+    animation-delay: -2 * $animationStepDuration;
+  }
+  &_4 {
+    animation-delay: -3 * $animationStepDuration;
+  }
+  &_5 {
+    animation-delay: -4 * $animationStepDuration;
+  }
+  &_6 {
+    animation-delay: -5 * $animationStepDuration;
+  }
+  &_7 {
+    animation-delay: -6 * $animationStepDuration;
+  }
 }
