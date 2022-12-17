@@ -54,7 +54,7 @@ export const AuthSignin: FC = () => {
       </div>
       <div className={styles.buttons}>
         <Button variant={ButtonStyles.primary} type="submit" disabled={disabled}>
-          Авторизоваться
+          Войти
         </Button>
         <Button onClick={handlerToggle} variant={ButtonStyles.secondary}>
           Нет аккаунта?

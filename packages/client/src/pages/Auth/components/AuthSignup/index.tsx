@@ -114,10 +114,10 @@ export const AuthSignup: FC = () => {
       </div>
       <div className={styles.buttons}>
         <Button variant={ButtonStyles.primary} type="submit" disabled={disabled}>
-          Авторизоваться
+          Зарегистрироваться
         </Button>
         <Button onClick={handlerToggle} variant={ButtonStyles.secondary}>
-          Нет аккаунта?
+          Войти
         </Button>
       </div>
     </form>

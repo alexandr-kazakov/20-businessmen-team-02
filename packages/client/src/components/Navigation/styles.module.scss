@@ -29,6 +29,10 @@
   text-decoration: none;
   color: $ruby;
 
+  &_hide {
+    display: none;
+  }
+
   &:hover {
     background-color: $ruby;
     color: $black;
@@ -38,6 +42,22 @@
 .active {
   background-color: $ruby;
   color: $black;
+}
+
+.auth {
+  background: none;
+  border: none;
+  margin-top: 20px;
+  padding: 5px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: $ruby;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $ruby;
+    color: $black;
+  }
 }
 
 .button {
