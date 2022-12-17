@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 
 import { useAppDispatch } from '@/app/redux/hooks'
 import { Input } from '@/components/UI/Input'
-import { Button } from '@/components/UI/Button'
+import { Button, ButtonVariant } from '@/components/UI/Button'
 import { signup, setIsSigninView } from '../../redux/authSlice'
 
 import type { IAuthSignup } from '../../types'
@@ -121,7 +121,7 @@ export const AuthSignUp: React.FC = () => {
         <Button type="submit" disabled={disabled}>
           Авторизоваться
         </Button>
-        <Button onClick={handlerToggle} variant="secondary">
+        <Button onClick={handlerToggle} variant={ButtonVariant.SECONDARY}>
           Нет аккаунта?
         </Button>
       </div>

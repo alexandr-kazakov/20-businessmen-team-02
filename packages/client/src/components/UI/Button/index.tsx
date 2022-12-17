@@ -3,14 +3,19 @@ import classnames from 'classnames'
 
 import styles from './styles.module.scss'
 
+export enum ButtonVariant {
+  PRIMARY = 'primary',
+  SECONDARY = 'secondary',
+}
+
 type ButtonProps = {
-  variant?: 'primary' | 'secondary'
+  variant?: ButtonVariant
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
-export const Button: React.FC<ButtonProps> = memo(({ variant = 'primary', children, ...props }) => {
+export const Button: React.FC<ButtonProps> = memo(({ variant = ButtonVariant.PRIMARY, children, ...props }) => {
   const className = classnames(styles.button, {
-    [styles.primary]: variant === 'primary',
-    [styles.secondary]: variant === 'secondary',
+    [styles.primary]: variant === ButtonVariant.PRIMARY,
+    [styles.secondary]: variant === ButtonVariant.SECONDARY,
   })
 
   return (
