@@ -1,10 +1,11 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import CanvasComponent from '@/components/Canvas'
 import Button from '@/components/UI/Button'
 import { ButtonStyles } from '@/components/UI/Button/types'
 import styles from './styles.module.scss'
 
 const GamePage: FC = () => {
+  const elementRef = useRef<HTMLDivElement | null>(null)
   const [initStart, setInitStart] = useState<number>(0)
   const [scores, setScores] = useState<number>(-1)
   const header = scores < 0 ? null : scores === 0 ? 'У Вас 0 очков' : `Поздравляем у Вас ${scores} очков!`
@@ -34,12 +35,55 @@ const GamePage: FC = () => {
     </div>
   )
 
+  const requestFullscreen = (element: HTMLDivElement) => {
+    if (element.requestFullscreen) {
+      element.requestFullscreen()
+    }
+  }
+
+  const exitFullScreen = () => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen()
+    }
+  }
+
+  const isFullScreen = () => {
+    return document.fullscreenElement
+  }
+
+  const toggleFullScreen = useCallback((element: HTMLDivElement) => {
+    if (isFullScreen()) {
+      exitFullScreen()
+    } else {
+      requestFullscreen(element)
+    }
+  }, [])
+
+  const handlerKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.code === 'KeyQ') {
+        if (elementRef.current) {
+          toggleFullScreen(elementRef.current)
+        }
+      }
+    },
+    [toggleFullScreen]
+  )
+
+  useEffect(() => {
+    document.addEventListener('keydown', handlerKeyDown)
+
+    return () => {
+      document.removeEventListener('keydown', handlerKeyDown)
+    }
+  }, [handlerKeyDown])
+
   return (
-    <>
+    <div className={styles.game} ref={elementRef}>
       <div className={styles.container}>{initStart ? <CanvasComponent setScores={setScores} /> : startButton}</div>
       {header && <h1 className={styles.congrat}>{header}</h1>}
       {header && playAgainButton}
-    </>
+    </div>
   )
 }
 

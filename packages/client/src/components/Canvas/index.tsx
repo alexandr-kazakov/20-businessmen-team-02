@@ -255,6 +255,7 @@ const CanvasComponent: FC<Props> = ({ setScores }) => {
         }
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return <canvas ref={ref} width={CANVAS_WIDTH} height={CANVAS_HEIGHT} />
