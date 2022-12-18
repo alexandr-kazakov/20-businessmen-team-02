@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 import classnames from 'classnames'
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
@@ -22,7 +22,7 @@ export const Navigation: React.FC = () => {
     setIsHide(prev => !prev)
   }
 
-  const handlerClick = (event: MouseEvent) => {
+  const handlerClick = useCallback((event: MouseEvent) => {
     const navigationElement = document.getElementById('navigation') as Element
     const target = event.target as Element
 
@@ -31,7 +31,7 @@ export const Navigation: React.FC = () => {
     if (isClickOutside) {
       handlerToggle()
     }
-  }
+  }, [])
 
   const handlerLogout = async () => {
     try {
@@ -56,7 +56,7 @@ export const Navigation: React.FC = () => {
           {link.name}
         </NavLink>
       )),
-    [links, user]
+    [user]
   )
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export const Navigation: React.FC = () => {
     return () => {
       document.removeEventListener('click', handlerClick, true)
     }
-  }, [isHide])
+  }, [isHide, handlerClick])
 
   return (
     <nav id="navigation" className={className}>
