@@ -1,5 +1,7 @@
 import React, { useEffect, FC } from 'react'
 import { Switch, Route } from 'react-router-dom'
+import { useAppDispatch } from '@/app/redux/hooks'
+import { setUser } from '@/pages/Auth/redux/authSlice'
 import { Navigation } from '../Navigation'
 import ProtectedRoute from '../Routers/ProtectedRoute'
 import AuthPage from '@/pages/Auth'
@@ -14,6 +16,8 @@ import { RoutersPaths } from '../Routers/types'
 import styles from './styles.module.scss'
 
 const App: FC = () => {
+  const dispatch = useAppDispatch()
+
   useEffect(() => {
     // падает тест
     // const fetchServerData = async () => {
@@ -23,6 +27,12 @@ const App: FC = () => {
     //   console.log(data)
     // }
     // fetchServerData()
+
+    const storageUser = localStorage.getItem('user')
+
+    if (storageUser) {
+      dispatch(setUser(JSON.parse(storageUser)))
+    }
   }, [])
 
   return (

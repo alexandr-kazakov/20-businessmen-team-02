@@ -61,11 +61,11 @@ export const Navigation: React.FC = () => {
 
   useEffect(() => {
     if (!isHide) {
-      document.addEventListener('click', handlerClick)
+      document.addEventListener('click', handlerClick, true)
     }
 
     return () => {
-      document.removeEventListener('click', handlerClick)
+      document.removeEventListener('click', handlerClick, true)
     }
   }, [isHide])
 

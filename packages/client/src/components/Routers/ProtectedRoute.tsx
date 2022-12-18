@@ -1,8 +1,6 @@
-import React, { useEffect, useState, useCallback, FC } from 'react'
+import React, { useCallback, FC } from 'react'
 import { Route, Redirect, RouteProps, RouteComponentProps } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
-import { setUser } from '@/pages/Auth/redux/authSlice'
-import { Spinner } from '@/components/Spinner'
+import { useAppSelector } from '@/app/redux/hooks'
 import { RoutersPaths } from './types'
 
 type Props = RouteProps & {
@@ -12,9 +10,7 @@ type Props = RouteProps & {
 export const ProtectedRoute: FC<Props> = props => {
   const { component: Component, ...rest } = props
 
-  const dispatch = useAppDispatch()
   const { user } = useAppSelector(state => state.auth)
-  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const renderComponent = useCallback(
     (props: RouteComponentProps) => {
@@ -34,17 +30,7 @@ export const ProtectedRoute: FC<Props> = props => {
     [Component, user]
   )
 
-  useEffect(() => {
-    const storageUser = localStorage.getItem('user')
-
-    if (storageUser) {
-      dispatch(setUser(storageUser))
-    }
-
-    setIsLoading(false)
-  }, [])
-
-  return isLoading ? <Spinner /> : <Route {...rest} render={renderComponent} />
+  return <Route {...rest} render={renderComponent} />
 }
 
 export default ProtectedRoute
