@@ -38,10 +38,11 @@ export const ProtectedRoute: FC<Props> = props => {
     const storageUser = localStorage.getItem('user')
 
     if (storageUser) {
-      dispatch(setUser(storageUser))
+      dispatch(setUser(JSON.parse(storageUser)))
     }
 
     setIsLoading(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return isLoading ? <Spinner /> : <Route {...rest} render={renderComponent} />

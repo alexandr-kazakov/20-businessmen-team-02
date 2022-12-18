@@ -4,6 +4,7 @@ export enum RoutersPaths {
   game = '/game',
   forum = '/forum',
   profile = '/profile',
+  changePassword = '/change-password',
   leaderboard = '/leaderboard',
   errorClient = '/404',
   errorServer = '/500',
