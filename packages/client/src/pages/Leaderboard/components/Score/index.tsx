@@ -1,5 +1,6 @@
+import React from 'react'
 import classnames from 'classnames'
-import { FC } from 'react'
+
 import styles from './styles.module.scss'
 
 interface ScoreProps {
@@ -7,7 +8,7 @@ interface ScoreProps {
   scores: number
 }
 
-export const Score: FC<ScoreProps> = ({ scores, direction }: ScoreProps) => {
+export const Score: React.FC<ScoreProps> = ({ scores, direction }) => {
   const className = classnames(styles.scores, {
     [styles.scores_asc]: direction === 'acs',
     [styles.scores_desc]: direction === 'desc',

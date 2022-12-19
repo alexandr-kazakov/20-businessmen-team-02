@@ -5,13 +5,13 @@
   color: #fff;
   cursor: pointer;
 
-  &_primary {
+  &.primary {
     width: 100%;
     background-color: #d9534f;
     border-radius: 10px;
   }
 
-  &_secondary {
+  &.secondary {
     background-color: transparent;
   }
 

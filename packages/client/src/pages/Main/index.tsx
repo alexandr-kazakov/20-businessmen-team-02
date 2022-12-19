@@ -1,8 +1,8 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import styles from './styles.module.scss'
 
-const MainPage: FC = () => {
+const MainPage: React.FC = () => {
   return (
     <div className={styles.pagelanding}>
       <div className="container">

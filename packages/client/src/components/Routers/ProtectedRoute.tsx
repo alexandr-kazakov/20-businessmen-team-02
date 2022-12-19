@@ -1,15 +1,13 @@
-import React, { useCallback, FC } from 'react'
-import { Route, Redirect, RouteProps, RouteComponentProps } from 'react-router-dom'
+import React, { useCallback } from 'react'
+import { Route, Redirect, type RouteProps, type RouteComponentProps } from 'react-router-dom'
 import { useAppSelector } from '@/app/redux/hooks'
 import { RoutersPaths } from './types'
 
-type Props = RouteProps & {
+type ProtectedRouteProps = RouteProps & {
   component: React.ElementType
 }
 
-export const ProtectedRoute: FC<Props> = props => {
-  const { component: Component, ...rest } = props
-
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ component: Component, ...rest }) => {
   const { user } = useAppSelector(state => state.auth)
 
   const renderComponent = useCallback(
@@ -32,5 +30,3 @@ export const ProtectedRoute: FC<Props> = props => {
 
   return <Route {...rest} render={renderComponent} />
 }
-
-export default ProtectedRoute

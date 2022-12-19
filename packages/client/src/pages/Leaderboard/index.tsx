@@ -1,12 +1,15 @@
-import { FC } from 'react'
+import React, { useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { RankCard } from './components/RankCard/RankCard'
-import { Leaders } from './components/Leaders/Leaders'
+
+import { RankCard } from './components/RankCard'
+import { Leaders } from './components/Leaders'
+
+import type { User } from '../../domain/intefaceses/user'
+
 import styles from './styles.module.scss'
-import { User } from '../../domain/intefaceses/user'
 
 // mock data
-const users: User[] = [
+const USERS: User[] = [
   {
     alias: 'gora1',
     first_name: 'summer1',
@@ -89,34 +92,35 @@ const users: User[] = [
   },
 ]
 
-export const Leaderboard: FC = () => {
-  let leadersAllocationTemplate
+const Leaderboard: React.FC = () => {
+  const leadersAllocationTemplate = useMemo(() => {
+    if (USERS?.length > 3) {
+      return (
+        <>
+          <Leaders users={USERS.slice(0, 3)} />
 
-  if (users?.length > 3) {
-    leadersAllocationTemplate = (
-      <>
-        <Leaders users={users.slice(0, 3)} />
-
+          <div className={styles.ranks}>
+            {USERS.slice(3).map(user => (
+              <Link to={`/users/${user.id}/profile`} key={user.id}>
+                <RankCard {...user} />
+              </Link>
+            ))}
+          </div>
+        </>
+      )
+    } else {
+      return (
         <div className={styles.ranks}>
-          {users.slice(3).map(user => (
+          {USERS.map(user => (
             <Link to={`/users/${user.id}/profile`} key={user.id}>
               <RankCard {...user} />
             </Link>
           ))}
         </div>
-      </>
-    )
-  } else {
-    leadersAllocationTemplate = (
-      <div className={styles.ranks}>
-        {users.map(user => (
-          <Link to={`/users/${user.id}/profile`} key={user.id}>
-            <RankCard {...user} />
-          </Link>
-        ))}
-      </div>
-    )
-  }
+      )
+    }
+    /* TODO: добавить зависимости после ужадения моков */
+  }, [])
 
   return (
     <article className={styles.container}>
@@ -126,3 +130,5 @@ export const Leaderboard: FC = () => {
     </article>
   )
 }
+
+export default Leaderboard

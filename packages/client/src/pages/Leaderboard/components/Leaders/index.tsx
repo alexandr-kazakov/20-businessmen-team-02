@@ -1,14 +1,17 @@
-import { FC } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { LeaderCard, LeaderVariant, LeaderCardProps } from '../LeaderCard/LeaderCard'
-import { User } from '../../../../domain/intefaceses/user'
+
+import { LeaderCard, LeaderVariant, type LeaderCardProps } from '../LeaderCard'
+
+import type { User } from '../../../../domain/intefaceses/user'
+
 import styles from './styles.module.scss'
 
 interface LeadersProps {
   users: User[]
 }
 
-export const Leaders: FC<LeadersProps> = ({ users: [firstUser, secondUser, thirdUser] }: LeadersProps) => {
+export const Leaders: React.FC<LeadersProps> = ({ users: [firstUser, secondUser, thirdUser] }) => {
   const firstLeader: LeaderCardProps = {
     name: firstUser.alias || firstUser.first_name,
     scores: firstUser.scores,

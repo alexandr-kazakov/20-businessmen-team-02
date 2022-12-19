@@ -1,27 +1,26 @@
-import React, { ButtonHTMLAttributes, memo, FC } from 'react'
+import React, { type ButtonHTMLAttributes, memo } from 'react'
 import classnames from 'classnames'
-import { ButtonStyles } from './types'
+
 import styles from './styles.module.scss'
 
-type OwnProps = {
-  variant: ButtonStyles
+export enum ButtonVariant {
+  PRIMARY = 'primary',
+  SECONDARY = 'secondary',
+}
+
+type ButtonProps = {
+  variant?: ButtonVariant
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
-type Props = OwnProps
-
-const Button: FC<Props> = props => {
-  const { variant, children, ...buttonProps } = props
-
+export const Button: React.FC<ButtonProps> = memo(({ variant = ButtonVariant.PRIMARY, children, ...props }) => {
   const className = classnames(styles.button, {
-    [styles.button_primary]: variant === ButtonStyles.primary,
-    [styles.button_secondary]: variant === ButtonStyles.secondary,
+    [styles.primary]: variant === ButtonVariant.PRIMARY,
+    [styles.secondary]: variant === ButtonVariant.SECONDARY,
   })
 
   return (
-    <button {...buttonProps} className={className}>
+    <button {...props} className={className}>
       {children}
     </button>
   )
-}
-
-export default memo(Button)
+})

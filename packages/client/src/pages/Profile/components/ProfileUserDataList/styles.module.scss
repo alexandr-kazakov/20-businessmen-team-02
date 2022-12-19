@@ -1,18 +1,18 @@
 .profile_user_data {
   color: #fff;
 
-  &__item {
+  & .item {
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid #eaeaea;
     padding: 8px 0;
   }
 
-  &__profile_user_data_col_left {
+  & .colLeft {
     text-align: left;
   }
 
-  &__profile_user_data_col_right {
+  & .colRight {
     text-align: right;
   }
 }

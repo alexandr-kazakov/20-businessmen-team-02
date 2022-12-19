@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { api } from '@/app/api'
 import { StatusType } from '@/app/apiTypes'
-import { IAuthSignin, IAuthSignup } from '../types'
+import { type IAuthSignIn, type IAuthSignup } from '../types'
 
-export const signin: any = createAsyncThunk('auth/signin', async (data: IAuthSignin) => {
+export const signin: any = createAsyncThunk('auth/signin', async (data: IAuthSignIn) => {
   const response = await api.post('auth/signin/', data)
 
   if (response.data === 'OK') {
