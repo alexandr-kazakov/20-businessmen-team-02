@@ -1,16 +1,17 @@
-import React, { FC } from 'react'
+import React from 'react'
+
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
 import { setSelectedIdForum } from '../../redux/forumSlice'
-import { TForum } from '../../types'
+
+import type { TForum } from '../../types'
+
 import styles from './styles.module.scss'
 
 type Props = {
   forum: TForum
 }
 
-export const ForumItem: FC<Props> = props => {
-  const { forum } = props
-
+export const ForumItem: React.FC<Props> = ({ forum }) => {
   const dispatch = useAppDispatch()
   const { selectedIdForum } = useAppSelector(state => state.forum)
 

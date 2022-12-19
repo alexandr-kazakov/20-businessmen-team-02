@@ -1,10 +1,11 @@
-import React, { FC } from 'react'
+import React from 'react'
+
 // import { useAppDispatch } from '@/app/redux/hooks'
 // import { logout } from '@/pages/Auth/redux/authSlice'
 import styles from './styles.module.scss'
 import { Link } from 'react-router-dom'
 
-const MainPage: FC = () => {
+const MainPage: React.FC = () => {
   // const dispatch = useAppDispatch()
 
   // пока нужно :)

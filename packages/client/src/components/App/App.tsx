@@ -1,19 +1,22 @@
-import React, { useEffect, FC } from 'react'
+import React, { useEffect } from 'react'
 import { Switch, Route } from 'react-router-dom'
-import ProtectedRoute from '../Routers/ProtectedRoute'
-import AuthPage from '@/pages/Auth'
+
 import { NotFoundPage, UnavailablePage } from '@/pages/Error'
-import { Leaderboard } from '@/pages/Leaderboard'
+import ChangePassword from '@/pages/ChangePassword'
+import Leaderboard from '@/pages/Leaderboard'
+import ProfilePage from '@/pages/Profile'
+import AuthPage from '@/pages/Auth'
 import MainPage from '@/pages/Main'
 import GamePage from '@/pages/Game'
 import ForumPage from '@/pages/Forum'
-import ProfilePage from '@/pages/Profile'
-import ChangePassword from '@/pages/ChangePassword'
-import { ErrorBoundary } from '../UI/Error'
-import { RoutersPaths } from '../Routers/types'
+
+import { ProtectedRoute } from '@/components/Routers/ProtectedRoute'
+import { ErrorBoundary } from '@/components/UI/Error'
+import { RoutersPaths } from '@/components/Routers/types'
+
 import styles from './styles.module.scss'
 
-const App: FC = () => {
+const App: React.FC = () => {
   useEffect(() => {
     // падает тест
     // const fetchServerData = async () => {

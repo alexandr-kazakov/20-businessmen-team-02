@@ -1,6 +1,7 @@
-import { FC } from 'react'
-import styles from './styles.module.scss'
+import React from 'react'
 import classnames from 'classnames'
+
+import styles from './styles.module.scss'
 
 export interface LeaderCardProps {
   name: string
@@ -15,7 +16,7 @@ export enum LeaderVariant {
   THIRD = 'THIRD',
 }
 
-export const LeaderCard: FC<LeaderCardProps> = ({ name, scores, variant, avatar }: LeaderCardProps) => {
+export const LeaderCard: React.FC<LeaderCardProps> = ({ name, scores, variant, avatar }) => {
   const className = classnames(styles.leader, {
     [styles.leader_first]: variant === LeaderVariant.FIRST,
     [styles.leader_second]: variant === LeaderVariant.SECOND,
@@ -25,7 +26,7 @@ export const LeaderCard: FC<LeaderCardProps> = ({ name, scores, variant, avatar 
   return (
     <div className={className}>
       <span className={styles.avatar}>
-        <img src={avatar || '/avatar.svg'} alt="user"></img>
+        <img src={avatar || '/avatar.svg'} alt="user" />
       </span>
       <p className={styles.name}>{name}</p>
       <p className={styles.score}>Score: {scores}</p>

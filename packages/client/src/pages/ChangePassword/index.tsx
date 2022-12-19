@@ -1,22 +1,21 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
-import { ButtonStyles } from '@/components/UI/Button/types'
-import Button from '@/components/UI/Button'
-import Input from '@/components/UI/Input'
+import { Button } from '@/components/UI/Button'
+import { Input } from '@/components/UI/Input'
 
 import { useAppSelector } from '@/app/redux/hooks'
 import { api } from '@/app/api'
 
 import styles from './styles.module.scss'
 
-const DEFAULT_VALUES = {
+const INIT_VALUES = {
   oldPassword: '',
   newPassword: '',
   repeatPassword: '',
 }
 
 const ChangePassword: React.FC = () => {
-  const [values, setValues] = useState(DEFAULT_VALUES)
+  const [values, setValues] = useState(INIT_VALUES)
 
   const { user } = useAppSelector(state => state.auth)
 
@@ -85,7 +84,7 @@ const ChangePassword: React.FC = () => {
           />
         </div>
         <div className={styles.buttons}>
-          <Button variant={ButtonStyles.primary} disabled={disabled} type="submit">
+          <Button disabled={disabled} type="submit">
             Изменить пароль
           </Button>
         </div>

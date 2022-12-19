@@ -1,23 +1,28 @@
-import React, { useEffect, useState, FC } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+
+import { signin, setIsSigninView } from '@/pages/Auth/redux/authSlice'
 import { useAppDispatch } from '@/app/redux/hooks'
-import { signin, setIsSigninView } from '../../redux/authSlice'
-import Input from '@/components/UI/Input'
-import Button from '@/components/UI/Button'
-import { IAuthSignin } from '../../types'
-import { ButtonStyles } from '@/components/UI/Button/types'
+import { Button, ButtonVariant } from '@/components/UI/Button'
+import { Input } from '@/components/UI/Input'
+import type { IAuthSignIn } from '../../types'
+
 import styles from './styles.module.scss'
 
-export const AuthSignin: FC = () => {
+export const AuthSignIn: React.FC = () => {
   const history = useHistory()
   const dispatch = useAppDispatch()
-  const [values, setValues] = useState<IAuthSignin>({ login: '', password: '' })
-  const [disabled, setDisabled] = useState<boolean>(true)
 
-  const handlerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target
-    setValues({ ...values, [name]: value })
-  }
+  const [values, setValues] = useState<IAuthSignIn>({ login: '', password: '' })
+  const [disabled, setDisabled] = useState(true)
+
+  const handlerChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = event.target
+      setValues({ ...values, [name]: value })
+    },
+    [values]
+  )
 
   const handlerSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -51,10 +56,10 @@ export const AuthSignin: FC = () => {
         <Input onChange={handlerChange} type="password" name="password" value={values.password} placeholder="Пароль" />
       </div>
       <div className={styles.buttons}>
-        <Button variant={ButtonStyles.primary} type="submit" disabled={disabled}>
+        <Button type="submit" disabled={disabled}>
           Авторизоваться
         </Button>
-        <Button onClick={handlerToggle} variant={ButtonStyles.secondary}>
+        <Button onClick={handlerToggle} variant={ButtonVariant.SECONDARY}>
           Нет аккаунта?
         </Button>
       </div>
