@@ -1,0 +1,75 @@
+@import '../../styles/variables.scss';
+
+.navigation {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: $black-light;
+  min-height: 100vh;
+  max-height: 100%;
+  max-width: 160px;
+  width: 100%;
+  padding: 20px;
+  transition: left 0.3s ease-in;
+}
+
+.hide {
+  left: -140px;
+}
+
+.link {
+  padding: 5px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: $ruby;
+
+  &_hide {
+    display: none;
+  }
+
+  &:hover {
+    background-color: $ruby;
+    color: $black;
+  }
+}
+
+.active {
+  background-color: $ruby;
+  color: $black;
+}
+
+.auth {
+  background: none;
+  border: none;
+  margin-top: 20px;
+  padding: 5px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: $ruby;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $ruby;
+    color: $black;
+  }
+}
+
+.button {
+  position: absolute;
+  right: -20px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background-color: $ruby;
+  border: none;
+  border-radius: 50%;
+  color: $black;
+  cursor: pointer;
+}

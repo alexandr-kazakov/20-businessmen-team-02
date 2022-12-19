@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-
 import { useAppDispatch } from '@/app/redux/hooks'
+
+import { signup, setIsSigninView } from '@/pages/Auth/redux/authSlice'
 import { Input } from '@/components/UI/Input'
 import { Button, ButtonVariant } from '@/components/UI/Button'
-import { signup, setIsSigninView } from '../../redux/authSlice'
-
 import type { IAuthSignup } from '../../types'
+import { RoutersPaths } from '@/components/Routers/types'
 
 import styles from './styles.module.scss'
 
@@ -43,16 +43,18 @@ export const AuthSignUp: React.FC = () => {
   const handlerSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    try {
-      if (values.password !== values.check_password) {
-        setIsValidPasswords(false)
+    if (values.password !== values.check_password) {
+      setIsValidPasswords(false)
+    } else {
+      const { email, login, first_name, second_name, phone, password } = values
+
+      const response = await dispatch(signup({ email, login, first_name, second_name, phone, password }))
+
+      if (response.error) {
+        console.log(response.error)
       } else {
-        const { email, login, first_name, second_name, phone, password } = values
-        await dispatch(signup({ email, login, first_name, second_name, phone, password }))
-        history.push('/')
+        history.push(RoutersPaths.main)
       }
-    } catch (error) {
-      console.log(error)
     }
   }
 
@@ -119,10 +121,10 @@ export const AuthSignUp: React.FC = () => {
       </div>
       <div className={styles.buttons}>
         <Button type="submit" disabled={disabled}>
-          Авторизоваться
+          Зарегистрироваться
         </Button>
         <Button onClick={handlerToggle} variant={ButtonVariant.SECONDARY}>
-          Нет аккаунта?
+          Войти
         </Button>
       </div>
     </form>

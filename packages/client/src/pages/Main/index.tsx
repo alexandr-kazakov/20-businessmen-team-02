@@ -1,16 +1,8 @@
 import React from 'react'
-
-// import { useAppDispatch } from '@/app/redux/hooks'
-// import { logout } from '@/pages/Auth/redux/authSlice'
-import styles from './styles.module.scss'
 import { Link } from 'react-router-dom'
+import styles from './styles.module.scss'
 
 const MainPage: React.FC = () => {
-  // const dispatch = useAppDispatch()
-
-  // пока нужно :)
-  // dispatch(logout())
-
   return (
     <div className={styles.pagelanding}>
       <div className="container">

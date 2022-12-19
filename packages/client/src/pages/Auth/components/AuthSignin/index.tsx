@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { useAppDispatch } from '@/app/redux/hooks'
 
 import { signin, setIsSigninView } from '@/pages/Auth/redux/authSlice'
-import { useAppDispatch } from '@/app/redux/hooks'
-import { Button, ButtonVariant } from '@/components/UI/Button'
 import { Input } from '@/components/UI/Input'
+import { Button, ButtonVariant } from '@/components/UI/Button'
 import type { IAuthSignIn } from '../../types'
+import { RoutersPaths } from '@/components/Routers/types'
 
 import styles from './styles.module.scss'
 
@@ -27,11 +28,12 @@ export const AuthSignIn: React.FC = () => {
   const handlerSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    try {
-      await dispatch(signin(values))
-      history.push('/')
-    } catch (error) {
-      console.log(error)
+    const response = await dispatch(signin(values))
+
+    if (response.error) {
+      console.log(response.error)
+    } else {
+      history.push(RoutersPaths.main)
     }
   }
 
@@ -57,7 +59,7 @@ export const AuthSignIn: React.FC = () => {
       </div>
       <div className={styles.buttons}>
         <Button type="submit" disabled={disabled}>
-          Авторизоваться
+          Войти
         </Button>
         <Button onClick={handlerToggle} variant={ButtonVariant.SECONDARY}>
           Нет аккаунта?

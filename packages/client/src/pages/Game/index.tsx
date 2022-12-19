@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef } from 'react'
+import React, { useCallback, useState, useRef, useEffect } from 'react'
 
 import CanvasComponent from '@/components/Canvas'
 import { Button } from '@/components/UI/Button'
@@ -49,21 +49,24 @@ const GamePage: React.FC = () => {
     return document.fullscreenElement
   }
 
-  const toggleFullScreen = (element: HTMLDivElement) => {
+  const toggleFullScreen = useCallback((element: HTMLDivElement) => {
     if (isFullScreen()) {
       exitFullScreen()
     } else {
       requestFullscreen(element)
     }
-  }
+  }, [])
 
-  const handlerKeyDown = (event: KeyboardEvent) => {
-    if (event.ctrlKey && event.code === 'KeyQ') {
-      if (elementRef.current) {
-        toggleFullScreen(elementRef.current)
+  const handlerKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.code === 'KeyQ') {
+        if (elementRef.current) {
+          toggleFullScreen(elementRef.current)
+        }
       }
-    }
-  }
+    },
+    [toggleFullScreen]
+  )
 
   useEffect(() => {
     document.addEventListener('keydown', handlerKeyDown)
@@ -71,7 +74,7 @@ const GamePage: React.FC = () => {
     return () => {
       document.removeEventListener('keydown', handlerKeyDown)
     }
-  }, [])
+  }, [handlerKeyDown])
 
   return (
     <div className={styles.game} ref={elementRef}>
