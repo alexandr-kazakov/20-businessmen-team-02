@@ -25,7 +25,7 @@ export const logout: any = createAsyncThunk('auth/logout', () => {
 
 interface IInitialState {
   status: StatusType | ''
-  message: string
+  isLoadingProtectedRouter: boolean
   user: IUser | null
   isSigninView: boolean
 }
@@ -43,7 +43,7 @@ interface IUser {
 
 const initialState: IInitialState = {
   status: '',
-  message: '',
+  isLoadingProtectedRouter: true,
   user: null,
   isSigninView: true,
 }
@@ -52,6 +52,9 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    setIsLoadingProtectedRouter(state, { payload }) {
+      state.isLoadingProtectedRouter = payload
+    },
     setUser(state, { payload }) {
       state.user = payload
     },
@@ -99,6 +102,6 @@ export const authSlice = createSlice({
   },
 })
 
-export const { setUser, setIsSigninView } = authSlice.actions
+export const { setIsLoadingProtectedRouter, setUser, setIsSigninView } = authSlice.actions
 
 export default authSlice.reducer

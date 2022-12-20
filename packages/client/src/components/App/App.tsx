@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { useAppDispatch } from '@/app/redux/hooks'
-import { setUser } from '@/pages/Auth/redux/authSlice'
+import { setIsLoadingProtectedRouter, setUser } from '@/pages/Auth/redux/authSlice'
 
 import { NotFoundPage, UnavailablePage } from '@/pages/Error'
 import ChangePassword from '@/pages/ChangePassword'
@@ -36,6 +36,14 @@ const App: React.FC = () => {
 
     if (storageUser) {
       dispatch(setUser(JSON.parse(storageUser)))
+    }
+
+    const timer = setTimeout(() => {
+      dispatch(setIsLoadingProtectedRouter(false))
+    }, 500)
+
+    return () => {
+      clearTimeout(timer)
     }
   }, [dispatch])
 
