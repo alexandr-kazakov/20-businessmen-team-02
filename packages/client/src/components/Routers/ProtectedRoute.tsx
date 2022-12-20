@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import { Route, Redirect, type RouteProps, type RouteComponentProps } from 'react-router-dom'
 import { useAppSelector } from '@/app/redux/hooks'
+import { Spinner } from '@/components/Spinner'
 import { RoutersPaths } from './types'
 
 type ProtectedRouteProps = RouteProps & {
@@ -8,7 +9,7 @@ type ProtectedRouteProps = RouteProps & {
 }
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ component: Component, ...rest }) => {
-  const { user } = useAppSelector(state => state.auth)
+  const { isLoadingProtectedRouter, user } = useAppSelector(state => state.auth)
 
   const renderComponent = useCallback(
     (props: RouteComponentProps) => {
@@ -28,5 +29,5 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ component: Compo
     [Component, user]
   )
 
-  return <Route {...rest} render={renderComponent} />
+  return isLoadingProtectedRouter ? <Spinner /> : <Route {...rest} render={renderComponent} />
 }
