@@ -2,16 +2,20 @@ import React, { useRef, useEffect } from 'react'
 import { getRandomInt } from './helper'
 import type { Position, ImageObj, Props } from './types'
 
-const CANVAS_HEIGHT = 644,
-  CANVAS_WIDTH = 644,
-  IMG_X_AMOUNT = 3,
-  IMG_Y_AMOUNT = 3,
-  IMG_SIZE_X = 200,
-  IMG_SIZE_Y = 200,
-  IMG_BORDER = 20,
+const IMG_BORDER = 20,
   IMG_DIVIDER = 2,
   CANVAS_COLOR = 'gray',
-  DELAY = 200
+  DELAY = 200,
+  sourceFullWidth = 600,
+  sourceFullHeight = 600,
+  IMG_X_AMOUNT = 3,
+  IMG_Y_AMOUNT = 3,
+  sourcePartX = Math.floor(sourceFullWidth / IMG_X_AMOUNT),
+  sourcePartY = Math.floor(sourceFullHeight / IMG_Y_AMOUNT),
+  IMG_SIZE_X = sourcePartX,
+  IMG_SIZE_Y = sourcePartY,
+  CANVAS_WIDTH = sourceFullWidth + 2 * IMG_BORDER + (IMG_X_AMOUNT - 1) * IMG_DIVIDER,
+  CANVAS_HEIGHT = sourceFullHeight + 2 * IMG_BORDER + (IMG_Y_AMOUNT - 1) * IMG_DIVIDER
 
 const CanvasComponent: React.FC<Props> = ({ setScores }) => {
   const ref = useRef(null)
@@ -47,12 +51,12 @@ const CanvasComponent: React.FC<Props> = ({ setScores }) => {
             const imageElement = new Image()
 
             imageElement.onload = function () {
-              const sourceX = x * 200
-              const sourceY = y * 200
-              const sourceWidth = IMG_SIZE_X
-              const sourceHeight = IMG_SIZE_Y
-              const destWidth = sourceWidth
-              const destHeight = sourceHeight
+              const sourceX = x * sourcePartX
+              const sourceY = y * sourcePartY
+              const sourceWidth = sourcePartX
+              const sourceHeight = sourcePartY
+              const destWidth = IMG_SIZE_X
+              const destHeight = IMG_SIZE_Y
               const origX = x * (IMG_SIZE_X + IMG_DIVIDER) + IMG_BORDER
               const origY = y * (IMG_SIZE_Y + IMG_DIVIDER) + IMG_BORDER
               let pos: Position
