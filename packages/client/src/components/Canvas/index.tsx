@@ -6,19 +6,28 @@ const IMG_BORDER = 20,
   IMG_DIVIDER = 2,
   CANVAS_COLOR = 'gray',
   DELAY = 200,
+  LEFT_MENU_WIDTH = 40,
   sourceFullWidth = 600,
   sourceFullHeight = 600,
-  IMG_X_AMOUNT = 3,
-  IMG_Y_AMOUNT = 3,
-  sourcePartX = Math.floor(sourceFullWidth / IMG_X_AMOUNT),
-  sourcePartY = Math.floor(sourceFullHeight / IMG_Y_AMOUNT),
-  IMG_SIZE_X = sourcePartX,
-  IMG_SIZE_Y = sourcePartY,
-  CANVAS_WIDTH = sourceFullWidth + 2 * IMG_BORDER + (IMG_X_AMOUNT - 1) * IMG_DIVIDER,
-  CANVAS_HEIGHT = sourceFullHeight + 2 * IMG_BORDER + (IMG_Y_AMOUNT - 1) * IMG_DIVIDER
+  imgAmountX = 3,
+  imgAmountY = 3,
+  sourceWidth = Math.floor(sourceFullWidth / imgAmountX),
+  sourceHeight = Math.floor(sourceFullHeight / imgAmountY)
 
 const CanvasComponent: React.FC<Props> = ({ setScores }) => {
   const ref = useRef(null)
+
+  const winWidth = window.innerWidth - LEFT_MENU_WIDTH,
+    winHeight = window.innerHeight
+
+  const k = Math.min(winWidth / sourceFullWidth, winHeight / sourceFullHeight),
+    maxWidth = sourceFullWidth * k,
+    maxHeight = sourceFullHeight * k
+
+  const imgPartWidth = Math.floor((maxWidth - 2 * IMG_BORDER - (imgAmountX - 1) * IMG_DIVIDER) / imgAmountX),
+    imgPartHeight = Math.floor((maxHeight - 2 * IMG_BORDER - (imgAmountY - 1) * IMG_DIVIDER) / imgAmountY),
+    canvasWidth = imgPartWidth * imgAmountX + 2 * IMG_BORDER + (imgAmountX - 1) * IMG_DIVIDER,
+    canvasHeight = imgPartHeight * imgAmountY + 2 * IMG_BORDER + (imgAmountY - 1) * IMG_DIVIDER
 
   useEffect(() => {
     if (ref.current) {
@@ -37,28 +46,26 @@ const CanvasComponent: React.FC<Props> = ({ setScores }) => {
           second: ImageObj | null = null
         let startAnimate = 0
 
-        for (let x = 0; x < IMG_X_AMOUNT; x++) {
-          for (let y = 0; y < IMG_Y_AMOUNT; y++) {
+        for (let x = 0; x < imgAmountX; x++) {
+          for (let y = 0; y < imgAmountY; y++) {
             startPos.push({
-              posX: x * (IMG_SIZE_X + IMG_DIVIDER) + IMG_BORDER,
-              posY: y * (IMG_SIZE_Y + IMG_DIVIDER) + IMG_BORDER,
+              posX: x * (imgPartWidth + IMG_DIVIDER) + IMG_BORDER,
+              posY: y * (imgPartHeight + IMG_DIVIDER) + IMG_BORDER,
             })
           }
         }
         const imgArr: ImageObj[] = []
-        for (let x = 0; x < IMG_X_AMOUNT; x++) {
-          for (let y = 0; y < IMG_Y_AMOUNT; y++) {
+        for (let x = 0; x < imgAmountX; x++) {
+          for (let y = 0; y < imgAmountY; y++) {
             const imageElement = new Image()
 
             imageElement.onload = function () {
-              const sourceX = x * sourcePartX
-              const sourceY = y * sourcePartY
-              const sourceWidth = sourcePartX
-              const sourceHeight = sourcePartY
-              const destWidth = IMG_SIZE_X
-              const destHeight = IMG_SIZE_Y
-              const origX = x * (IMG_SIZE_X + IMG_DIVIDER) + IMG_BORDER
-              const origY = y * (IMG_SIZE_Y + IMG_DIVIDER) + IMG_BORDER
+              const sourceX = x * sourceWidth
+              const sourceY = y * sourceHeight
+              const destWidth = imgPartWidth
+              const destHeight = imgPartHeight
+              const origX = x * (imgPartWidth + IMG_DIVIDER) + IMG_BORDER
+              const origY = y * (imgPartHeight + IMG_DIVIDER) + IMG_BORDER
               let pos: Position
               if (startPos.length === 1) {
                 pos = startPos[0]
@@ -103,13 +110,13 @@ const CanvasComponent: React.FC<Props> = ({ setScores }) => {
             for (const imgObj of imgArr) {
               if (
                 e.offsetX > imgObj.posX &&
-                e.offsetX < imgObj.posX + IMG_SIZE_X &&
+                e.offsetX < imgObj.posX + imgPartWidth &&
                 e.offsetY > imgObj.posY &&
-                e.offsetY < imgObj.posY + IMG_SIZE_Y
+                e.offsetY < imgObj.posY + imgPartHeight
               ) {
                 draggable = imgObj
-                draggable.currX = e.offsetX - IMG_SIZE_X / 2
-                draggable.currY = e.offsetY - IMG_SIZE_Y / 2
+                draggable.currX = e.offsetX - imgPartWidth / 2
+                draggable.currY = e.offsetY - imgPartHeight / 2
                 break
               }
             }
@@ -118,8 +125,8 @@ const CanvasComponent: React.FC<Props> = ({ setScores }) => {
 
         canvas.onmousemove = e => {
           if (draggable) {
-            draggable.currX = e.offsetX - IMG_SIZE_X / 2
-            draggable.currY = e.offsetY - IMG_SIZE_Y / 2
+            draggable.currX = e.offsetX - imgPartWidth / 2
+            draggable.currY = e.offsetY - imgPartHeight / 2
             requestAnimationFrame(refreshCanvas)
           }
         }
@@ -130,9 +137,9 @@ const CanvasComponent: React.FC<Props> = ({ setScores }) => {
             for (const imgObj of imgArr) {
               if (
                 e.offsetX > imgObj.posX &&
-                e.offsetX < imgObj.posX + IMG_SIZE_X &&
+                e.offsetX < imgObj.posX + imgPartWidth &&
                 e.offsetY > imgObj.posY &&
-                e.offsetY < imgObj.posY + IMG_SIZE_Y
+                e.offsetY < imgObj.posY + imgPartHeight
               ) {
                 second = imgObj
                 break
@@ -221,7 +228,7 @@ const CanvasComponent: React.FC<Props> = ({ setScores }) => {
             }
           })
           if (result && !finished) {
-            let scores = 20000 - (Date.now() - start)
+            let scores = Math.round((20000 - (Date.now() - start)) / 100)
             scores < 0 && (scores = 0)
             finished = true
             setTimeout(() => {
@@ -262,7 +269,7 @@ const CanvasComponent: React.FC<Props> = ({ setScores }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return <canvas ref={ref} width={CANVAS_WIDTH} height={CANVAS_HEIGHT} />
+  return <canvas ref={ref} width={canvasWidth} height={canvasHeight} />
 }
 
 export default CanvasComponent

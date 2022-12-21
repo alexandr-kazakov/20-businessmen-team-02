@@ -23,6 +23,7 @@ const GamePage: React.FC = () => {
 
   const startButton = (
     <div className={styles.start}>
+      <div className={styles.startheader}>Для переключения в полноэкранный режим нажмите Ctrl-Q</div>
       <Button onClick={clickStart}>Старт</Button>
     </div>
   )
