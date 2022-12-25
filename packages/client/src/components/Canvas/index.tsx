@@ -101,7 +101,7 @@ const CanvasComponent: React.FC<Props> = ({ setScores }) => {
               )
               start = Date.now()
             }
-            imageElement.src = `src/assets/images/cheburashka.png`
+            imageElement.src = `/assets/images/cheburashka.png`
           }
         }
 

@@ -19,7 +19,7 @@ import { RoutersPaths } from '@/components/Routers/types'
 
 import styles from './styles.module.scss'
 
-const App: React.FC = () => {
+export const App: React.FC = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -66,5 +66,3 @@ const App: React.FC = () => {
     </div>
   )
 }
-
-export default App

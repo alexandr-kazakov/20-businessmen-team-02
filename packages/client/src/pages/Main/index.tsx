@@ -26,37 +26,37 @@ const MainPage: React.FC = () => {
             <div className={`${styles['col']} ${styles['col_right']}`}>
               <div id="puzzle-promo" className={`${styles['puzzle-promo']}`}>
                 <img
-                  src="src/assets/images/parts/ch00.png"
+                  src="/assets/images/parts/ch00.png"
                   alt=""
                   className={`${styles['puzzle-promo__item']} ${styles['puzzle-promo__item_1']}`}
                 />
                 <img
-                  src="src/assets/images/parts/ch10.png"
+                  src="/assets/images/parts/ch10.png"
                   alt=""
                   className={`${styles['puzzle-promo__item']} ${styles['puzzle-promo__item_2']}`}
                 />
                 <img
-                  src="src/assets/images/parts/ch20.png"
+                  src="/assets/images/parts/ch20.png"
                   alt=""
                   className={`${styles['puzzle-promo__item']} ${styles['puzzle-promo__item_3']}`}
                 />
                 <img
-                  src="src/assets/images/parts/ch01.png"
+                  src="/assets/images/parts/ch01.png"
                   alt=""
                   className={`${styles['puzzle-promo__item']} ${styles['puzzle-promo__item_4']}`}
                 />
                 <img
-                  src="src/assets/images/parts/ch11.png"
+                  src="/assets/images/parts/ch11.png"
                   alt=""
                   className={`${styles['puzzle-promo__item']} ${styles['puzzle-promo__item_5']}`}
                 />
                 <img
-                  src="src/assets/images/parts/ch21.png"
+                  src="/assets/images/parts/ch21.png"
                   alt=""
                   className={`${styles['puzzle-promo__item']} ${styles['puzzle-promo__item_6']}`}
                 />
                 <img
-                  src="src/assets/images/parts/ch02.png"
+                  src="/assets/images/parts/ch02.png"
                   alt=""
                   className={`${styles['puzzle-promo__item']} ${styles['puzzle-promo__item_7']}`}
                 />

@@ -17,4 +17,18 @@ export default defineConfig({
     alias: [{ find: '@', replacement: path.resolve(__dirname, './src') }],
   },
   plugins: [react(), reactRefresh()],
+  build: {
+    rollupOptions: {
+      input: {
+        index: './index.html',
+        main: './src/main.tsx',
+        'service-worker': './src/service-worker.ts',
+      },
+      output: {
+        entryFileNames: assetInfo => {
+          return assetInfo.name === 'service-worker' ? '[name].js' : 'assets/[name]-[hash].js'
+        },
+      },
+    },
+  },
 })

@@ -22,7 +22,10 @@
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^5.3.4",
-    "sass": "^1.56.1"
+    "sass": "^1.56.1",
+    "workbox-cacheable-response": "^6.5.4",
+    "workbox-routing": "^6.5.4",
+    "workbox-strategies": "^6.5.4"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
