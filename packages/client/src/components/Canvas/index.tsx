@@ -1,21 +1,27 @@
 import React, { useRef, useEffect } from 'react'
 import { getRandomInt } from './helper'
-import type { Position, ImageObj, Props } from './types'
+import type { Position, ImageObj, Props, AmountPartByLevel } from './types'
 
 const IMG_BORDER = 20,
   IMG_DIVIDER = 2,
   CANVAS_COLOR = 'gray',
   DELAY = 200,
   LEFT_MENU_WIDTH = 40,
-  sourceFullWidth = 600,
-  sourceFullHeight = 600,
-  imgAmountX = 3,
-  imgAmountY = 3,
-  sourceWidth = Math.floor(sourceFullWidth / imgAmountX),
-  sourceHeight = Math.floor(sourceFullHeight / imgAmountY)
+  AMOUNT_PART_BY_LEVEL: AmountPartByLevel = {
+    '0': 3,
+    '1': 4,
+    '2': 5,
+  }
 
-const CanvasComponent: React.FC<Props> = ({ setScores }) => {
+const CanvasComponent: React.FC<Props> = ({ setScores, level }) => {
   const ref = useRef(null)
+
+  const sourceFullWidth = 600,
+    sourceFullHeight = 600,
+    imgAmountX = AMOUNT_PART_BY_LEVEL[level],
+    imgAmountY = AMOUNT_PART_BY_LEVEL[level],
+    sourceWidth = Math.floor(sourceFullWidth / imgAmountX),
+    sourceHeight = Math.floor(sourceFullHeight / imgAmountY)
 
   const winWidth = window.innerWidth - LEFT_MENU_WIDTH,
     winHeight = window.innerHeight
@@ -228,7 +234,8 @@ const CanvasComponent: React.FC<Props> = ({ setScores }) => {
             }
           })
           if (result && !finished) {
-            let scores = Math.round((20000 - (Date.now() - start)) / 100)
+            const levelNum = Number(level)
+            let scores = Math.round((20000 * (1 + levelNum * levelNum) - (Date.now() - start)) / 100)
             scores < 0 && (scores = 0)
             finished = true
             setTimeout(() => {

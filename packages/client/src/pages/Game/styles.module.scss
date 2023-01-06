@@ -20,7 +20,7 @@
 }
 
 .start {
-  width: 200px;
+  width: 300px;
 }
 
 .startHeader {
@@ -33,4 +33,13 @@
   top: 80px;
   left: calc(100vw / 2 - 100px);
   width: 200px;
+}
+
+.select {
+  margin-bottom: 20px;
+}
+
+.selectLabel {
+  color: white;
+  margin-right: 10px;
 }

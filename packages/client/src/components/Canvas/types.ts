@@ -23,6 +23,11 @@ export type ImageObj = {
 
 type OwnProps = {
   setScores: (value: number) => void
+  level: string
 }
 
 export type Props = OwnProps
+
+export type AmountPartByLevel = {
+  [key: string]: number
+}

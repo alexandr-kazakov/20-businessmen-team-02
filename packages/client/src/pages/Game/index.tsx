@@ -5,10 +5,13 @@ import { Button } from '@/components/UI/Button'
 
 import styles from './styles.module.scss'
 
+const LOCAL_STORAGE_LEVEL_LABEL = 'puzzleLevel'
+
 const GamePage: React.FC = () => {
   const elementRef = useRef<HTMLDivElement | null>(null)
   const [initStart, setInitStart] = useState(0)
   const [scores, setScores] = useState(-1)
+  const [level, setLevel] = useState(localStorage.getItem(LOCAL_STORAGE_LEVEL_LABEL) || '0')
 
   const header = scores < 0 ? null : scores === 0 ? 'У Вас 0 очков' : `Поздравляем у Вас ${scores} очков!`
 
@@ -21,9 +24,23 @@ const GamePage: React.FC = () => {
     setScores(-1)
   }, [])
 
-  const startButton = (
+  const selectLevelHandle = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = event.target
+    setLevel(value)
+    localStorage.setItem(LOCAL_STORAGE_LEVEL_LABEL, value)
+  }
+
+  const startBlock = (
     <div className={styles.start}>
       <div className={styles.startHeader}>Для переключения в полноэкранный режим нажмите Ctrl-Q</div>
+      <label htmlFor="level" className={styles.selectLabel}>
+        Выберите уровень:
+      </label>
+      <select id="level" className={styles.select} onChange={selectLevelHandle} value={level}>
+        <option value="0">Новичок</option>
+        <option value="1">Продвинутый</option>
+        <option value="2">Эксперт</option>
+      </select>
       <Button onClick={clickStart}>Старт</Button>
     </div>
   )
@@ -79,7 +96,9 @@ const GamePage: React.FC = () => {
 
   return (
     <div className={styles.game} ref={elementRef}>
-      <div className={styles.container}>{initStart ? <CanvasComponent setScores={setScores} /> : startButton}</div>
+      <div className={styles.container}>
+        {initStart ? <CanvasComponent setScores={setScores} level={level} /> : startBlock}
+      </div>
       {header && <h1 className={styles.congrat}>{header}</h1>}
       {header && playAgainButton}
     </div>
