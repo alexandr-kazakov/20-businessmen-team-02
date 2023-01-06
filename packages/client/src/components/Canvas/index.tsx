@@ -23,17 +23,23 @@ const CanvasComponent: React.FC<Props> = ({ setScores, level }) => {
     sourceWidth = Math.floor(sourceFullWidth / imgAmountX),
     sourceHeight = Math.floor(sourceFullHeight / imgAmountY)
 
-  const winWidth = window.innerWidth - LEFT_MENU_WIDTH,
-    winHeight = window.innerHeight
+  const resize = () => {
+    const winWidth = window.innerWidth - LEFT_MENU_WIDTH,
+      winHeight = window.innerHeight
 
-  const k = Math.min(winWidth / sourceFullWidth, winHeight / sourceFullHeight),
-    maxWidth = sourceFullWidth * k,
-    maxHeight = sourceFullHeight * k
+    const k = Math.min(winWidth / sourceFullWidth, winHeight / sourceFullHeight),
+      maxWidth = sourceFullWidth * k,
+      maxHeight = sourceFullHeight * k
 
-  const imgPartWidth = Math.floor((maxWidth - 2 * IMG_BORDER - (imgAmountX - 1) * IMG_DIVIDER) / imgAmountX),
-    imgPartHeight = Math.floor((maxHeight - 2 * IMG_BORDER - (imgAmountY - 1) * IMG_DIVIDER) / imgAmountY),
-    canvasWidth = imgPartWidth * imgAmountX + 2 * IMG_BORDER + (imgAmountX - 1) * IMG_DIVIDER,
-    canvasHeight = imgPartHeight * imgAmountY + 2 * IMG_BORDER + (imgAmountY - 1) * IMG_DIVIDER
+    const imgPartWidth = Math.floor((maxWidth - 2 * IMG_BORDER - (imgAmountX - 1) * IMG_DIVIDER) / imgAmountX),
+      imgPartHeight = Math.floor((maxHeight - 2 * IMG_BORDER - (imgAmountY - 1) * IMG_DIVIDER) / imgAmountY),
+      canvasWidth = imgPartWidth * imgAmountX + 2 * IMG_BORDER + (imgAmountX - 1) * IMG_DIVIDER,
+      canvasHeight = imgPartHeight * imgAmountY + 2 * IMG_BORDER + (imgAmountY - 1) * IMG_DIVIDER
+
+    return { imgPartWidth, imgPartHeight, canvasWidth, canvasHeight }
+  }
+
+  const { imgPartWidth, imgPartHeight, canvasWidth, canvasHeight } = resize()
 
   useEffect(() => {
     if (ref.current) {
@@ -52,11 +58,13 @@ const CanvasComponent: React.FC<Props> = ({ setScores, level }) => {
           second: ImageObj | null = null
         let startAnimate = 0
 
+        const getCoord = (x: number, size: number) => x * (size + IMG_DIVIDER) + IMG_BORDER
+
         for (let x = 0; x < imgAmountX; x++) {
           for (let y = 0; y < imgAmountY; y++) {
             startPos.push({
-              posX: x * (imgPartWidth + IMG_DIVIDER) + IMG_BORDER,
-              posY: y * (imgPartHeight + IMG_DIVIDER) + IMG_BORDER,
+              posX: x, // * (imgPartWidth + IMG_DIVIDER) + IMG_BORDER,
+              posY: y, // * (imgPartHeight + IMG_DIVIDER) + IMG_BORDER,
             })
           }
         }
@@ -70,8 +78,8 @@ const CanvasComponent: React.FC<Props> = ({ setScores, level }) => {
               const sourceY = y * sourceHeight
               const destWidth = imgPartWidth
               const destHeight = imgPartHeight
-              const origX = x * (imgPartWidth + IMG_DIVIDER) + IMG_BORDER
-              const origY = y * (imgPartHeight + IMG_DIVIDER) + IMG_BORDER
+              const origX = x // * (imgPartWidth + IMG_DIVIDER) + IMG_BORDER
+              const origY = y // * (imgPartHeight + IMG_DIVIDER) + IMG_BORDER
               let pos: Position
               if (startPos.length === 1) {
                 pos = startPos[0]
@@ -100,8 +108,8 @@ const CanvasComponent: React.FC<Props> = ({ setScores, level }) => {
                 sourceY,
                 sourceWidth,
                 sourceHeight,
-                posX,
-                posY,
+                getCoord(posX, imgPartWidth),
+                getCoord(posY, imgPartHeight),
                 destWidth,
                 destHeight
               )
@@ -114,11 +122,13 @@ const CanvasComponent: React.FC<Props> = ({ setScores, level }) => {
         canvas.onmousedown = e => {
           if (!finished) {
             for (const imgObj of imgArr) {
+              const posX = getCoord(imgObj.posX, imgPartWidth),
+                posY = getCoord(imgObj.posY, imgPartHeight)
               if (
-                e.offsetX > imgObj.posX &&
-                e.offsetX < imgObj.posX + imgPartWidth &&
-                e.offsetY > imgObj.posY &&
-                e.offsetY < imgObj.posY + imgPartHeight
+                e.offsetX > posX &&
+                e.offsetX < posX + imgPartWidth &&
+                e.offsetY > posY &&
+                e.offsetY < posY + imgPartHeight
               ) {
                 draggable = imgObj
                 draggable.currX = e.offsetX - imgPartWidth / 2
@@ -141,11 +151,13 @@ const CanvasComponent: React.FC<Props> = ({ setScores, level }) => {
           if (draggable) {
             startAnimate = performance.now()
             for (const imgObj of imgArr) {
+              const posX = getCoord(imgObj.posX, imgPartWidth),
+                posY = getCoord(imgObj.posY, imgPartHeight)
               if (
-                e.offsetX > imgObj.posX &&
-                e.offsetX < imgObj.posX + imgPartWidth &&
-                e.offsetY > imgObj.posY &&
-                e.offsetY < imgObj.posY + imgPartHeight
+                e.offsetX > posX &&
+                e.offsetX < posX + imgPartWidth &&
+                e.offsetY > posY &&
+                e.offsetY < posY + imgPartHeight
               ) {
                 second = imgObj
                 break
@@ -163,8 +175,8 @@ const CanvasComponent: React.FC<Props> = ({ setScores, level }) => {
               second.posX = draggable.posX
               second.posY = draggable.posY
 
-              draggable.posX = posX
-              draggable.posY = posY
+              first.posX = posX
+              first.posY = posY
             }
 
             draggable = null
@@ -202,7 +214,9 @@ const CanvasComponent: React.FC<Props> = ({ setScores, level }) => {
               destWidth,
               destHeight,
             } = imgObj
-            ctx.drawImage(imageElement, sourceX, sourceY, sourceWidth, sourceHeight, posX, posY, destWidth, destHeight)
+            const x = getCoord(posX, imgPartWidth),
+              y = getCoord(posY, imgPartHeight)
+            ctx.drawImage(imageElement, sourceX, sourceY, sourceWidth, sourceHeight, x, y, destWidth, destHeight)
             if (result && (posX !== origX || posY !== origY)) {
               result = false
             }
@@ -257,12 +271,20 @@ const CanvasComponent: React.FC<Props> = ({ setScores, level }) => {
           } else {
             const t = now - startAnimate
             if (first && first.fromX && first.fromY) {
-              first.currX = calculateCoord(first.fromX, first.posX, t)
-              first.currY = calculateCoord(first.fromY, first.posY, t)
+              first.currX = calculateCoord(first.fromX, getCoord(first.posX, imgPartWidth), t)
+              first.currY = calculateCoord(first.fromY, getCoord(first.posY, imgPartHeight), t)
             }
-            if (second && second.fromX && second.fromY) {
-              second.currX = calculateCoord(second.fromX, second.posX, t)
-              second.currY = calculateCoord(second.fromY, second.posY, t)
+            if (second && typeof second.fromX === 'number' && typeof second.fromY === 'number') {
+              second.currX = calculateCoord(
+                getCoord(second.fromX, imgPartWidth),
+                getCoord(second.posX, imgPartWidth),
+                t
+              )
+              second.currY = calculateCoord(
+                getCoord(second.fromY, imgPartHeight),
+                getCoord(second.posY, imgPartHeight),
+                t
+              )
             }
           }
           refreshCanvas()
