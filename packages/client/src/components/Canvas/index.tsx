@@ -248,7 +248,8 @@ const CanvasComponent: React.FC<Props> = ({ setScores, level }) => {
             }
           })
           if (result && !finished) {
-            let scores = Math.round((20000 * (1 + Number(level) * Number(level)) - (Date.now() - start)) / 100)
+            const levelNum = Number(level)
+            let scores = Math.round((20000 * (1 + levelNum * levelNum) - (Date.now() - start)) / 100)
             scores < 0 && (scores = 0)
             finished = true
             setTimeout(() => {
