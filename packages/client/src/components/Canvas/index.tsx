@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { getRandomInt } from './helper'
 import type { Position, ImageObj, Props, AmountPartByLevel } from './types'
 
@@ -13,7 +13,7 @@ const IMG_BORDER = 20,
     '2': 5,
   }
 
-const CanvasComponent: React.FC<Props> = ({ setScores, level }) => {
+const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initStart }) => {
   const ref = useRef(null)
 
   const sourceFullWidth = 600,
@@ -39,9 +39,21 @@ const CanvasComponent: React.FC<Props> = ({ setScores, level }) => {
     return { imgPartWidth, imgPartHeight, canvasWidth, canvasHeight }
   }
 
-  const { imgPartWidth, imgPartHeight, canvasWidth, canvasHeight } = resize()
+  const [sizes, setSizes] = useState(resize())
+  const { imgPartWidth, imgPartHeight, canvasWidth, canvasHeight } = sizes
 
   useEffect(() => {
+    let timer: NodeJS.Timeout
+
+    const handleResize = () => {
+      timer && clearTimeout(timer)
+      timer = setTimeout(() => {
+        setSizes(resize())
+      }, 500)
+    }
+
+    window.addEventListener('resize', handleResize)
+
     if (ref.current) {
       const canvas: HTMLCanvasElement = ref.current
       const ctx = canvas.getContext('2d')
@@ -252,7 +264,7 @@ const CanvasComponent: React.FC<Props> = ({ setScores, level }) => {
             let scores = Math.round((20000 * (1 + levelNum * levelNum) - (Date.now() - start)) / 100)
             scores < 0 && (scores = 0)
             finished = true
-            setTimeout(() => {
+            timer = setTimeout(() => {
               // окончание игры
               setScores(scores)
             }, DELAY)
@@ -295,10 +307,16 @@ const CanvasComponent: React.FC<Props> = ({ setScores, level }) => {
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
-  return <canvas ref={ref} width={canvasWidth} height={canvasHeight} />
+    return () => {
+      timer && clearTimeout(timer)
+      window.removeEventListener('resize', handleResize)
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initStart, sizes])
+
+  return <canvas ref={ref} width={canvasWidth} height={canvasHeight} className={className} />
 }
 
 export default CanvasComponent
