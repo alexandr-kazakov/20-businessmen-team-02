@@ -4,7 +4,6 @@ export type Position = {
 }
 
 export type ImageObj = {
-  imageElement: HTMLImageElement
   posX: number
   posY: number
   origX: number

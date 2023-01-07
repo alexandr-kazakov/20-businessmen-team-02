@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState, useCallback } from 'react'
 import { getRandomInt } from './helper'
 import type { Position, ImageObj, Props, AmountPartByLevel } from './types'
 
@@ -23,7 +23,7 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
     sourceWidth = Math.floor(sourceFullWidth / imgAmountX),
     sourceHeight = Math.floor(sourceFullHeight / imgAmountY)
 
-  const resize = () => {
+  const resize = useCallback(() => {
     const winWidth = window.innerWidth - LEFT_MENU_WIDTH,
       winHeight = window.innerHeight
 
@@ -37,10 +37,14 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
       canvasHeight = imgPartHeight * imgAmountY + 2 * IMG_BORDER + (imgAmountY - 1) * IMG_DIVIDER
 
     return { imgPartWidth, imgPartHeight, canvasWidth, canvasHeight }
-  }
+  }, [imgAmountX, imgAmountY])
 
   const [sizes, setSizes] = useState(resize())
   const { imgPartWidth, imgPartHeight, canvasWidth, canvasHeight } = sizes
+
+  useEffect(() => {
+    setSizes(resize())
+  }, [level, resize])
 
   useEffect(() => {
     let timer: NodeJS.Timeout
@@ -81,11 +85,10 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
           }
         }
         const imgArr: ImageObj[] = []
-        for (let x = 0; x < imgAmountX; x++) {
-          for (let y = 0; y < imgAmountY; y++) {
-            const imageElement = new Image()
-
-            imageElement.onload = function () {
+        const imageElement = new Image()
+        imageElement.onload = function () {
+          for (let x = 0; x < imgAmountX; x++) {
+            for (let y = 0; y < imgAmountY; y++) {
               const sourceX = x * sourceWidth
               const sourceY = y * sourceHeight
               const destWidth = imgPartWidth
@@ -102,7 +105,6 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
               }
               const { posX, posY } = pos
               imgArr.push({
-                imageElement,
                 sourceX,
                 sourceY,
                 sourceWidth,
@@ -125,11 +127,11 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
                 destWidth,
                 destHeight
               )
-              start = Date.now()
             }
-            imageElement.src = `/assets/images/cheburashka.png`
           }
+          start = Date.now()
         }
+        imageElement.src = '/assets/images/cheburashka.png'
 
         canvas.onmousedown = e => {
           if (!finished) {
@@ -213,19 +215,8 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
             if (imgObj === draggable || imgObj === first || imgObj === second) {
               continue
             }
-            const {
-              imageElement,
-              posX,
-              posY,
-              origX,
-              origY,
-              sourceX,
-              sourceY,
-              sourceWidth,
-              sourceHeight,
-              destWidth,
-              destHeight,
-            } = imgObj
+            const { posX, posY, origX, origY, sourceX, sourceY, sourceWidth, sourceHeight, destWidth, destHeight } =
+              imgObj
             const x = getCoord(posX, imgPartWidth),
               y = getCoord(posY, imgPartHeight)
             ctx.drawImage(imageElement, sourceX, sourceY, sourceWidth, sourceHeight, x, y, destWidth, destHeight)
@@ -235,17 +226,7 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
           }
           ;[second, first, draggable].map(moved => {
             if (moved) {
-              const {
-                imageElement,
-                currX = 0,
-                currY = 0,
-                sourceX,
-                sourceY,
-                sourceWidth,
-                sourceHeight,
-                destWidth,
-                destHeight,
-              } = moved
+              const { currX = 0, currY = 0, sourceX, sourceY, sourceWidth, sourceHeight, destWidth, destHeight } = moved
               ctx.drawImage(
                 imageElement,
                 sourceX,
