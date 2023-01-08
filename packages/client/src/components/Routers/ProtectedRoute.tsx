@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { Route, Redirect, type RouteProps, type RouteComponentProps } from 'react-router-dom'
-import { useAppSelector } from '@/app/redux/hooks'
-import { Spinner } from '@/components/Spinner'
+import { useAppSelector } from '../../app/redux/hooks'
+import { Spinner } from '../Spinner'
 import { RoutersPaths } from './types'
 
 type ProtectedRouteProps = RouteProps & {

@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
-import authSlice from '@/pages/Auth/redux/authSlice'
-import forumSlice from '@/pages/Forum/redux/forumSlice'
-import profileSlice from '@/pages/Profile/redux/profileSlice'
+import authSlice from '../../pages/Auth/redux/authSlice'
+import forumSlice from '../../pages/Forum/redux/forumSlice'
+import profileSlice from '../../pages/Profile/redux/profileSlice'
 
 export const createStore = () => {
   return configureStore({

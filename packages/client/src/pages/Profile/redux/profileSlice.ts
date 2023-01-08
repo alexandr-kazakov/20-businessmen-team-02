@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { api } from '@/app/api'
-import { StatusType } from '@/app/apiTypes'
+import { api } from '../../../app/api'
+import { StatusType } from '../../../app/apiTypes'
 import { list } from '../const'
 
 import type { ProfileType } from '../types'
