@@ -14,8 +14,6 @@ export type ImageObj = {
   sourceY: number
   sourceWidth: number
   sourceHeight: number
-  destWidth: number
-  destHeight: number
   fromX?: number
   fromY?: number
 }

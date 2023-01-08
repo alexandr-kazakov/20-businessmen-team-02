@@ -46,6 +46,12 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
     setSizes(resize())
   }, [level, resize])
 
+  const getCoord = (x: number, size: number) => x * (size + IMG_DIVIDER) + IMG_BORDER
+
+  const [imageArray, setImageArray] = useState<ImageObj[]>([])
+  const [finishedPlay, setFinished] = useState(false)
+  const [start, setStart] = useState(-1)
+
   useEffect(() => {
     let timer: NodeJS.Timeout
 
@@ -66,70 +72,74 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
         ctx.fillStyle = CANVAS_COLOR
         ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-        let finished = false
-        let start = 0
+        let finished = finishedPlay
         const startPos: Position[] = []
         let draggable: ImageObj | null = null,
           first: ImageObj | null = null,
           second: ImageObj | null = null
         let startAnimate = 0
 
-        const getCoord = (x: number, size: number) => x * (size + IMG_DIVIDER) + IMG_BORDER
-
-        for (let x = 0; x < imgAmountX; x++) {
-          for (let y = 0; y < imgAmountY; y++) {
-            startPos.push({
-              posX: x, // * (imgPartWidth + IMG_DIVIDER) + IMG_BORDER,
-              posY: y, // * (imgPartHeight + IMG_DIVIDER) + IMG_BORDER,
-            })
-          }
-        }
-        const imgArr: ImageObj[] = []
-        const imageElement = new Image()
-        imageElement.onload = function () {
+        if (start !== initStart) {
           for (let x = 0; x < imgAmountX; x++) {
             for (let y = 0; y < imgAmountY; y++) {
-              const sourceX = x * sourceWidth
-              const sourceY = y * sourceHeight
-              const destWidth = imgPartWidth
-              const destHeight = imgPartHeight
-              const origX = x // * (imgPartWidth + IMG_DIVIDER) + IMG_BORDER
-              const origY = y // * (imgPartHeight + IMG_DIVIDER) + IMG_BORDER
-              let pos: Position
-              if (startPos.length === 1) {
-                pos = startPos[0]
-              } else {
-                const rnd = getRandomInt(startPos.length)
-                pos = startPos[rnd]
-                startPos.splice(rnd, 1)
-              }
-              const { posX, posY } = pos
-              imgArr.push({
-                sourceX,
-                sourceY,
-                sourceWidth,
-                sourceHeight,
-                posX,
-                posY,
-                destWidth,
-                destHeight,
-                origX,
-                origY,
+              startPos.push({
+                posX: x,
+                posY: y,
               })
-              ctx.drawImage(
-                imageElement,
-                sourceX,
-                sourceY,
-                sourceWidth,
-                sourceHeight,
-                getCoord(posX, imgPartWidth),
-                getCoord(posY, imgPartHeight),
-                destWidth,
-                destHeight
-              )
             }
           }
-          start = Date.now()
+        }
+
+        let imgArr: ImageObj[] = []
+        const imageElement = new Image()
+        imageElement.onload = function () {
+          if (start !== initStart) {
+            for (let x = 0; x < imgAmountX; x++) {
+              for (let y = 0; y < imgAmountY; y++) {
+                const sourceX = x * sourceWidth
+                const sourceY = y * sourceHeight
+                const origX = x
+                const origY = y
+                let pos: Position
+                if (startPos.length === 1) {
+                  pos = startPos[0]
+                } else {
+                  const rnd = getRandomInt(startPos.length)
+                  pos = startPos[rnd]
+                  startPos.splice(rnd, 1)
+                }
+                const { posX, posY } = pos
+                imgArr.push({
+                  sourceX,
+                  sourceY,
+                  sourceWidth,
+                  sourceHeight,
+                  posX,
+                  posY,
+                  origX,
+                  origY,
+                })
+                ctx.drawImage(
+                  imageElement,
+                  sourceX,
+                  sourceY,
+                  sourceWidth,
+                  sourceHeight,
+                  getCoord(posX, imgPartWidth),
+                  getCoord(posY, imgPartHeight),
+                  imgPartWidth,
+                  imgPartHeight
+                )
+              }
+            }
+            setStart(initStart) //start = Date.now()
+            setImageArray([...imgArr])
+            finished = false
+            setFinished(false)
+          } else {
+            imgArr = [...imageArray]
+            refreshCanvas()
+          }
         }
         imageElement.src = '/assets/images/cheburashka.png'
 
@@ -215,18 +225,17 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
             if (imgObj === draggable || imgObj === first || imgObj === second) {
               continue
             }
-            const { posX, posY, origX, origY, sourceX, sourceY, sourceWidth, sourceHeight, destWidth, destHeight } =
-              imgObj
+            const { posX, posY, origX, origY, sourceX, sourceY, sourceWidth, sourceHeight } = imgObj
             const x = getCoord(posX, imgPartWidth),
               y = getCoord(posY, imgPartHeight)
-            ctx.drawImage(imageElement, sourceX, sourceY, sourceWidth, sourceHeight, x, y, destWidth, destHeight)
+            ctx.drawImage(imageElement, sourceX, sourceY, sourceWidth, sourceHeight, x, y, imgPartWidth, imgPartHeight)
             if (result && (posX !== origX || posY !== origY)) {
               result = false
             }
           }
           ;[second, first, draggable].map(moved => {
             if (moved) {
-              const { currX = 0, currY = 0, sourceX, sourceY, sourceWidth, sourceHeight, destWidth, destHeight } = moved
+              const { currX = 0, currY = 0, sourceX, sourceY, sourceWidth, sourceHeight } = moved
               ctx.drawImage(
                 imageElement,
                 sourceX,
@@ -235,16 +244,17 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
                 sourceHeight,
                 currX,
                 currY,
-                destWidth,
-                destHeight
+                imgPartWidth,
+                imgPartHeight
               )
             }
           })
           if (result && !finished) {
             const levelNum = Number(level)
-            let scores = Math.round((20000 * (1 + levelNum * levelNum) - (Date.now() - start)) / 100)
+            let scores = Math.round((20000 * (1 + levelNum * levelNum) - (Date.now() - initStart)) / 100)
             scores < 0 && (scores = 0)
             finished = true
+            setFinished(true)
             timer = setTimeout(() => {
               // окончание игры
               setScores(scores)
