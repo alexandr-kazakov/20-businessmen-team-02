@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import authSlice from '@/pages/Auth/redux/authSlice'
 import forumSlice from '@/pages/Forum/redux/forumSlice'
 import profileSlice from '@/pages/Profile/redux/profileSlice'
+import leaderboardSlice from '@/pages/Leaderboard/redux/leaderboardSlice'
 
 export const createStore = () => {
   return configureStore({
@@ -9,6 +10,7 @@ export const createStore = () => {
       auth: authSlice,
       forum: forumSlice,
       profile: profileSlice,
+      leaderboard: leaderboardSlice,
     },
     devTools: process.env.NODE_ENV !== 'production',
   })

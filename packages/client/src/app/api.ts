@@ -2,7 +2,7 @@ import axios, { type AxiosRequestConfig, type Method } from 'axios'
 
 const DEV = process.env.NODE_ENV !== 'production'
 
-const getURL = (path: string) => `https://ya-praktikum.tech/api/v2/${path}`
+export const getURL = (path: string) => `https://ya-praktikum.tech/api/v2/${path}`
 
 /**
  * возвращает header для запроса
