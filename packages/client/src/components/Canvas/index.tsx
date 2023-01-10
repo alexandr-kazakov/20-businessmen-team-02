@@ -53,7 +53,7 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
   const [start, setStart] = useState(-1)
 
   useEffect(() => {
-    let timer: NodeJS.Timeout
+    let timer: ReturnType<typeof setTimeout>
 
     const handleResize = () => {
       timer && clearTimeout(timer)
