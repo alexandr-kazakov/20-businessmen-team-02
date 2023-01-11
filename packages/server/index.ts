@@ -18,7 +18,7 @@ const startServer = async () => {
   const port = Number(process.env.SERVER_PORT) || 3001
   const srcPath = path.dirname(require.resolve('client'))
   const distClientPath = path.dirname(require.resolve('client/dist/index.html'))
-  const distSsrClientPath = require.resolve('client/dist-ssr/client.cjs')
+  const distSsrClientPath = require.resolve('client/dist-ssr/ssr.cjs')
 
   app.use(cors())
 

@@ -16,5 +16,9 @@ export default defineConfig({
         dir: 'dist-ssr',
       },
     },
+    ssr: true,
+  },
+  ssr: {
+    format: 'cjs',
   },
 })
