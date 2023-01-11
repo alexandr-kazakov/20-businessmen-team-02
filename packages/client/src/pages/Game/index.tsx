@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react'
+import classnames from 'classnames'
 
 import CanvasComponent from '@/components/Canvas'
 import { Button } from '@/components/UI/Button'
@@ -30,20 +31,23 @@ const GamePage: React.FC = () => {
     localStorage.setItem(LOCAL_STORAGE_LEVEL_LABEL, value)
   }
 
-  const startBlock = (
-    <div className={styles.start}>
-      <div className={styles.startHeader}>Для переключения в полноэкранный режим нажмите Ctrl-Q</div>
-      <label htmlFor="level" className={styles.selectLabel}>
-        Выберите уровень:
-      </label>
-      <select id="level" className={styles.select} onChange={selectLevelHandle} value={level}>
-        <option value="0">Новичок</option>
-        <option value="1">Продвинутый</option>
-        <option value="2">Эксперт</option>
-      </select>
-      <Button onClick={clickStart}>Старт</Button>
-    </div>
-  )
+  const startBlock = (show: boolean) => {
+    const className = classnames(styles.start, show ? styles.show : styles.hide)
+    return (
+      <div className={className}>
+        <div className={styles.startHeader}>Для переключения в полноэкранный режим нажмите Ctrl-Q</div>
+        <label htmlFor="level" className={styles.selectLabel}>
+          Выберите уровень:
+        </label>
+        <select id="level" className={styles.select} onChange={selectLevelHandle} value={level}>
+          <option value="0">Новичок</option>
+          <option value="1">Продвинутый</option>
+          <option value="2">Эксперт</option>
+        </select>
+        <Button onClick={clickStart}>Старт</Button>
+      </div>
+    )
+  }
 
   const playAgainButton = (
     <div className={styles.restart}>
@@ -97,7 +101,13 @@ const GamePage: React.FC = () => {
   return (
     <div className={styles.game} ref={elementRef}>
       <div className={styles.container}>
-        {initStart ? <CanvasComponent setScores={setScores} level={level} /> : startBlock}
+        <CanvasComponent
+          className={initStart ? styles.show : styles.hide}
+          setScores={setScores}
+          level={level}
+          initStart={initStart}
+        />
+        {startBlock(!initStart)}
       </div>
       {header && <h1 className={styles.congrat}>{header}</h1>}
       {header && playAgainButton}
