@@ -40,6 +40,8 @@ const startServer = async () => {
     app.use('/assets', express.static(path.resolve(distClientPath, 'assets')))
   }
 
+  app.use('/service-worker.js', express.static(path.resolve(distClientPath, 'service-worker.js')))
+
   app.use('*', async (req, res, next) => {
     const url = req.originalUrl
 
@@ -53,8 +55,8 @@ const startServer = async () => {
         template = fs.readFileSync(path.resolve(distClientPath, 'index.html'), 'utf-8')
       }
 
-      let render: (store: any, url: any) => Promise<string>
-      let createStore: () => any
+      let render: (store: any, url: string) => Promise<string>
+      let createStore: (preloadedState: any) => any
 
       if (isDev()) {
         render = (await vite!.ssrLoadModule(path.resolve(srcPath, 'ssr.tsx'))).render
@@ -64,18 +66,15 @@ const startServer = async () => {
         createStore = (await import(distSsrClientPath)).createStore
       }
 
-      const store = createStore()
+      const store = createStore(undefined)
 
       const appHtml = await render(store, req.url)
 
       const state = store.getState()
 
-      const stateMarkup = `<script>window.__PRELOADED_STATE__=${JSON.stringify(state).replace(
-        /</g,
-        '\\u003c'
-      )}</script>`
+      const stateHtml = `<script>window.__PRELOADED_STATE__=${JSON.stringify(state).replace(/</g, '\\u003c')}</script>`
 
-      const html = template.replace(`<!--ssr-outlet-->`, appHtml + stateMarkup)
+      const html = template.replace(`<!--ssr-outlet-->`, appHtml + stateHtml)
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (error) {

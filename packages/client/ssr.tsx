@@ -7,7 +7,7 @@ import { createStore } from './src/app/redux/store'
 
 export { createStore }
 
-export const render = (store: any, url: any) => {
+export const render = (store: any, url: string) => {
   return renderToString(
     <StaticRouter location={url}>
       <Provider store={store}>
