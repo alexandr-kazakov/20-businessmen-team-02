@@ -4,7 +4,6 @@ export type Position = {
 }
 
 export type ImageObj = {
-  imageElement: HTMLImageElement
   posX: number
   posY: number
   origX: number
@@ -15,15 +14,15 @@ export type ImageObj = {
   sourceY: number
   sourceWidth: number
   sourceHeight: number
-  destWidth: number
-  destHeight: number
   fromX?: number
   fromY?: number
 }
 
 type OwnProps = {
+  className: string
   setScores: (value: number) => void
   level: string
+  initStart: number
 }
 
 export type Props = OwnProps
