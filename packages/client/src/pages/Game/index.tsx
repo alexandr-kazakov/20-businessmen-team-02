@@ -1,8 +1,8 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react'
 import classnames from 'classnames'
 
-import CanvasComponent from '@/components/Canvas'
-import { Button } from '@/components/UI/Button'
+import CanvasComponent from '../../components/Canvas'
+import { Button } from '../../components/UI/Button'
 
 import styles from './styles.module.scss'
 

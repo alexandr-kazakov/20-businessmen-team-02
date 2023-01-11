@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useAppSelector } from '@/app/redux/hooks'
+import { useAppSelector } from '../../app/redux/hooks'
 
 import { AuthSignIn } from './components/AuthSignin'
 import { AuthSignUp } from './components/AuthSignup'

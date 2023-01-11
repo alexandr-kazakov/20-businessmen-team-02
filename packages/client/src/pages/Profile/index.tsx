@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Button } from '@/components/UI/Button'
+import { Button } from '../../components/UI/Button'
 import { ProfileUserDataList } from './components/ProfileUserDataList'
 
 import styles from './styles.module.scss'

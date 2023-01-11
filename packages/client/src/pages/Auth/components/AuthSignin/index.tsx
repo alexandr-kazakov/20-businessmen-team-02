@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { useAppDispatch } from '@/app/redux/hooks'
+import { useAppDispatch } from '../../../../app/redux/hooks'
 
-import { signin, setIsSigninView } from '@/pages/Auth/redux/authSlice'
-import { Input } from '@/components/UI/Input'
-import { Button, ButtonVariant } from '@/components/UI/Button'
+import { signin, setIsSigninView } from '../../redux/authSlice'
+import { Input } from '../../../../components/UI/Input'
+import { Button, ButtonVariant } from '../../../../components/UI/Button'
 import type { IAuthSignIn } from '../../types'
-import { RoutersPaths } from '@/components/Routers/types'
+import { RoutersPaths } from '../../../../components/Routers/types'
 
 import styles from './styles.module.scss'
 
