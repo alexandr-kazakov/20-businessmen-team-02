@@ -8,7 +8,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'ssr.tsx'),
-      name: 'client',
+      name: 'build-client-for-ssr',
       formats: ['cjs'],
     },
     rollupOptions: {

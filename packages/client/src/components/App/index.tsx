@@ -19,6 +19,10 @@ import { RoutersPaths } from '../../components/Routers/types'
 
 import styles from './styles.module.scss'
 
+export const AppString = () => {
+  return <div>Hello world!!!</div>
+}
+
 export const App: React.FC = () => {
   const dispatch = useAppDispatch()
 

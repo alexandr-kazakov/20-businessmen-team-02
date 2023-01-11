@@ -13,6 +13,7 @@ const isDev = () => process.env.NODE_ENV === 'development'
 
 const startServer = async () => {
   let vite: ViteDevServer | undefined
+
   const app = express()
   const port = Number(process.env.SERVER_PORT) || 3001
   const srcPath = path.dirname(require.resolve('client'))
@@ -20,8 +21,6 @@ const startServer = async () => {
   const distSsrClientPath = require.resolve('client/dist-ssr/client.cjs')
 
   app.use(cors())
-
-  // createClientAndConnect()
 
   if (isDev()) {
     vite = await createViteServer({
@@ -47,42 +46,36 @@ const startServer = async () => {
     try {
       let template: string
 
-      if (!isDev()) {
-        template = fs.readFileSync(path.resolve(distClientPath, 'index.html'), 'utf-8')
-      } else {
+      if (isDev()) {
         template = fs.readFileSync(path.resolve(srcPath, 'index.html'), 'utf-8')
         template = await vite!.transformIndexHtml(url, template)
-      }
-
-      let render: () => Promise<string>
-
-      if (!isDev()) {
-        render = (await import(distSsrClientPath)).render
       } else {
-        render = (await vite!.ssrLoadModule(path.resolve(srcPath, 'ssr.tsx'))).render
+        template = fs.readFileSync(path.resolve(distClientPath, 'index.html'), 'utf-8')
       }
 
-      // let createStore: () => Promise<string>
+      let render: (store: any, url: any) => Promise<string>
+      let createStore: () => any
 
-      // if (!isDev()) {
-      //   createStore = (await import(distSsrClientPath)).createStore
-      // } else {
-      //   createStore = (await vite!.ssrLoadModule(path.resolve(srcPath, 'ssr.tsx'))).createStore
-      // }
+      if (isDev()) {
+        render = (await vite!.ssrLoadModule(path.resolve(srcPath, 'ssr.tsx'))).render
+        createStore = (await vite!.ssrLoadModule(path.resolve(srcPath, 'ssr.tsx'))).createStore
+      } else {
+        render = (await import(distSsrClientPath)).render
+        createStore = (await import(distSsrClientPath)).createStore
+      }
 
-      // console.log(createStore)
+      const store = createStore()
 
-      // const store = createStore()
+      const appHtml = await render(store, req.url)
 
-      // console.log('store', store)
+      const state = store.getState()
 
-      const appHtml = await render()
+      const stateMarkup = `<script>window.__PRELOADED_STATE__=${JSON.stringify(state).replace(
+        /</g,
+        '\\u003c'
+      )}</script>`
 
-      // const state = store.getState()
-
-      // const stateMarkup = `<script>window.__PRELOADED_STATE__=${JSON.stringify(state)}</script>`
-
-      const html = template.replace(`<!--ssr-outlet-->`, /* stateMarkup + */ appHtml)
+      const html = template.replace(`<!--ssr-outlet-->`, appHtml + stateMarkup)
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (error) {

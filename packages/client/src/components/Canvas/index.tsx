@@ -6,7 +6,7 @@ const IMG_BORDER = 20,
   IMG_DIVIDER = 2,
   CANVAS_COLOR = 'gray',
   DELAY = 200,
-  LEFT_MENU_WIDTH = 40,
+  // LEFT_MENU_WIDTH = 40,
   AMOUNT_PART_BY_LEVEL: AmountPartByLevel = {
     '0': 3,
     '1': 4,
@@ -23,12 +23,13 @@ const CanvasComponent: React.FC<Props> = ({ setScores, level }) => {
     sourceWidth = Math.floor(sourceFullWidth / imgAmountX),
     sourceHeight = Math.floor(sourceFullHeight / imgAmountY)
 
-  const winWidth = window.innerWidth - LEFT_MENU_WIDTH,
-    winHeight = window.innerHeight
+  // const winWidth = window.innerWidth - LEFT_MENU_WIDTH,
+  //   winHeight = window.innerHeight
 
-  const k = Math.min(winWidth / sourceFullWidth, winHeight / sourceFullHeight),
-    maxWidth = sourceFullWidth * k,
-    maxHeight = sourceFullHeight * k
+  // const k = Math.min(winWidth / sourceFullWidth, winHeight / sourceFullHeight)
+
+  const maxWidth = sourceFullWidth
+  const maxHeight = sourceFullHeight
 
   const imgPartWidth = Math.floor((maxWidth - 2 * IMG_BORDER - (imgAmountX - 1) * IMG_DIVIDER) / imgAmountX),
     imgPartHeight = Math.floor((maxHeight - 2 * IMG_BORDER - (imgAmountY - 1) * IMG_DIVIDER) / imgAmountY),
