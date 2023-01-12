@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
+import { useAppDispatch, useAppSelector } from '../../../../app/redux/hooks'
 import { setSelectedIdForum } from '../../redux/forumSlice'
 
 import type { TForum } from '../../types'

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import { useAppSelector } from '@/app/redux/hooks'
+import { useAppSelector } from '../../../../app/redux/hooks'
 import { ForumItem } from '../ForumItem'
 
 import styles from './styles.module.scss'

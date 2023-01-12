@@ -10,7 +10,7 @@ global.fetch = jest.fn(() => Promise.resolve({ json: () => Promise.resolve('hey'
 test('Example test', async () => {
   render(
     <BrowserRouter>
-      <Provider store={createStore()}>
+      <Provider store={createStore(undefined)}>
         <App />
       </Provider>
     </BrowserRouter>
