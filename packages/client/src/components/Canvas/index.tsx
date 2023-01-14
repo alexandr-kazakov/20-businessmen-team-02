@@ -7,44 +7,49 @@ const IMG_BORDER = 20,
   CANVAS_COLOR = 'gray',
   DELAY = 200,
   LEFT_MENU_WIDTH = 40,
+  CHEBURASHKA = 600,
   AMOUNT_PART_BY_LEVEL: AmountPartByLevel = {
     '0': 3,
     '1': 4,
     '2': 5,
   }
 
-const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initStart }) => {
+const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initStart, src }) => {
   const ref = useRef(null)
 
-  const sourceFullWidth = 600,
-    sourceFullHeight = 600,
-    imgAmountX = AMOUNT_PART_BY_LEVEL[level],
-    imgAmountY = AMOUNT_PART_BY_LEVEL[level],
-    sourceWidth = Math.floor(sourceFullWidth / imgAmountX),
-    sourceHeight = Math.floor(sourceFullHeight / imgAmountY)
+  const [sourceSizes, setSourceSizes] = useState({ sourceFullWidth: CHEBURASHKA, sourceFullHeight: CHEBURASHKA })
 
-  const resize = useCallback(() => {
-    const winWidth = window.innerWidth - LEFT_MENU_WIDTH,
-      winHeight = window.innerHeight
+  const imgAmountX = AMOUNT_PART_BY_LEVEL[level],
+    imgAmountY = AMOUNT_PART_BY_LEVEL[level]
 
-    const k = Math.min(winWidth / sourceFullWidth, winHeight / sourceFullHeight),
-      maxWidth = sourceFullWidth * k,
-      maxHeight = sourceFullHeight * k
+  const resize = useCallback(
+    (sourceSizes: { sourceFullWidth: number; sourceFullHeight: number }) => {
+      const { sourceFullWidth, sourceFullHeight } = sourceSizes
+      const winWidth = window.innerWidth - LEFT_MENU_WIDTH,
+        winHeight = window.innerHeight
 
-    const imgPartWidth = Math.floor((maxWidth - 2 * IMG_BORDER - (imgAmountX - 1) * IMG_DIVIDER) / imgAmountX),
-      imgPartHeight = Math.floor((maxHeight - 2 * IMG_BORDER - (imgAmountY - 1) * IMG_DIVIDER) / imgAmountY),
-      canvasWidth = imgPartWidth * imgAmountX + 2 * IMG_BORDER + (imgAmountX - 1) * IMG_DIVIDER,
-      canvasHeight = imgPartHeight * imgAmountY + 2 * IMG_BORDER + (imgAmountY - 1) * IMG_DIVIDER
+      const k = Math.min(winWidth / sourceFullWidth, winHeight / sourceFullHeight),
+        maxWidth = sourceFullWidth * k,
+        maxHeight = sourceFullHeight * k
 
-    return { imgPartWidth, imgPartHeight, canvasWidth, canvasHeight }
-  }, [imgAmountX, imgAmountY])
+      const imgPartWidth = Math.floor((maxWidth - 2 * IMG_BORDER - (imgAmountX - 1) * IMG_DIVIDER) / imgAmountX),
+        imgPartHeight = Math.floor((maxHeight - 2 * IMG_BORDER - (imgAmountY - 1) * IMG_DIVIDER) / imgAmountY),
+        canvasWidth = imgPartWidth * imgAmountX + 2 * IMG_BORDER + (imgAmountX - 1) * IMG_DIVIDER,
+        canvasHeight = imgPartHeight * imgAmountY + 2 * IMG_BORDER + (imgAmountY - 1) * IMG_DIVIDER,
+        sourceWidth = Math.floor(sourceFullWidth / imgAmountX),
+        sourceHeight = Math.floor(sourceFullHeight / imgAmountY)
 
-  const [sizes, setSizes] = useState(resize())
+      return { imgPartWidth, imgPartHeight, canvasWidth, canvasHeight, sourceWidth, sourceHeight }
+    },
+    [imgAmountX, imgAmountY]
+  )
+
+  const [sizes, setSizes] = useState(resize(sourceSizes))
   const { imgPartWidth, imgPartHeight, canvasWidth, canvasHeight } = sizes
 
   useEffect(() => {
-    setSizes(resize())
-  }, [level, resize])
+    setSizes(resize(sourceSizes))
+  }, [resize, sourceSizes])
 
   const getCoord = (x: number, size: number) => x * (size + IMG_DIVIDER) + IMG_BORDER
 
@@ -58,7 +63,7 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
     const handleResize = () => {
       timer && clearTimeout(timer)
       timer = setTimeout(() => {
-        setSizes(resize())
+        setSizes(resize(sourceSizes))
       }, 500)
     }
 
@@ -79,21 +84,26 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
           second: ImageObj | null = null
         let startAnimate = 0
 
-        if (start !== initStart) {
-          for (let x = 0; x < imgAmountX; x++) {
-            for (let y = 0; y < imgAmountY; y++) {
-              startPos.push({
-                posX: x,
-                posY: y,
-              })
-            }
+        for (let x = 0; x < imgAmountX; x++) {
+          for (let y = 0; y < imgAmountY; y++) {
+            startPos.push({
+              posX: x,
+              posY: y,
+            })
           }
         }
 
         let imgArr: ImageObj[] = []
         const imageElement = new Image()
         imageElement.onload = function () {
-          if (start !== initStart) {
+          const { width, height } = this as HTMLImageElement
+          const { sourceFullWidth, sourceFullHeight } = sourceSizes
+
+          if (start !== initStart || sourceFullWidth !== width || sourceFullHeight !== height) {
+            const { imgPartWidth, imgPartHeight, sourceWidth, sourceHeight } = resize({
+              sourceFullWidth: width,
+              sourceFullHeight: height,
+            })
             for (let x = 0; x < imgAmountX; x++) {
               for (let y = 0; y < imgAmountY; y++) {
                 const sourceX = x * sourceWidth
@@ -132,7 +142,10 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
                 )
               }
             }
-            setStart(initStart) //start = Date.now()
+            if (sourceFullWidth !== width || sourceFullHeight !== height) {
+              setSourceSizes({ sourceFullWidth: width, sourceFullHeight: height })
+            }
+            setStart(initStart)
             setImageArray([...imgArr])
             finished = false
             setFinished(false)
@@ -141,7 +154,7 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
             refreshCanvas()
           }
         }
-        imageElement.src = '/assets/images/cheburashka.png'
+        imageElement.src = src || '/assets/images/cheburashka.png'
 
         canvas.onmousedown = e => {
           if (!finished) {
@@ -305,7 +318,7 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initStart, sizes])
+  }, [initStart, sizes, sourceSizes])
 
   return <canvas ref={ref} width={canvasWidth} height={canvasHeight} className={className} />
 }

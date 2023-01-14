@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef, useEffect } from 'react'
+import React, { useCallback, useState, useRef, useEffect, type DragEvent } from 'react'
 import classnames from 'classnames'
 
 import CanvasComponent from '../../components/Canvas'
@@ -31,11 +31,51 @@ const GamePage: React.FC = () => {
     localStorage.setItem(LOCAL_STORAGE_LEVEL_LABEL, value)
   }
 
+  const [dropZoneText, setDropZoneText] = useState('Вы можете перенести сюда файл с картинкой, которую будете собирать')
+  const [src, setSrc] = useState('')
+
+  const handleDragEnter = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+    setDropZoneText('')
+  }
+
+  const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+  }
+
+  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+    const dt = event.dataTransfer
+    const files = dt.files
+    const count = files.length
+
+    if (count) {
+      const file = files[0]
+      const { name, type } = file
+      if (type.includes('image')) {
+        const src0 = URL.createObjectURL(file)
+        setDropZoneText(`${name}`)
+        setSrc(src0)
+      }
+    }
+  }
+
   const startBlock = (show: boolean) => {
     const className = classnames(styles.start, show ? styles.show : styles.hide)
     return (
       <div className={className}>
         <div className={styles.startHeader}>Для переключения в полноэкранный режим нажмите Ctrl-Q</div>
+        <div
+          id="dropZone"
+          className={styles.dropZone}
+          onDragEnter={handleDragEnter}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}>
+          <div className={styles.dropZoneLabel}>{dropZoneText}</div>
+        </div>
         <label htmlFor="level" className={styles.selectLabel}>
           Выберите уровень:
         </label>
@@ -106,6 +146,7 @@ const GamePage: React.FC = () => {
           setScores={setScores}
           level={level}
           initStart={initStart}
+          src={src}
         />
         {startBlock(!initStart)}
       </div>
