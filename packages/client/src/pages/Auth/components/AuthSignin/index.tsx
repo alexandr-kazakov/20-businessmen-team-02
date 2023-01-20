@@ -29,7 +29,7 @@ export const AuthSignIn: React.FC = () => {
 
   useEffect(() => {
     if (!oAuthYandexUrl) {
-      getOAuthUrl().then(url => setOAuthYandexUrl(url))
+      getOAuthUrl().then(setOAuthYandexUrl)
     }
   }, [oAuthYandexUrl])
 
