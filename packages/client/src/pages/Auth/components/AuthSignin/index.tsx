@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useAppDispatch } from '../../../../app/redux/hooks'
 
-import { signin, setIsSigninView } from '../../redux/authSlice'
+import { signin, setIsSigninView, getOAuthUrl } from '../../redux/authSlice'
 import { Input } from '../../../../components/UI/Input'
 import { Button, ButtonVariant } from '../../../../components/UI/Button'
 import type { IAuthSignIn } from '../../types'
@@ -24,6 +24,14 @@ export const AuthSignIn: React.FC = () => {
     },
     [values]
   )
+
+  const [oAuthYandexUrl, setOAuthYandexUrl] = useState('')
+
+  useEffect(() => {
+    if (!oAuthYandexUrl) {
+      getOAuthUrl().then(setOAuthYandexUrl)
+    }
+  }, [oAuthYandexUrl])
 
   const handlerSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -61,6 +69,9 @@ export const AuthSignIn: React.FC = () => {
         <Button type="submit" disabled={disabled}>
           Войти
         </Button>
+        <a href={oAuthYandexUrl} className={styles.yandexButton}>
+          <Button type="button">Войти через YandexId</Button>
+        </a>
         <Button onClick={handlerToggle} variant={ButtonVariant.SECONDARY}>
           Нет аккаунта?
         </Button>

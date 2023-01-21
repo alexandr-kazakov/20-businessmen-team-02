@@ -1,7 +1,24 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { api } from '../../../app/api'
 import { StatusType } from '../../../app/apiTypes'
-import { type IAuthSignIn, type IAuthSignup } from '../types'
+
+import type { IAuthSignIn, IAuthSignup, OauthYandexId } from '../types'
+
+// TODO: после деплоя добавить продакшн урл..
+export const OAUTH_YANDEX_REDIRECT = 'http://localhost:3000'
+
+export const getOAuthUrl = async (): Promise<string> => {
+  const { data } = await api.get('oauth/yandex/service-id', {
+    redirect_uri: OAUTH_YANDEX_REDIRECT,
+  })
+
+  return `https://oauth.yandex.ru/authorize?response_type=code&client_id=${data.service_id}&redirect_uri=${OAUTH_YANDEX_REDIRECT}`
+}
+
+export const oAuthSignIn: any = createAsyncThunk('oauth/yandex', async (data: OauthYandexId) => {
+  await api.post('oauth/yandex/', data)
+  return await api.get('auth/user/')
+})
 
 export const signin: any = createAsyncThunk('auth/signin', async (data: IAuthSignIn) => {
   const response = await api.post('auth/signin/', data)
@@ -63,6 +80,18 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: builder => {
+    builder.addCase(oAuthSignIn.pending, state => {
+      state.status = StatusType.loading
+    })
+    builder.addCase(oAuthSignIn.fulfilled, (state, { payload }) => {
+      localStorage.setItem('user', JSON.stringify(payload.data))
+
+      state.user = payload.data
+      state.status = StatusType.success
+    })
+    builder.addCase(oAuthSignIn.rejected, state => {
+      state.status = StatusType.error
+    })
     builder.addCase(signin.pending, state => {
       state.status = StatusType.loading
     })
