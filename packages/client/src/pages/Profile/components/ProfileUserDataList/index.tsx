@@ -10,7 +10,7 @@ export const ProfileUserDataList: React.FC = () => {
   const userObj = useAppSelector(state => state.auth.user)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const editeduserObj: any = {}
-
+ // @ts-ignore: Unreachable code error
   Object.entries(userObj).map(([key, value]) => {
     if (key === 'first_name') {
       editeduserObj['Имя'] = value
@@ -33,6 +33,8 @@ export const ProfileUserDataList: React.FC = () => {
         <li key={key} className={styles.item}>
           <div className={styles.colLeft}>{key}</div>
           <div className={styles.colRight}>
+            {/* 
+              // @ts-ignore */}
             <input className={styles.userDataInput} type="text" defaultValue={value} disabled={profilenView} />
           </div>
         </li>
