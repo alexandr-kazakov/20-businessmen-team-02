@@ -8,9 +8,9 @@ export const ProfileUserDataList: React.FC = () => {
   const { profilenView } = useAppSelector(state => state.profile)
 
   const userObj = useAppSelector(state => state.auth.user)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   const editeduserObj: any = {}
- // @ts-ignore: Unreachable code error
+  // @ts-ignore
   Object.entries(userObj).map(([key, value]) => {
     if (key === 'first_name') {
       editeduserObj['Имя'] = value
