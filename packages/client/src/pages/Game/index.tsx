@@ -8,13 +8,24 @@ import styles from './styles.module.scss'
 
 const LOCAL_STORAGE_LEVEL_LABEL = 'puzzleLevel'
 
+const getEnding = (num: number) => {
+  if (num === 0) return 'ов'
+  if (num < 10 || Math.floor(num / 10) % 10 !== 1) {
+    const mod = num % 10
+    if (mod === 1) return 'о'
+    if (mod > 1 && mod < 5) return 'а'
+  }
+  return 'ов'
+}
+
 const GamePage: React.FC = () => {
   const elementRef = useRef<HTMLDivElement | null>(null)
   const [initStart, setInitStart] = useState(0)
   const [scores, setScores] = useState(-1)
   const [level, setLevel] = useState(localStorage.getItem(LOCAL_STORAGE_LEVEL_LABEL) || '0')
 
-  const header = scores < 0 ? null : scores === 0 ? 'У Вас 0 очков' : `Поздравляем у Вас ${scores} очков!`
+  const header =
+    scores < 0 ? null : scores === 0 ? 'У Вас 0 очков' : `Поздравляем у Вас ${scores} очк${getEnding(scores)}!`
 
   const clickStart = useCallback(() => {
     setInitStart(performance.now())
