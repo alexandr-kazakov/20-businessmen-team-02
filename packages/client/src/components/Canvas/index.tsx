@@ -84,7 +84,7 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
 
         const drawTimebar = () => {
           const color = 'green',
-            rate = (initStart + timeLimit - Date.now()) / timeLimit
+            rate = (initStart + timeLimit - performance.now()) / timeLimit
 
           if (rate > 0) {
             const width = Math.round(rate * (canvasWidth - IMG_BORDER * 2))
@@ -290,7 +290,7 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
             }
           })
           if (result && !finished) {
-            let scores = Math.round((initStart + timeLimit - Date.now()) / 100)
+            let scores = Math.round((initStart + timeLimit - performance.now()) / 100)
             scores < 0 && (scores = 0)
             finished = true
             setFinished(true)
@@ -342,7 +342,7 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
           ctx.stroke()
           ctx.fill()
           drawTimebar()
-          if (!finished && initStart + timeLimit - Date.now() > 0) {
+          if (!finished && initStart + timeLimit - performance.now() > 0) {
             requestAnimationFrame(animateTimeBar)
           }
         }

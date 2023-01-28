@@ -17,7 +17,7 @@ const GamePage: React.FC = () => {
   const header = scores < 0 ? null : scores === 0 ? 'У Вас 0 очков' : `Поздравляем у Вас ${scores} очков!`
 
   const clickStart = useCallback(() => {
-    setInitStart(Date.now())
+    setInitStart(performance.now())
   }, [])
 
   const clickPlayAgain = useCallback(() => {
