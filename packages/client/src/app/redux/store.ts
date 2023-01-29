@@ -11,7 +11,6 @@ export const createStore = (preloadedState: any) => {
       profile: profileSlice,
     },
     preloadedState,
-    devTools: process.env.NODE_ENV !== 'production',
   })
 }
 

@@ -4,23 +4,31 @@ import express from 'express'
 import * as fs from 'fs'
 import * as path from 'path'
 import { createServer as createViteServer } from 'vite'
-// import { createClientAndConnect } from './db'
 import type { ViteDevServer } from 'vite'
+import { dbConnect } from './db'
+import routers from './routers'
+import cookieParser from './middleware/cookie'
 
 dotenv.config()
 
+const PORT = Number(process.env.SERVER_PORT) || 3001
 const isDev = () => process.env.NODE_ENV === 'development'
 
 const startServer = async () => {
   let vite: ViteDevServer | undefined
 
   const app = express()
-  const port = Number(process.env.SERVER_PORT) || 3001
   const srcPath = path.dirname(require.resolve('client'))
   const distClientPath = path.dirname(require.resolve('client/dist/index.html'))
   const distSsrClientPath = require.resolve('client/dist-ssr/ssr.cjs')
 
+  await dbConnect()
+
   app.use(cors())
+  app.use(express.json())
+  app.use(cookieParser)
+
+  app.use('/api', routers)
 
   if (isDev()) {
     vite = await createViteServer({
@@ -31,10 +39,6 @@ const startServer = async () => {
 
     app.use(vite.middlewares)
   }
-
-  app.get('/api', (_, res) => {
-    res.json('👋 Howdy from the server :)')
-  })
 
   if (!isDev()) {
     app.use('/assets', express.static(path.resolve(distClientPath, 'assets')))
@@ -47,21 +51,16 @@ const startServer = async () => {
 
     try {
       let template: string
-
-      if (isDev()) {
-        template = fs.readFileSync(path.resolve(srcPath, 'index.html'), 'utf-8')
-        template = await vite!.transformIndexHtml(url, template)
-      } else {
-        template = fs.readFileSync(path.resolve(distClientPath, 'index.html'), 'utf-8')
-      }
-
       let render: (store: any, url: string) => Promise<string>
       let createStore: (preloadedState: any) => any
 
       if (isDev()) {
+        template = fs.readFileSync(path.resolve(srcPath, 'index.html'), 'utf-8')
+        template = await vite!.transformIndexHtml(url, template)
         render = (await vite!.ssrLoadModule(path.resolve(srcPath, 'ssr.tsx'))).render
         createStore = (await vite!.ssrLoadModule(path.resolve(srcPath, 'ssr.tsx'))).createStore
       } else {
+        template = fs.readFileSync(path.resolve(distClientPath, 'index.html'), 'utf-8')
         render = (await import(distSsrClientPath)).render
         createStore = (await import(distSsrClientPath)).createStore
       }
@@ -86,8 +85,8 @@ const startServer = async () => {
     }
   })
 
-  app.listen(port, () => {
-    console.log(`  ➜ 🎸 Server is listening on port: ${port}`)
+  app.listen(PORT, () => {
+    console.log(`  ➜ 🎸 Server is listening on port: ${PORT}`)
   })
 }
 
