@@ -15,6 +15,7 @@ import ForumPage from '../../pages/Forum'
 import { Navigation } from '../../components/Navigation'
 import { ProtectedRoute } from '../../components/Routers/ProtectedRoute'
 import { ErrorBoundary } from '../../components/UI/Error'
+import { Snackbar } from '../../components/Snackbar'
 import { RoutersPaths } from '../../components/Routers/types'
 
 import styles from './styles.module.scss'
@@ -61,6 +62,7 @@ export const App: React.FC = () => {
           <Route path={RoutersPaths.errorServer} exact component={UnavailablePage} />
           <Route path={['/*', `${RoutersPaths.errorClient}`]} exact component={NotFoundPage} />
         </Switch>
+        <Snackbar />
       </ErrorBoundary>
     </div>
   )

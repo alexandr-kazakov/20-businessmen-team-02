@@ -127,6 +127,8 @@ export const authSlice = createSlice({
     })
     builder.addCase(logout.rejected, state => {
       state.status = StatusType.error
+      localStorage.removeItem('user')
+      state.user = null
     })
   },
 })
