@@ -20,21 +20,21 @@ export const changeUserProfile: any = createAsyncThunk('profile', async (data: a
 interface IInitialState {
   status: StatusType | ''
   listProfile: ProfileType[]
-  profilenView: boolean
+  profileView: boolean
 }
 
 const initialState: IInitialState = {
   status: '',
   listProfile: list,
-  profilenView: true,
+  profileView: true,
 }
 
 export const profileSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: {
-    setProfilenView(state) {
-      state.profilenView = !state.profilenView
+    setprofileView(state) {
+      state.profileView = !state.profileView
     },
   },
   extraReducers: builder => {
@@ -51,5 +51,5 @@ export const profileSlice = createSlice({
   },
 })
 
-export const { setProfilenView } = profileSlice.actions
+export const { setprofileView } = profileSlice.actions
 export default profileSlice.reducer
