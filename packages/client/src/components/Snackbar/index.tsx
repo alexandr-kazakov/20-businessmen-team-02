@@ -7,27 +7,22 @@ import styles from './styles.module.scss'
 export const Snackbar: React.FC = () => {
   const { message, isShow } = useAppSelector(state => state.snack)
   const dispatch = useAppDispatch()
-  let timer: ReturnType<typeof setTimeout> | undefined
-
-  const handleTimeout = () => {
-    timer = setTimeout(() => {
-      dispatch(hideSnackBar())
-    }, 3000)
-  }
 
   const handleClose = () => {
     dispatch(hideSnackBar())
   }
 
   useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | undefined
     if (isShow) {
-      handleTimeout()
+      timer = setTimeout(() => {
+        dispatch(hideSnackBar())
+      }, 3000)
     }
     return () => {
-      clearTimeout(timer)
+      timer && clearTimeout(timer)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isShow, timer])
+  }, [isShow, dispatch])
 
   return isShow ? (
     <div className={styles.container}>
