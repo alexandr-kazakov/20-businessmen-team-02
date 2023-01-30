@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
-import { Button } from '@/components/UI/Button'
-import { Input } from '@/components/UI/Input'
+import { Button } from '../../components/UI/Button'
+import { Input } from '../../components/UI/Input'
 
-import { useAppSelector } from '@/app/redux/hooks'
-import { api } from '@/app/api'
+import { useAppSelector } from '../../app/redux/hooks'
+import { api } from '../../app/api'
 
 import styles from './styles.module.scss'
 

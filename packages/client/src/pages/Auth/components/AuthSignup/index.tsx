@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { useAppDispatch } from '@/app/redux/hooks'
+import { useAppDispatch } from '../../../../app/redux/hooks'
 
-import { signup, setIsSigninView } from '@/pages/Auth/redux/authSlice'
-import { Input } from '@/components/UI/Input'
-import { Button, ButtonVariant } from '@/components/UI/Button'
+import { signup, setIsSigninView } from '../../redux/authSlice'
+import { showSnackBar } from '../../../../components/Snackbar/redux/snackbarSlice'
+import { Input } from '../../../../components/UI/Input'
+import { Button, ButtonVariant } from '../../../../components/UI/Button'
 import type { IAuthSignup } from '../../types'
-import { RoutersPaths } from '@/components/Routers/types'
+import { RoutersPaths } from '../../../../components/Routers/types'
 
 import styles from './styles.module.scss'
 
@@ -52,6 +53,7 @@ export const AuthSignUp: React.FC = () => {
 
       if (response.error) {
         console.log(response.error)
+        dispatch(showSnackBar(response.error.message))
       } else {
         history.push(RoutersPaths.main)
       }

@@ -32,3 +32,14 @@
   align-items: center;
   gap: 10px;
 }
+
+.yandexButton {
+  display: block;
+  width: 100%;
+
+  & button {
+    background-color: #fc0 !important;
+    color: #000;
+    text-decoration: none;
+  }
+}

@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit'
-import { api } from '@/app/api'
-import { StatusType } from '@/app/apiTypes'
+import { api } from '../../../app/api'
+import { StatusType } from '../../../app/apiTypes'
 import { list } from '../const'
 
 import type { TForum } from '../types'
-import type { RootState } from '@/app/redux/store'
+import type { RootState } from '../../../app/redux/store'
 
 export const getForums: any = createAsyncThunk('forum/getForums', () => {
   return api.get('forum/')

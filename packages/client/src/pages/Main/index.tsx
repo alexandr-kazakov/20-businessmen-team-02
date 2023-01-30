@@ -1,8 +1,28 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+
+import { OAUTH_YANDEX_REDIRECT, oAuthSignIn } from '../../pages/Auth/redux/authSlice'
+import { useAppDispatch } from '../../app/redux/hooks'
+import { useQuery } from '../../lib/url'
+
 import styles from './styles.module.scss'
 
 const MainPage: React.FC = () => {
+  const dispatch = useAppDispatch()
+  const query = useQuery()
+
+  // oAuthYandex
+  useEffect(() => {
+    const oauthCode = query.get('code')
+
+    if (oauthCode) {
+      dispatch(oAuthSignIn({
+        code: oauthCode,
+        redirect_uri: OAUTH_YANDEX_REDIRECT,
+      }))
+    }
+  }, [dispatch, query])
+
   return (
     <div className={styles.pagelanding}>
       <div className="container">

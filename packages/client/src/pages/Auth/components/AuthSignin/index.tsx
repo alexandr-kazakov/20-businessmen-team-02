@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { useAppDispatch } from '@/app/redux/hooks'
+import { useAppDispatch } from '../../../../app/redux/hooks'
 
-import { signin, setIsSigninView } from '@/pages/Auth/redux/authSlice'
-import { Input } from '@/components/UI/Input'
-import { Button, ButtonVariant } from '@/components/UI/Button'
+import { signin, setIsSigninView, getOAuthUrl } from '../../redux/authSlice'
+import { showSnackBar } from '../../../../components/Snackbar/redux/snackbarSlice'
+import { Input } from '../../../../components/UI/Input'
+import { Button, ButtonVariant } from '../../../../components/UI/Button'
 import type { IAuthSignIn } from '../../types'
-import { RoutersPaths } from '@/components/Routers/types'
+import { RoutersPaths } from '../../../../components/Routers/types'
 
 import styles from './styles.module.scss'
 
@@ -25,6 +26,14 @@ export const AuthSignIn: React.FC = () => {
     [values]
   )
 
+  const [oAuthYandexUrl, setOAuthYandexUrl] = useState('')
+
+  useEffect(() => {
+    if (!oAuthYandexUrl) {
+      getOAuthUrl().then(setOAuthYandexUrl)
+    }
+  }, [oAuthYandexUrl])
+
   const handlerSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
@@ -32,6 +41,7 @@ export const AuthSignIn: React.FC = () => {
 
     if (response.error) {
       console.log(response.error)
+      dispatch(showSnackBar(response.error.message))
     } else {
       history.push(RoutersPaths.main)
     }
@@ -61,6 +71,9 @@ export const AuthSignIn: React.FC = () => {
         <Button type="submit" disabled={disabled}>
           Войти
         </Button>
+        <a href={oAuthYandexUrl} className={styles.yandexButton}>
+          <Button type="button">Войти через YandexId</Button>
+        </a>
         <Button onClick={handlerToggle} variant={ButtonVariant.SECONDARY}>
           Нет аккаунта?
         </Button>

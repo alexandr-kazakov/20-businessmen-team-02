@@ -59,6 +59,8 @@ export const api = {
         if (DEV) {
           console.error('[API] <- error', method, url, error)
         }
+        const reason = error?.response?.data?.reason || error?.response?.data
+        reason && typeof reason === 'string' && (error.message = reason)
         throw error
       })
   },
