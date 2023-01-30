@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { RankCard } from './components/RankCard'
 import { Leaders } from './components/Leaders'
 import { leaderboardThunk } from './redux/leaderboardSlice'
-import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
+import { useAppDispatch, useAppSelector } from '../../app/redux/hooks'
 import type { UsersRate } from './types/user-rates'
 
 import styles from './styles.module.scss'

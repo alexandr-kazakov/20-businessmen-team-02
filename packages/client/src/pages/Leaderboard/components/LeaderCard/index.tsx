@@ -1,7 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 import type { UserRate } from '../../types/user-rates'
-import { getURL } from '@/app/api'
+import { getURL } from '../../../../app/api'
 
 import styles from './styles.module.scss'
 

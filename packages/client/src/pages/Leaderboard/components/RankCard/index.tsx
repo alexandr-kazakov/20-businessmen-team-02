@@ -1,6 +1,6 @@
 import React from 'react'
 import { Score } from '../Score'
-import { getURL } from '@/app/api'
+import { getURL } from '../../../../app/api'
 import type { UserRate } from '../../types/user-rates'
 
 import styles from './styles.module.scss'

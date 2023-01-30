@@ -1,7 +1,7 @@
-import { api } from '@/app/api'
+import { api } from '../../../app/api'
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit'
 import type { UsersRate, UserRate } from '../types/user-rates'
-import { RATING_FIELD_NAME, TEAM_NAME } from '@/domain/constants/leaderboard'
+import { RATING_FIELD_NAME, TEAM_NAME } from '../../../domain/constants/leaderboard'
 
 interface LeaderboardState {
   leaderboard: UsersRate
