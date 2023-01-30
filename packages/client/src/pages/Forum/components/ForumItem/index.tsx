@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useAppDispatch, useAppSelector } from '../../../../app/redux/hooks'
-import { setSelectedIdForum } from '../../redux/forumSlice'
+import { setIsCreateTopic, setSelectedIdForum } from '../../redux/forumSlice'
 
 import type { TForum } from '../../types'
 
@@ -13,9 +13,14 @@ type Props = {
 
 export const ForumItem: React.FC<Props> = ({ forum }) => {
   const dispatch = useAppDispatch()
-  const { selectedIdForum } = useAppSelector(state => state.forum)
+
+  const { isCreateTopic, selectedIdForum } = useAppSelector(state => state.forum)
 
   const handlerClick = () => {
+    if (isCreateTopic) {
+      dispatch(setIsCreateTopic(false))
+    }
+
     if (selectedIdForum !== forum.id) {
       dispatch(setSelectedIdForum(forum.id))
     }

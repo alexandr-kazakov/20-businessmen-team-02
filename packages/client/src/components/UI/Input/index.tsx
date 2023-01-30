@@ -9,6 +9,7 @@ type InputProps = {
 
 export const Input: React.FC<InputProps> = memo(({ isValid = true, ...inputProps }) => {
   const className = classnames(styles.input, {
+    [`${inputProps.className}`]: inputProps.className,
     [styles.error]: !isValid,
   })
 

@@ -1,5 +1,6 @@
 import commentModel from './comment'
+import reactionModel from './reaction'
 import topicModel from './topic'
 import userModel from './user'
 
-export { commentModel, topicModel, userModel }
+export { commentModel, reactionModel, topicModel, userModel }

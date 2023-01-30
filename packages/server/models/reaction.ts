@@ -1,24 +1,24 @@
 import { DataType, Model } from 'sequelize-typescript'
 import type { ModelAttributes } from 'sequelize'
-import type { IComment } from '../types/model'
+import type { IReaction } from '../types/model'
 
-const commentModel: ModelAttributes<Model, IComment> = {
+const reactionModel: ModelAttributes<Model, IReaction> = {
   id: {
     type: DataType.STRING,
     defaultValue: DataType.UUIDV4,
     allowNull: false,
     primaryKey: true,
   },
-  id_topic: {
+  id_comment: {
     type: DataType.STRING,
     allowNull: false,
-  },
-  text: {
-    type: DataType.STRING,
   },
   id_author: {
     type: DataType.STRING,
   },
+  value: {
+    type: DataType.STRING,
+  },
 }
 
-export default commentModel
+export default reactionModel

@@ -1,29 +1,32 @@
-export interface IUser {
-  theme: string
-  avatar: string | null
-  display_name: string | null
-  email: string
-  first_name: string
-  id: number
-  login: string
-  phone: string
-  second_name: string
-}
-
 export interface IComment {
-  id?: string
+  id: string
   id_topic: string
   id_author: string
   text: string
-  date: string
-  likes: number
+}
+
+export interface IReaction {
+  id: string
+  id_comment: string
+  id_author: string
+  value: string
 }
 
 export interface ITopic {
-  id?: string
+  id: string
+  id_author: string
   title: string
   description: string
-  id_author: string
-  date: string
-  views: number
+}
+
+export interface IUser {
+  id: number
+  email: string
+  login: string
+  first_name: string
+  second_name: string
+  display_name: string | null
+  avatar: string | null
+  phone: string
+  theme: string
 }

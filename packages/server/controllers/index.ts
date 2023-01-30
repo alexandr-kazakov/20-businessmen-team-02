@@ -1,5 +1,6 @@
 import commentController from './comment'
+import reactionController from './reaction'
 import topicController from './topic'
 import userController from './user'
 
-export { commentController, topicController, userController }
+export { commentController, reactionController, topicController, userController }

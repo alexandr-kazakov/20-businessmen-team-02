@@ -1,4 +1,22 @@
-.input {
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.title {
+  max-width: 250px;
+}
+
+.description {
+  min-height: 150px;
+  resize: none;
   border: none;
   padding: 10px;
   border-radius: 10px;

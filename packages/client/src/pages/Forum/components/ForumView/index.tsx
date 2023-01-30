@@ -1,26 +1,13 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 
-import { getSelectedForum } from '../../redux/forumSlice'
+import { useAppSelector } from '../../../../app/redux/hooks'
+import { ForumCreate } from '../ForumCreate'
+import { ForumWindow } from '../ForumWindow'
 
 import styles from './styles.module.scss'
 
 export const ForumView: React.FC = () => {
-  const selectedForum = useSelector(getSelectedForum)
+  const { isCreateTopic } = useAppSelector(state => state.forum)
 
-  return (
-    <div className={styles.view}>
-      {selectedForum ? (
-        <>
-          <div className={styles.row}>
-            <span className={styles.title}>{selectedForum.title}</span>
-            <time className={styles.date}>{selectedForum.date}</time>
-          </div>
-          <p className={styles.description}>{selectedForum.description}</p>
-        </>
-      ) : (
-        <p className={styles.description}>Выберите форум</p>
-      )}
-    </div>
-  )
+  return <div className={styles.view}>{isCreateTopic ? <ForumCreate /> : <ForumWindow />}</div>
 }

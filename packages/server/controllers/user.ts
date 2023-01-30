@@ -1,14 +1,20 @@
 import type { Request, Response } from 'express'
-// import { User } from '../db'
+import { User } from '../db'
 
 class UserController {
-  findOrCreate = async (req: Request, res: Response) => {
-    console.log(req.body)
-    res.json('dadad')
+  createUser = async (req: Request, res: Response) => {
+    try {
+      console.log(req.body)
 
-    // User.findAll(req.params.id, { ...req.body })
-    //   .then(user => res.status(200).json(user))
-    //   .catch(err => res.status(500).json({ error: ['db error: unable to find or create user', err.status] }))
+      const user = await User.findOrCreate({
+        where: { id: req.params.id },
+        defaults: { ...req.body },
+      })
+
+      res.status(200).json(user)
+    } catch (error) {
+      res.status(500).json({ error: 'db error' })
+    }
   }
 }
 

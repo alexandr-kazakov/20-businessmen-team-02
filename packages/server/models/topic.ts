@@ -21,13 +21,6 @@ const topicModel: ModelAttributes<Model, ITopic> = {
     type: DataType.STRING,
     allowNull: false,
   },
-  date: {
-    type: DataType.STRING,
-    allowNull: false,
-  },
-  views: {
-    type: DataType.INTEGER,
-  },
 }
 
 export default topicModel
