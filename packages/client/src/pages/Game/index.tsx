@@ -6,8 +6,7 @@ import { Button } from '@/components/UI/Button'
 import styles from './styles.module.scss'
 import { useAppSelector } from '@/app/redux/hooks'
 import { api } from '@/app/api'
-import { TEAM_NAME } from '@/domain/constants/leaderboard'
-import { RATING_FIELD_NAME } from '@/domain/constants/leaderboard'
+import { RATING_FIELD_NAME, TEAM_NAME } from '@/domain/constants/leaderboard'
 
 const LOCAL_STORAGE_LEVEL_LABEL = 'puzzleLevel'
 
