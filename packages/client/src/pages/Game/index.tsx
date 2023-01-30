@@ -4,6 +4,10 @@ import CanvasComponent from '@/components/Canvas'
 import { Button } from '@/components/UI/Button'
 
 import styles from './styles.module.scss'
+import { useAppSelector } from '@/app/redux/hooks'
+import { api } from '@/app/api'
+import { TEAM_NAME } from '@/domain/constants/leaderboard'
+import { RATING_FIELD_NAME } from '@/domain/constants/leaderboard'
 
 const LOCAL_STORAGE_LEVEL_LABEL = 'puzzleLevel'
 
@@ -23,6 +27,23 @@ const GamePage: React.FC = () => {
     setInitStart(0)
     setScores(-1)
   }, [])
+
+  const user = useAppSelector(state => state.auth.user)
+
+  const setScoresAndPostUserScores = (scores: number) => {
+    setScores(scores)
+
+    if (user && scores > 0) {
+      const { id, avatar, display_name } = user
+      const payload = {
+        data: { id, avatar, display_name, scores },
+        ratingFieldName: RATING_FIELD_NAME,
+        teamName: TEAM_NAME,
+      }
+
+      api.post('/leaderboard', payload)
+    }
+  }
 
   const selectLevelHandle = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target
@@ -97,7 +118,7 @@ const GamePage: React.FC = () => {
   return (
     <div className={styles.game} ref={elementRef}>
       <div className={styles.container}>
-        {initStart ? <CanvasComponent setScores={setScores} level={level} /> : startBlock}
+        {initStart ? <CanvasComponent setScores={setScoresAndPostUserScores} level={level} /> : startBlock}
       </div>
       {header && <h1 className={styles.congrat}>{header}</h1>}
       {header && playAgainButton}

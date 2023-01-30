@@ -1,8 +1,9 @@
 import { api } from '@/app/api'
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit'
 import type { UsersRate, UserRate } from '../types/user-rates'
+import { RATING_FIELD_NAME } from '@/domain/constants/leaderboard'
+import { TEAM_NAME } from '@/domain/constants/leaderboard'
 
-const TEAM_NAME = 'team-02'
 interface LeaderboardState {
   leaderboard: UsersRate
   isLoading: boolean
@@ -22,7 +23,7 @@ const initialState: LeaderboardState = {
 export const leaderboardThunk = createAsyncThunk('/leaderboard', async (data?: LeaderboardRequiestPayload) => {
   if (data === undefined) {
     data = {
-      ratingFieldName: 'scores',
+      ratingFieldName: RATING_FIELD_NAME,
       cursor: 0,
       limit: 10,
     }
