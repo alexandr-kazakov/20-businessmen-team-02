@@ -20,7 +20,6 @@ class ReactionController {
           value: req.body.value,
         },
       })
-
       if (foundReaction) {
         await foundReaction.destroy()
         res.status(200).json('ok')

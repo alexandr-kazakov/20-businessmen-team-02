@@ -3,7 +3,6 @@ export interface IComment {
   id_topic: string
   id_author: string
   text: string
-  likes: number
 }
 
 export interface IReaction {

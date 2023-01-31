@@ -19,9 +19,6 @@ const commentModel: ModelAttributes<Model, IComment> = {
   text: {
     type: DataType.STRING,
   },
-  likes: {
-    type: DataType.INTEGER,
-  },
 }
 
 export default commentModel
