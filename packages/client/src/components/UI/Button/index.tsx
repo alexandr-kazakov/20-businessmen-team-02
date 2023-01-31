@@ -14,6 +14,7 @@ type ButtonProps = {
 
 export const Button: React.FC<ButtonProps> = memo(({ variant = ButtonVariant.PRIMARY, children, ...props }) => {
   const className = classnames(styles.button, {
+    [`${props.className}`]: props.className,
     [styles.primary]: variant === ButtonVariant.PRIMARY,
     [styles.secondary]: variant === ButtonVariant.SECONDARY,
   })

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useAppDispatch, useAppSelector } from '../../../../app/redux/hooks'
-import { setIsCreateTopic, setSelectedIdForum } from '../../redux/forumSlice'
+import { getAllComments, setIsCreateTopic, setSelectedIdForum } from '../../redux/forumSlice'
 
 import type { TForum } from '../../types'
 
@@ -16,12 +16,15 @@ export const ForumItem: React.FC<Props> = ({ forum }) => {
 
   const { isCreateTopic, selectedIdForum } = useAppSelector(state => state.forum)
 
-  const handlerClick = () => {
+  const date = new Date(forum.createdAt).toLocaleDateString()
+
+  const handlerClick = async () => {
     if (isCreateTopic) {
       dispatch(setIsCreateTopic(false))
     }
 
     if (selectedIdForum !== forum.id) {
+      await dispatch(getAllComments(forum.id))
       dispatch(setSelectedIdForum(forum.id))
     }
   }
@@ -30,7 +33,7 @@ export const ForumItem: React.FC<Props> = ({ forum }) => {
     <li className={styles.item} onClick={handlerClick}>
       <div className={styles.row}>
         <span className={styles.title}>{forum.title}</span>
-        <time className={styles.date}>{forum.date}</time>
+        <time className={styles.date}>{date}</time>
       </div>
       <p className={styles.description}>{forum.description}</p>
     </li>

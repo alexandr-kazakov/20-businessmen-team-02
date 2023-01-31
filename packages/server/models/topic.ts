@@ -9,15 +9,15 @@ const topicModel: ModelAttributes<Model, ITopic> = {
     allowNull: false,
     primaryKey: true,
   },
+  id_author: {
+    type: DataType.STRING,
+    allowNull: false,
+  },
   title: {
     type: DataType.STRING,
     allowNull: false,
   },
   description: {
-    type: DataType.STRING,
-    allowNull: false,
-  },
-  id_author: {
     type: DataType.STRING,
     allowNull: false,
   },

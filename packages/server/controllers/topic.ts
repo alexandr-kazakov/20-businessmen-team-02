@@ -3,13 +3,21 @@ import { Topic } from '../db'
 
 class TopicController {
   getAllTopics = async (_: Request, res: Response) => {
-    const topics = await Topic.findAll()
-    res.json(topics)
+    try {
+      const topics = await Topic.findAll()
+      res.json(topics)
+    } catch (error) {
+      res.status(500).json({ error })
+    }
   }
 
   getTopic = async (req: Request, res: Response) => {
-    console.log(req.body)
-    res.json('topic')
+    try {
+      const topic = await Topic.findOne({ where: { id: req.params.id } })
+      res.json(topic)
+    } catch (error) {
+      res.status(500).json({ error })
+    }
   }
 
   createTopic = async (req: Request, res: Response) => {
@@ -17,7 +25,16 @@ class TopicController {
       const topic = await Topic.create(req.body)
       res.status(200).json(topic)
     } catch (error) {
-      res.status(500).json({ error: 'db error' })
+      res.status(500).json({ error })
+    }
+  }
+
+  deleteTopic = async (req: Request, res: Response) => {
+    try {
+      await Topic.destroy({ where: { id: req.params.id } })
+      res.status(200).json('ok')
+    } catch (error) {
+      res.status(500).json({ error })
     }
   }
 }

@@ -9,11 +9,11 @@ const userModel: ModelAttributes<Model, IUser> = {
     primaryKey: true,
     unique: true,
   },
-  login: {
+  email: {
     type: DataType.STRING,
     allowNull: false,
   },
-  theme: {
+  login: {
     type: DataType.STRING,
     allowNull: false,
   },
@@ -25,19 +25,15 @@ const userModel: ModelAttributes<Model, IUser> = {
     type: DataType.STRING,
     allowNull: true,
   },
-  email: {
-    type: DataType.STRING,
-    allowNull: false,
-  },
   first_name: {
     type: DataType.STRING,
     allowNull: false,
   },
-  phone: {
+  second_name: {
     type: DataType.STRING,
     allowNull: false,
   },
-  second_name: {
+  phone: {
     type: DataType.STRING,
     allowNull: false,
   },

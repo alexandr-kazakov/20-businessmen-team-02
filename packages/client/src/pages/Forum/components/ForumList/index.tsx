@@ -10,10 +10,14 @@ import styles from './styles.module.scss'
 export const ForumList: React.FC = () => {
   const dispatch = useAppDispatch()
 
-  const { listForums } = useAppSelector(state => state.forum)
+  const { isCreateTopic, listForums } = useAppSelector(state => state.forum)
 
   const handlerClick = () => {
-    dispatch(setIsCreateTopic(true))
+    if (isCreateTopic) {
+      dispatch(setIsCreateTopic(false))
+    } else {
+      dispatch(setIsCreateTopic(true))
+    }
   }
 
   const listNodes = useMemo(() => listForums.map(forum => <ForumItem key={forum.id} forum={forum} />), [listForums])

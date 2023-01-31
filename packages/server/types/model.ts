@@ -3,6 +3,7 @@ export interface IComment {
   id_topic: string
   id_author: string
   text: string
+  likes: number
 }
 
 export interface IReaction {
@@ -23,10 +24,9 @@ export interface IUser {
   id: number
   email: string
   login: string
+  avatar: string | null
+  display_name: string | null
   first_name: string
   second_name: string
-  display_name: string | null
-  avatar: string | null
   phone: string
-  theme: string
 }

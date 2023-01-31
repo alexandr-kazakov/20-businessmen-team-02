@@ -41,10 +41,9 @@
 }
 
 .description {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
   margin: 0;
   font-style: normal;
   font-weight: 500;

@@ -9,12 +9,40 @@ export const getAllTopics: any = createAsyncThunk('forum/getAllTopics', () => {
   return api.get('topic/', undefined, true)
 })
 
-export const getTopic: any = createAsyncThunk('forum/getTopic', (topicId: any) => {
-  return api.get('topic/', topicId, true)
+export const getTopic: any = createAsyncThunk('forum/getTopic', (topicId: string) => {
+  return api.get(`topic/${topicId}`, undefined, true)
 })
 
 export const postTopic: any = createAsyncThunk('forum/postTopic', (data: any) => {
   return api.post('topic/', data, true)
+})
+
+export const deleteTopic: any = createAsyncThunk('forum/deleteTopic', (topicId: string) => {
+  return api.delete(`topic/${topicId}`, true)
+})
+
+export const getAllComments: any = createAsyncThunk('forum/getAllComments', (topicId: string) => {
+  return api.get(`comment/?id_topic=${topicId}`, undefined, true)
+})
+
+export const getComment: any = createAsyncThunk('forum/getComment', (commentId: string) => {
+  return api.get(`comment/${commentId}`, undefined, true)
+})
+
+export const createComment: any = createAsyncThunk('forum/createComment', (data: any) => {
+  return api.post('comment/', data, true)
+})
+
+export const deleteComment: any = createAsyncThunk('forum/deleteComment', (commentId: string) => {
+  return api.delete(`comment/${commentId}`, true)
+})
+
+export const getAllReactions: any = createAsyncThunk('forum/getAllReactions', () => {
+  return api.get('reaction/', true)
+})
+
+export const createReaction: any = createAsyncThunk('forum/createReaction', (data: any) => {
+  return api.post('reaction/', data, true)
 })
 
 interface IInitialState {
@@ -22,6 +50,7 @@ interface IInitialState {
   message: string
   isCreateTopic: boolean
   listForums: TForum[]
+  commentsTopic: any[]
   selectedIdForum: number | null
 }
 
@@ -30,6 +59,7 @@ const initialState: IInitialState = {
   message: '',
   isCreateTopic: false,
   listForums: [],
+  commentsTopic: [],
   selectedIdForum: null,
 }
 
@@ -58,9 +88,7 @@ export const forumSlice = createSlice({
     builder.addCase(getTopic.pending, state => {
       state.status = StatusType.loading
     })
-    builder.addCase(getTopic.fulfilled, (state, { payload }) => {
-      console.log('getTopic', payload)
-      // state.listForums = payload
+    builder.addCase(getTopic.fulfilled, state => {
       state.status = StatusType.success
     })
     builder.addCase(getTopic.rejected, state => {
@@ -73,6 +101,52 @@ export const forumSlice = createSlice({
       state.status = StatusType.success
     })
     builder.addCase(postTopic.rejected, state => {
+      state.status = StatusType.error
+    })
+    builder.addCase(deleteTopic.pending, state => {
+      state.status = StatusType.loading
+    })
+    builder.addCase(deleteTopic.fulfilled, state => {
+      state.status = StatusType.success
+    })
+    builder.addCase(deleteTopic.rejected, state => {
+      state.status = StatusType.error
+    })
+    builder.addCase(getAllComments.pending, state => {
+      state.status = StatusType.loading
+    })
+    builder.addCase(getAllComments.fulfilled, (state, { payload }) => {
+      state.commentsTopic = payload.data
+      state.status = StatusType.success
+    })
+    builder.addCase(getAllComments.rejected, state => {
+      state.status = StatusType.error
+    })
+    builder.addCase(getComment.pending, state => {
+      state.status = StatusType.loading
+    })
+    builder.addCase(getComment.fulfilled, state => {
+      state.status = StatusType.success
+    })
+    builder.addCase(getComment.rejected, state => {
+      state.status = StatusType.error
+    })
+    builder.addCase(createComment.pending, state => {
+      state.status = StatusType.loading
+    })
+    builder.addCase(createComment.fulfilled, state => {
+      state.status = StatusType.success
+    })
+    builder.addCase(createComment.rejected, state => {
+      state.status = StatusType.error
+    })
+    builder.addCase(deleteComment.pending, state => {
+      state.status = StatusType.loading
+    })
+    builder.addCase(deleteComment.fulfilled, state => {
+      state.status = StatusType.success
+    })
+    builder.addCase(deleteComment.rejected, state => {
       state.status = StatusType.error
     })
   },
