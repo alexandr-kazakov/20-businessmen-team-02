@@ -1,5 +1,7 @@
 .profile_user_data {
   color: #fff;
+  display: block;
+  margin-bottom: 30px!important;
 
   & .item {
     display: flex;
@@ -14,5 +16,22 @@
 
   & .colRight {
     text-align: right;
+  }
+}
+
+.hidden {
+  display: none!important;
+}
+
+.userDataInput{
+  height: 25px;
+  &:disabled {
+    background-color: transparent;
+    box-shadow: none;
+    border: none;
+    background-image:none;
+    color: #fff;
+    outline: none;
+    -webkit-appearance: none;
   }
 }

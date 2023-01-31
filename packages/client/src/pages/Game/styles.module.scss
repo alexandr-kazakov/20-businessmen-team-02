@@ -13,7 +13,8 @@
 
 .congrat {
   position: absolute;
-  top: 10px;
+  top: 0;
+  margin-top: 10px;
   width: 100vw;
   text-align: center;
   color: red;
@@ -36,7 +37,7 @@
 }
 
 .select {
-  margin-bottom: 20px;
+  margin: 20px 0;
 }
 
 .selectLabel {
@@ -50,4 +51,15 @@
 
 .hide {
   display: none;
+}
+
+.dropZone {
+  height: 100px;
+  color: white;
+  text-align: center;
+  border: 2px dashed white;
+}
+
+.dropZoneLabel {
+  margin: 15px;
 }

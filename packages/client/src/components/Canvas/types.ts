@@ -23,6 +23,7 @@ type OwnProps = {
   setScores: (value: number) => void
   level: string
   initStart: number
+  src: string
 }
 
 export type Props = OwnProps

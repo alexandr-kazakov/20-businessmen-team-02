@@ -20,7 +20,7 @@ export const Button: React.FC<ButtonProps> = memo(({ variant = ButtonVariant.PRI
   })
 
   return (
-    <button {...props} className={className}>
+    <button {...props} className={classnames(className, props.className)}>
       {children}
     </button>
   )
