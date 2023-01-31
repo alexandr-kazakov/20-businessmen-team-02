@@ -2,7 +2,8 @@ import React, { useRef, useEffect, useState, useCallback } from 'react'
 import { getRandomInt } from './helper'
 import type { Position, ImageObj, Props, AmountPartByLevel } from './types'
 
-const IMG_BORDER = 20,
+const TIMEBAR_HIGHT = 40,
+  IMG_BORDER = 20,
   IMG_DIVIDER = 2,
   CANVAS_COLOR = 'gray',
   DELAY = 200,
@@ -12,7 +13,8 @@ const IMG_BORDER = 20,
     '0': 3,
     '1': 4,
     '2': 5,
-  }
+  },
+  TIME_LIMIT = 20000
 
 const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initStart, src }) => {
   const ref = useRef(null)
@@ -20,13 +22,15 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
   const [sourceSizes, setSourceSizes] = useState({ sourceFullWidth: CHEBURASHKA, sourceFullHeight: CHEBURASHKA })
 
   const imgAmountX = AMOUNT_PART_BY_LEVEL[level],
-    imgAmountY = AMOUNT_PART_BY_LEVEL[level]
+    imgAmountY = AMOUNT_PART_BY_LEVEL[level],
+    levelNum = Number(level),
+    timeLimit = TIME_LIMIT * (1 + levelNum * levelNum)
 
   const resize = useCallback(
     (sourceSizes: { sourceFullWidth: number; sourceFullHeight: number }) => {
       const { sourceFullWidth, sourceFullHeight } = sourceSizes
       const winWidth = window.innerWidth - LEFT_MENU_WIDTH,
-        winHeight = window.innerHeight
+        winHeight = window.innerHeight - TIMEBAR_HIGHT
 
       const k = Math.min(winWidth / sourceFullWidth, winHeight / sourceFullHeight),
         maxWidth = sourceFullWidth * k,
@@ -35,7 +39,7 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
       const imgPartWidth = Math.floor((maxWidth - 2 * IMG_BORDER - (imgAmountX - 1) * IMG_DIVIDER) / imgAmountX),
         imgPartHeight = Math.floor((maxHeight - 2 * IMG_BORDER - (imgAmountY - 1) * IMG_DIVIDER) / imgAmountY),
         canvasWidth = imgPartWidth * imgAmountX + 2 * IMG_BORDER + (imgAmountX - 1) * IMG_DIVIDER,
-        canvasHeight = imgPartHeight * imgAmountY + 2 * IMG_BORDER + (imgAmountY - 1) * IMG_DIVIDER,
+        canvasHeight = TIMEBAR_HIGHT + imgPartHeight * imgAmountY + 2 * IMG_BORDER + (imgAmountY - 1) * IMG_DIVIDER,
         sourceWidth = Math.floor(sourceFullWidth / imgAmountX),
         sourceHeight = Math.floor(sourceFullHeight / imgAmountY)
 
@@ -51,7 +55,8 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
     setSizes(resize(sourceSizes))
   }, [resize, sourceSizes])
 
-  const getCoord = (x: number, size: number) => x * (size + IMG_DIVIDER) + IMG_BORDER
+  const getCoordX = (x: number, size: number) => x * (size + IMG_DIVIDER) + IMG_BORDER
+  const getCoordY = (x: number, size: number) => x * (size + IMG_DIVIDER) + IMG_BORDER + TIMEBAR_HIGHT
 
   const [imageArray, setImageArray] = useState<ImageObj[]>([])
   const [finishedPlay, setFinished] = useState(false)
@@ -76,6 +81,25 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
       if (ctx) {
         ctx.fillStyle = CANVAS_COLOR
         ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+        const drawTimebar = () => {
+          const color = 'green',
+            rate = (initStart + timeLimit - performance.now()) / timeLimit
+
+          if (rate > 0) {
+            const width = Math.round(rate * (canvasWidth - IMG_BORDER * 2))
+            ctx.strokeStyle = color
+            ctx.fillStyle = color
+            ctx.beginPath()
+            ctx.roundRect(IMG_BORDER, IMG_BORDER, width, IMG_BORDER, IMG_BORDER / 2)
+            ctx.stroke()
+            ctx.fill()
+            ctx.strokeStyle = CANVAS_COLOR
+            ctx.fillStyle = CANVAS_COLOR
+          }
+        }
+
+        drawTimebar()
 
         let finished = finishedPlay
         const startPos: Position[] = []
@@ -135,8 +159,8 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
                   sourceY,
                   sourceWidth,
                   sourceHeight,
-                  getCoord(posX, imgPartWidth),
-                  getCoord(posY, imgPartHeight),
+                  getCoordX(posX, imgPartWidth),
+                  getCoordY(posY, imgPartHeight),
                   imgPartWidth,
                   imgPartHeight
                 )
@@ -159,8 +183,8 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
         canvas.onmousedown = e => {
           if (!finished) {
             for (const imgObj of imgArr) {
-              const posX = getCoord(imgObj.posX, imgPartWidth),
-                posY = getCoord(imgObj.posY, imgPartHeight)
+              const posX = getCoordX(imgObj.posX, imgPartWidth),
+                posY = getCoordY(imgObj.posY, imgPartHeight)
               if (
                 e.offsetX > posX &&
                 e.offsetX < posX + imgPartWidth &&
@@ -188,8 +212,8 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
           if (draggable) {
             startAnimate = performance.now()
             for (const imgObj of imgArr) {
-              const posX = getCoord(imgObj.posX, imgPartWidth),
-                posY = getCoord(imgObj.posY, imgPartHeight)
+              const posX = getCoordX(imgObj.posX, imgPartWidth),
+                posY = getCoordY(imgObj.posY, imgPartHeight)
               if (
                 e.offsetX > posX &&
                 e.offsetX < posX + imgPartWidth &&
@@ -234,13 +258,16 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
         const refreshCanvas = () => {
           ctx.fillRect(0, 0, canvas.width, canvas.height)
           let result = true
+
+          drawTimebar()
+
           for (const imgObj of imgArr) {
             if (imgObj === draggable || imgObj === first || imgObj === second) {
               continue
             }
             const { posX, posY, origX, origY, sourceX, sourceY, sourceWidth, sourceHeight } = imgObj
-            const x = getCoord(posX, imgPartWidth),
-              y = getCoord(posY, imgPartHeight)
+            const x = getCoordX(posX, imgPartWidth),
+              y = getCoordY(posY, imgPartHeight)
             ctx.drawImage(imageElement, sourceX, sourceY, sourceWidth, sourceHeight, x, y, imgPartWidth, imgPartHeight)
             if (result && (posX !== origX || posY !== origY)) {
               result = false
@@ -263,8 +290,7 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
             }
           })
           if (result && !finished) {
-            const levelNum = Number(level)
-            let scores = Math.round((20000 * (1 + levelNum * levelNum) - (Date.now() - initStart)) / 100)
+            let scores = Math.round((initStart + timeLimit - performance.now()) / 100)
             scores < 0 && (scores = 0)
             finished = true
             setFinished(true)
@@ -288,18 +314,18 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
           } else {
             const t = now - startAnimate
             if (first && first.fromX && first.fromY) {
-              first.currX = calculateCoord(first.fromX, getCoord(first.posX, imgPartWidth), t)
-              first.currY = calculateCoord(first.fromY, getCoord(first.posY, imgPartHeight), t)
+              first.currX = calculateCoord(first.fromX, getCoordX(first.posX, imgPartWidth), t)
+              first.currY = calculateCoord(first.fromY, getCoordY(first.posY, imgPartHeight), t)
             }
             if (second && typeof second.fromX === 'number' && typeof second.fromY === 'number') {
               second.currX = calculateCoord(
-                getCoord(second.fromX, imgPartWidth),
-                getCoord(second.posX, imgPartWidth),
+                getCoordX(second.fromX, imgPartWidth),
+                getCoordX(second.posX, imgPartWidth),
                 t
               )
               second.currY = calculateCoord(
-                getCoord(second.fromY, imgPartHeight),
-                getCoord(second.posY, imgPartHeight),
+                getCoordY(second.fromY, imgPartHeight),
+                getCoordY(second.posY, imgPartHeight),
                 t
               )
             }
@@ -309,6 +335,18 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
             requestAnimationFrame(animate)
           }
         }
+
+        const animateTimeBar = () => {
+          ctx.beginPath()
+          ctx.roundRect(IMG_BORDER, IMG_BORDER, canvasWidth - IMG_BORDER * 2, IMG_BORDER, IMG_BORDER / 2)
+          ctx.stroke()
+          ctx.fill()
+          drawTimebar()
+          if (!finished && initStart + timeLimit - performance.now() > 0) {
+            requestAnimationFrame(animateTimeBar)
+          }
+        }
+        animateTimeBar()
       }
     }
 
