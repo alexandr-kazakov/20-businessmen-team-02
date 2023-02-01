@@ -1,10 +1,10 @@
 export interface User {
   id: number
-  alias: string
   first_name: string
-  last_name: string
-  email: string
+  second_name: string
+  display_name: string
+  login: string
   avatar: string | null
-  scores: number
-  direction: 'desc' | 'acs'
+  email: string
+  phone: string
 }
