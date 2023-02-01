@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { RankCard } from './components/RankCard'
 import { Leaders } from './components/Leaders'
-import { leaderboardThunk } from './redux/leaderboardSlice'
+import { getUsersRateThunk } from './redux/leaderboardSlice'
 import { useAppDispatch, useAppSelector } from '../../app/redux/hooks'
 import type { UsersRate } from './types/user-rates'
 
@@ -13,10 +13,10 @@ const Leaderboard: React.FC = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(leaderboardThunk())
+    dispatch(getUsersRateThunk())
   }, [dispatch])
 
-  const usersRate: UsersRate = useAppSelector(state => state.leaderboard.leaderboard)
+  const usersRate: UsersRate = useAppSelector(state => state.leaderboard.usersRate)
 
   const getRankCardTemplate = (usersRate: UsersRate) => (
     <div className={styles.ranks}>

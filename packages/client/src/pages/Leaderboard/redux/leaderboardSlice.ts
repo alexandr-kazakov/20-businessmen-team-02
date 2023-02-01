@@ -4,7 +4,7 @@ import type { UsersRate, UserRate } from '../types/user-rates'
 import { RATING_FIELD_NAME, TEAM_NAME } from '../../../domain/constants/leaderboard'
 
 interface LeaderboardState {
-  leaderboard: UsersRate
+  usersRate: UsersRate
   isLoading: boolean
 }
 
@@ -15,11 +15,11 @@ interface LeaderboardRequiestPayload {
 }
 
 const initialState: LeaderboardState = {
-  leaderboard: [],
+  usersRate: [],
   isLoading: false,
 }
 
-export const leaderboardThunk = createAsyncThunk('/leaderboard', async (data?: LeaderboardRequiestPayload) => {
+export const getUsersRateThunk = createAsyncThunk('/leaderboard', async (data?: LeaderboardRequiestPayload) => {
   if (data === undefined) {
     data = {
       ratingFieldName: RATING_FIELD_NAME,
@@ -38,16 +38,16 @@ const leaderboardSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => {
-    builder.addCase(leaderboardThunk.pending, state => {
+    builder.addCase(getUsersRateThunk.pending, state => {
       state.isLoading = true
     })
 
-    builder.addCase(leaderboardThunk.fulfilled, (state, { payload }: PayloadAction<{ data: UserRate }[]>) => {
-      state.leaderboard = payload.map(item => item.data)
+    builder.addCase(getUsersRateThunk.fulfilled, (state, { payload }: PayloadAction<{ data: UserRate }[]>) => {
+      state.usersRate = payload.map(item => item.data)
       state.isLoading = false
     })
 
-    builder.addCase(leaderboardThunk.rejected, state => {
+    builder.addCase(getUsersRateThunk.rejected, state => {
       state.isLoading = false
     })
   },
