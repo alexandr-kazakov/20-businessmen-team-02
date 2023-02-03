@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { api } from '../../../app/api'
 import { StatusType } from '../../../app/apiTypes'
 
-import type { IAuthSignIn, IAuthSignup, OauthYandexId } from '../types'
+import type { IAuthSignIn, IAuthSignup, IUser, OauthYandexId } from '../types'
 
 // TODO: после деплоя добавить продакшн урл..
 export const OAUTH_YANDEX_REDIRECT = 'http://localhost:3000'
@@ -45,17 +45,6 @@ interface IInitialState {
   isLoadingProtectedRouter: boolean
   user: IUser | null
   isSigninView: boolean
-}
-
-interface IUser {
-  avatar: any | null
-  display_name: string | null
-  email: string
-  first_name: string
-  id: number
-  login: string
-  phone: string
-  second_name: string
 }
 
 const initialState: IInitialState = {

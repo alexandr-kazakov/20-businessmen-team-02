@@ -67,7 +67,7 @@ export const AuthSignIn: React.FC = () => {
         <Input onChange={handlerChange} type="text" name="login" value={values.login} placeholder="Логин" />
         <Input onChange={handlerChange} type="password" name="password" value={values.password} placeholder="Пароль" />
       </div>
-      <div className={styles.buttons}>
+      <div className="buttons">
         <Button type="submit" disabled={disabled}>
           Войти
         </Button>

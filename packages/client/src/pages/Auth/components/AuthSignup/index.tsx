@@ -121,7 +121,7 @@ export const AuthSignUp: React.FC = () => {
           isValid={isValidPasswords}
         />
       </div>
-      <div className={styles.buttons}>
+      <div className="buttons">
         <Button type="submit" disabled={disabled}>
           Зарегистрироваться
         </Button>

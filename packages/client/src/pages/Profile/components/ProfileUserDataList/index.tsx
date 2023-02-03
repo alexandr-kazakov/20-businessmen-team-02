@@ -1,21 +1,30 @@
 import React, { useMemo } from 'react'
 
 import { useAppSelector } from '../../../../app/redux/hooks'
+import type { IUserKey } from '../../../../pages/Auth/types'
+import { profileForm } from '../../const'
 
 import styles from './styles.module.scss'
 
 export const ProfileUserDataList: React.FC = () => {
   const { profileView } = useAppSelector(state => state.profile)
 
-  const userObj: any = useAppSelector(state => state.auth.user)
+  const userObj = useAppSelector(state => state.auth.user)
 
   const listNodes = useMemo(
     () =>
-      Object.entries(userObj).map(([key, value]: any[]) => (
+      userObj &&
+      Object.entries(profileForm).map(([key, value]) => (
         <li key={key} className={styles.item}>
-          <div className={styles.colLeft}>{key}</div>
+          <div className={styles.colLeft}>{value}</div>
           <div className={styles.colRight}>
-            <input className={styles.userDataInput} type="text" defaultValue={value} disabled={profileView} />
+            <input
+              type="text"
+              className={styles.userDataInput}
+              name={key}
+              defaultValue={userObj[key as IUserKey] || undefined}
+              disabled={profileView}
+            />
           </div>
         </li>
       )),
@@ -24,7 +33,7 @@ export const ProfileUserDataList: React.FC = () => {
 
   return (
     <ul className={`clear-list ${styles.profile_user_data}`}>
-      {listNodes.length ? listNodes : <p className={styles.empty}>Список пуст</p>}
+      {listNodes && listNodes.length ? listNodes : <p className={styles.empty}>Список пуст</p>}
     </ul>
   )
 }
