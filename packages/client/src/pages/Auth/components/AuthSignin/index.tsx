@@ -40,7 +40,6 @@ export const AuthSignIn: React.FC = () => {
     const response = await dispatch(signin(values))
 
     if (response.error) {
-      console.log(response.error)
       dispatch(showSnackBar(response.error.message))
     } else {
       history.push(RoutersPaths.main)

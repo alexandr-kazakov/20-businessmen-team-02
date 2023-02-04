@@ -28,7 +28,6 @@ const ProfilePage: React.FC = () => {
     const response = await dispatch(changeUserProfile(profileData))
 
     if (response.error) {
-      console.log('response.error', response.error)
       dispatch(showSnackBar(response.error.message))
     } else {
       dispatch(setProfileView())

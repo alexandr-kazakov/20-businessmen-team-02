@@ -52,7 +52,6 @@ export const AuthSignUp: React.FC = () => {
       const response = await dispatch(signup({ email, login, first_name, second_name, phone, password }))
 
       if (response.error) {
-        console.log(response.error)
         dispatch(showSnackBar(response.error.message))
       } else {
         history.push(RoutersPaths.main)
