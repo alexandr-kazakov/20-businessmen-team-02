@@ -4,16 +4,16 @@ import { useAppSelector, useAppDispatch } from '../../app/redux/hooks'
 import { ProfileUserDataList } from './components/ProfileUserDataList'
 import { EditButton } from './components/EditButton'
 import { SubmitButton } from './components/SubmitButton'
-import { setprofileView, changeUserProfile } from './redux/profileSlice'
 import { ButtonVariant } from '../../components/UI/Button'
 import { showSnackBar } from '../../components/Snackbar/redux/snackbarSlice'
 import { profileForm } from './const'
+import { changeUserProfile, setProfileView } from '../Auth/redux/authSlice'
 
 import styles from './styles.module.scss'
 
 const ProfilePage: React.FC = () => {
   const dispatch = useAppDispatch()
-  const { profileView } = useAppSelector(state => state.profile)
+  const { profileView } = useAppSelector(state => state.auth)
 
   const handlerSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault()
@@ -31,7 +31,7 @@ const ProfilePage: React.FC = () => {
       console.log('response.error', response.error)
       dispatch(showSnackBar(response.error.message))
     } else {
-      dispatch(setprofileView())
+      dispatch(setProfileView())
     }
   }
 

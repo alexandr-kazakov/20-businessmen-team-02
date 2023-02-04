@@ -1,7 +1,7 @@
 import { Button, ButtonVariant } from '../../../../components/UI/Button'
 
-import { setprofileView } from '../../redux/profileSlice'
 import { useAppDispatch } from '../../../../app/redux/hooks'
+import { getProfile, setProfileView } from '../../../../pages/Auth/redux/authSlice'
 
 type Props = {
   children: string
@@ -13,7 +13,8 @@ export const EditButton: React.FC<Props> = ({ children, variant }) => {
 
   const handlerToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
-    dispatch(setprofileView())
+    dispatch(getProfile())
+    dispatch(setProfileView())
   }
 
   return (
