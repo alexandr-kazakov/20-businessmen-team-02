@@ -60,7 +60,7 @@ export const ForumCreate: React.FC = () => {
       }
     } else {
       const topic = {
-        id_author: user?.login,
+        id_author: user?.id,
         title: values.title,
         description: values.description,
       }

@@ -3,7 +3,7 @@ import { topicController } from '../controllers'
 
 const router: Router = Router()
 
-router.get('/', topicController.getAllTopics)
+router.get('/', topicController.getTopics)
 router.get('/:id', topicController.getTopic)
 router.post('/', topicController.createTopic)
 

@@ -3,7 +3,7 @@ import { commentController } from '../controllers'
 
 const router: Router = Router()
 
-router.get('/', commentController.getAllComments)
+router.get('/', commentController.getComments)
 router.get('/:id', commentController.getComment)
 router.post('/', commentController.createComment)
 

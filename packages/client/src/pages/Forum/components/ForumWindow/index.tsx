@@ -2,8 +2,15 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { useAppDispatch, useAppSelector } from '../../../../app/redux/hooks'
-import { getAllComments, createComment, getSelectedForum } from '../../redux/forumSlice'
-import { ForumComment } from '../ForumComment'
+import {
+  getCommentsTopic,
+  getAnswersComment,
+  createComment,
+  getSelectedForum,
+  getSelectedComment,
+} from '../../redux/forumSlice'
+import { ForumComments } from '../ForumComments'
+import { ForumEmpty } from '../ForumEmpty'
 import { Input } from '../../../../components/UI/Input'
 import { Button } from '../../../../components/UI/Button'
 
@@ -13,8 +20,9 @@ export const ForumWindow: React.FC = () => {
   const dispatch = useAppDispatch()
 
   const { user } = useAppSelector(state => state.auth)
-  const { commentsTopic } = useAppSelector(state => state.forum)
+
   const selectedForum = useSelector(getSelectedForum)
+  const selectedComment = useSelector(getSelectedComment)
 
   let date = null
 
@@ -30,16 +38,32 @@ export const ForumWindow: React.FC = () => {
 
   const handlerClick = async () => {
     if (value) {
-      const comment = {
-        id_topic: selectedForum?.id,
-        id_author: user?.id,
-        text: value,
+      if (selectedComment) {
+        const comment = {
+          id_topic: selectedForum?.id,
+          id_comment: selectedComment.id,
+          id_author: user?.id,
+          login_author: user?.login,
+          text: value,
+        }
+
+        await dispatch(createComment(comment))
+        await dispatch(getAnswersComment(selectedComment.id))
+
+        setValue('')
+      } else {
+        const comment = {
+          id_topic: selectedForum?.id,
+          id_author: user?.id,
+          login_author: user?.login,
+          text: value,
+        }
+
+        await dispatch(createComment(comment))
+        await dispatch(getCommentsTopic(selectedForum?.id))
+
+        setValue('')
       }
-
-      await dispatch(createComment(comment))
-      await dispatch(getAllComments(selectedForum?.id))
-
-      setValue('')
     }
   }
 
@@ -49,17 +73,11 @@ export const ForumWindow: React.FC = () => {
         <>
           <div className={styles.header}>
             <div className={styles.row}>
-              <span className={styles.title}>{selectedForum.title}</span>
+              <span className={styles.title}>Топик: {selectedForum.title}</span>
               <time className={styles.date}>{date}</time>
             </div>
             <p className={styles.description}>{selectedForum.description}</p>
-            <div className={styles.comments}>
-              {commentsTopic.length === 0 ? (
-                <p className={styles.description}>Комментов нет</p>
-              ) : (
-                commentsTopic.map((comment: any) => <ForumComment key={comment.id} comment={comment} />)
-              )}
-            </div>
+            <ForumComments />
           </div>
           <div className={styles.footer}>
             <Input
@@ -76,7 +94,7 @@ export const ForumWindow: React.FC = () => {
           </div>
         </>
       ) : (
-        <p className={styles.description}>Выберите топик</p>
+        <ForumEmpty text="Выберите топик" />
       )}
     </div>
   )

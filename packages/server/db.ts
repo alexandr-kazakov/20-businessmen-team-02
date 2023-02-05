@@ -25,6 +25,9 @@ export const User = sequelize.define('User', model.userModel, {})
 Comment.hasMany(Reaction, { foreignKey: 'id_comment' })
 Reaction.belongsTo(Comment, { foreignKey: 'id_comment', targetKey: 'id' })
 
+Comment.hasMany(Comment, { foreignKey: 'id_comment' })
+Comment.belongsTo(Comment, { foreignKey: 'id_comment', targetKey: 'id' })
+
 export const dbConnect = async () => {
   try {
     await sequelize.authenticate()

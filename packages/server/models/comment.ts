@@ -13,7 +13,13 @@ const commentModel: ModelAttributes<Model, IComment> = {
     type: DataType.STRING,
     allowNull: false,
   },
+  id_comment: {
+    type: DataType.STRING,
+  },
   id_author: {
+    type: DataType.STRING,
+  },
+  login_author: {
     type: DataType.STRING,
   },
   text: {

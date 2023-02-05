@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 import { Topic } from '../db'
 
 class TopicController {
-  getAllTopics = async (_: Request, res: Response) => {
+  getTopics = async (_: Request, res: Response) => {
     try {
       const topics = await Topic.findAll()
       res.json(topics)

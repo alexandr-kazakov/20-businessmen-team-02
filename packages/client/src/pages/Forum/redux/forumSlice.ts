@@ -21,8 +21,12 @@ export const deleteTopic: any = createAsyncThunk('forum/deleteTopic', (topicId: 
   return api.delete(`topic/${topicId}`, true)
 })
 
-export const getAllComments: any = createAsyncThunk('forum/getAllComments', (topicId: string) => {
+export const getCommentsTopic: any = createAsyncThunk('forum/getCommentsTopic', (topicId: string) => {
   return api.get(`comment/?id_topic=${topicId}`, undefined, true)
+})
+
+export const getAnswersComment: any = createAsyncThunk('forum/getAnswersComment', (commentId: string) => {
+  return api.get(`comment/?id_comment=${commentId}`, undefined, true)
 })
 
 export const getComment: any = createAsyncThunk('forum/getComment', (commentId: string) => {
@@ -52,6 +56,7 @@ interface IInitialState {
   listForums: TForum[]
   commentsTopic: any[]
   selectedIdForum: number | null
+  selectedIdComment: number | null
 }
 
 const initialState: IInitialState = {
@@ -61,6 +66,7 @@ const initialState: IInitialState = {
   listForums: [],
   commentsTopic: [],
   selectedIdForum: null,
+  selectedIdComment: null,
 }
 
 export const forumSlice = createSlice({
@@ -72,6 +78,9 @@ export const forumSlice = createSlice({
     },
     setSelectedIdForum(state, { payload }) {
       state.selectedIdForum = payload
+    },
+    setSelectedIdComment(state, { payload }) {
+      state.selectedIdComment = payload
     },
   },
   extraReducers: builder => {
@@ -112,14 +121,23 @@ export const forumSlice = createSlice({
     builder.addCase(deleteTopic.rejected, state => {
       state.status = StatusType.error
     })
-    builder.addCase(getAllComments.pending, state => {
+    builder.addCase(getCommentsTopic.pending, state => {
       state.status = StatusType.loading
     })
-    builder.addCase(getAllComments.fulfilled, (state, { payload }) => {
+    builder.addCase(getCommentsTopic.fulfilled, (state, { payload }) => {
       state.commentsTopic = payload.data
       state.status = StatusType.success
     })
-    builder.addCase(getAllComments.rejected, state => {
+    builder.addCase(getCommentsTopic.rejected, state => {
+      state.status = StatusType.error
+    })
+    builder.addCase(getAnswersComment.pending, state => {
+      state.status = StatusType.loading
+    })
+    builder.addCase(getAnswersComment.fulfilled, state => {
+      state.status = StatusType.success
+    })
+    builder.addCase(getAnswersComment.rejected, state => {
       state.status = StatusType.error
     })
     builder.addCase(getComment.pending, state => {
@@ -157,6 +175,11 @@ export const getSelectedForum = createSelector(
   stateForum => stateForum.listForums.find((forum: TForum) => forum.id === stateForum.selectedIdForum)
 )
 
-export const { setIsCreateTopic, setSelectedIdForum } = forumSlice.actions
+export const getSelectedComment = createSelector(
+  (state: RootState) => state.forum,
+  stateForum => stateForum.commentsTopic.find((comment: any) => comment.id === stateForum.selectedIdComment)
+)
+
+export const { setIsCreateTopic, setSelectedIdForum, setSelectedIdComment } = forumSlice.actions
 
 export default forumSlice.reducer

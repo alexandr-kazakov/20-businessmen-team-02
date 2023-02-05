@@ -15,6 +15,12 @@ em-emoji-picker {
   padding: 10px;
   border-radius: 10px;
   color: #1e1e1e;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
   cursor: pointer;
 }
 
@@ -54,21 +60,14 @@ em-emoji-picker {
 
 .picker {
   position: absolute;
-  top: 100px;
+  top: 35px;
 }
 
 .reactions {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 5px;
   width: 100%;
   height: 30px;
-}
-
-.reaction {
-  display: flex;
-  align-items: center;
-  padding: 5px 10px;
-  border-radius: 10px;
-  background-color: #204969;
 }

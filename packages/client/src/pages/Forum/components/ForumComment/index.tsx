@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import Picker from '@emoji-mart/react'
 
 import { useAppDispatch, useAppSelector } from '../../../../app/redux/hooks'
-import { getAllComments, createReaction } from '../../redux/forumSlice'
+import { getCommentsTopic, createReaction, setSelectedIdComment } from '../../redux/forumSlice'
+import { ForumEmoji } from '../ForumEmoji'
 
 import styles from './styles.module.scss'
 
@@ -23,6 +24,10 @@ export const ForumComment: React.FC<IComponent> = props => {
     setIsEmoji(prev => !prev)
   }
 
+  const handlerClick = () => {
+    dispatch(setSelectedIdComment(comment.id))
+  }
+
   const onEmojiSelect = async (event: any) => {
     const reaction = {
       id_comment: comment.id,
@@ -31,37 +36,39 @@ export const ForumComment: React.FC<IComponent> = props => {
     }
 
     await dispatch(createReaction(reaction))
-    await dispatch(getAllComments(comment.id_topic))
+    await dispatch(getCommentsTopic(comment.id_topic))
 
     toggleEmoji()
   }
 
   return (
     <div className={styles.comment}>
-      <div className={styles.wrapper}>
-        <span className={styles.author}>{comment.id_author}</span>
+      <div className={styles.container} onClick={handlerClick}>
+        <div className={styles.wrapper}>
+          <span className={styles.author}>{comment.login_author}</span>
+        </div>
+        <p className={styles.text}>{comment.text}</p>
       </div>
-      <p className={styles.text}>{comment.text}</p>
       <div className={styles.reactions}>
         <button className={styles.plus} onClick={toggleEmoji}>
           +
         </button>
         {comment.Reactions.length !== 0 &&
-          comment.Reactions.map((reaction: any) => <div className={styles.reaction}>{reaction.value}</div>)}
+          comment.Reactions.map((emoji: any) => <ForumEmoji key={emoji.id} emoji={emoji} />)}
+        {isEmoji && (
+          <div className={styles.picker}>
+            <Picker
+              onEmojiSelect={onEmojiSelect}
+              categories={['frequent']}
+              searchPosition="none"
+              navPosition="none"
+              previewPosition="none"
+              emojiButtonSize="20"
+              emojiSize="16"
+            />
+          </div>
+        )}
       </div>
-      {isEmoji && (
-        <div className={styles.picker}>
-          <Picker
-            onEmojiSelect={onEmojiSelect}
-            categories={['frequent']}
-            searchPosition="none"
-            navPosition="none"
-            previewPosition="none"
-            emojiButtonSize="20"
-            emojiSize="16"
-          />
-        </div>
-      )}
     </div>
   )
 }

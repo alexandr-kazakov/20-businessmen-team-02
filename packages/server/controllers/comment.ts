@@ -2,13 +2,21 @@ import type { Request, Response } from 'express'
 import { Comment, Reaction } from '../db'
 
 class CommentController {
-  getAllComments = async (req: Request, res: Response) => {
+  getComments = async (req: Request, res: Response) => {
     try {
-      const comments = await Comment.findAll({
-        include: [Reaction],
-        where: { id_topic: req.query.id_topic },
-      })
-      res.json(comments)
+      if (req.query.id_topic) {
+        const comments = await Comment.findAll({
+          include: [Reaction],
+          where: { id_topic: req.query.id_topic },
+        })
+        res.json(comments)
+      } else {
+        const comments = await Comment.findAll({
+          include: [Comment],
+          where: { id_comment: req.query.id_comment },
+        })
+        res.json(comments)
+      }
     } catch (error) {
       res.status(500).json({ error })
     }
