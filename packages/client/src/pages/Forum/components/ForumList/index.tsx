@@ -10,7 +10,7 @@ import styles from './styles.module.scss'
 export const ForumList: React.FC = () => {
   const dispatch = useAppDispatch()
 
-  const { isCreateTopic, listForums } = useAppSelector(state => state.forum)
+  const { isCreateTopic, topicsList } = useAppSelector(state => state.forum)
 
   const handlerClick = () => {
     if (isCreateTopic) {
@@ -20,7 +20,7 @@ export const ForumList: React.FC = () => {
     }
   }
 
-  const listNodes = useMemo(() => listForums.map(forum => <ForumItem key={forum.id} forum={forum} />), [listForums])
+  const listNodes = useMemo(() => topicsList.map(topic => <ForumItem key={topic.id} topic={topic} />), [topicsList])
 
   return (
     <div className={styles.conainer}>

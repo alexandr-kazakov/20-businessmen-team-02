@@ -51,21 +51,19 @@ export const createReaction: any = createAsyncThunk('forum/createReaction', (dat
 
 interface IInitialState {
   status: StatusType | ''
-  message: string
   isCreateTopic: boolean
-  listForums: TForum[]
+  topicsList: TForum[]
   commentsTopic: any[]
-  selectedIdForum: number | null
+  selectedIdTopic: number | null
   selectedIdComment: number | null
 }
 
 const initialState: IInitialState = {
   status: '',
-  message: '',
   isCreateTopic: false,
-  listForums: [],
+  topicsList: [],
   commentsTopic: [],
-  selectedIdForum: null,
+  selectedIdTopic: null,
   selectedIdComment: null,
 }
 
@@ -76,8 +74,8 @@ export const forumSlice = createSlice({
     setIsCreateTopic(state, { payload }) {
       state.isCreateTopic = payload
     },
-    setSelectedIdForum(state, { payload }) {
-      state.selectedIdForum = payload
+    setSelectedIdTopic(state, { payload }) {
+      state.selectedIdTopic = payload
     },
     setSelectedIdComment(state, { payload }) {
       state.selectedIdComment = payload
@@ -88,7 +86,7 @@ export const forumSlice = createSlice({
       state.status = StatusType.loading
     })
     builder.addCase(getAllTopics.fulfilled, (state, { payload }) => {
-      state.listForums = payload.data
+      state.topicsList = payload.data
       state.status = StatusType.success
     })
     builder.addCase(getAllTopics.rejected, state => {
@@ -170,9 +168,9 @@ export const forumSlice = createSlice({
   },
 })
 
-export const getSelectedForum = createSelector(
+export const getSelectedTopic = createSelector(
   (state: RootState) => state.forum,
-  stateForum => stateForum.listForums.find((forum: TForum) => forum.id === stateForum.selectedIdForum)
+  stateForum => stateForum.topicsList.find((topic: TForum) => topic.id === stateForum.selectedIdTopic)
 )
 
 export const getSelectedComment = createSelector(
@@ -180,6 +178,6 @@ export const getSelectedComment = createSelector(
   stateForum => stateForum.commentsTopic.find((comment: any) => comment.id === stateForum.selectedIdComment)
 )
 
-export const { setIsCreateTopic, setSelectedIdForum, setSelectedIdComment } = forumSlice.actions
+export const { setIsCreateTopic, setSelectedIdTopic, setSelectedIdComment } = forumSlice.actions
 
 export default forumSlice.reducer

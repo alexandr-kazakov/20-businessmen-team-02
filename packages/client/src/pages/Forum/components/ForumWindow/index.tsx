@@ -6,7 +6,7 @@ import {
   getCommentsTopic,
   getAnswersComment,
   createComment,
-  getSelectedForum,
+  getSelectedTopic,
   getSelectedComment,
 } from '../../redux/forumSlice'
 import { ForumComments } from '../ForumComments'
@@ -21,13 +21,13 @@ export const ForumWindow: React.FC = () => {
 
   const { user } = useAppSelector(state => state.auth)
 
-  const selectedForum = useSelector(getSelectedForum)
+  const selectedTopic = useSelector(getSelectedTopic)
   const selectedComment = useSelector(getSelectedComment)
 
   let date = null
 
-  if (selectedForum) {
-    date = new Date(selectedForum.createdAt).toLocaleDateString()
+  if (selectedTopic) {
+    date = new Date(selectedTopic.createdAt).toLocaleDateString()
   }
 
   const [value, setValue] = useState('')
@@ -40,7 +40,7 @@ export const ForumWindow: React.FC = () => {
     if (value) {
       if (selectedComment) {
         const comment = {
-          id_topic: selectedForum?.id,
+          id_topic: selectedTopic?.id,
           id_comment: selectedComment.id,
           id_author: user?.id,
           login_author: user?.login,
@@ -53,14 +53,14 @@ export const ForumWindow: React.FC = () => {
         setValue('')
       } else {
         const comment = {
-          id_topic: selectedForum?.id,
+          id_topic: selectedTopic?.id,
           id_author: user?.id,
           login_author: user?.login,
           text: value,
         }
 
         await dispatch(createComment(comment))
-        await dispatch(getCommentsTopic(selectedForum?.id))
+        await dispatch(getCommentsTopic(selectedTopic?.id))
 
         setValue('')
       }
@@ -69,14 +69,14 @@ export const ForumWindow: React.FC = () => {
 
   return (
     <div className={styles.window}>
-      {selectedForum ? (
+      {selectedTopic ? (
         <>
           <div className={styles.header}>
             <div className={styles.row}>
-              <span className={styles.title}>Топик: {selectedForum.title}</span>
+              <span className={styles.title}>Топик: {selectedTopic.title}</span>
               <time className={styles.date}>{date}</time>
             </div>
-            <p className={styles.description}>{selectedForum.description}</p>
+            <p className={styles.description}>{selectedTopic.description}</p>
             <ForumComments />
           </div>
           <div className={styles.footer}>

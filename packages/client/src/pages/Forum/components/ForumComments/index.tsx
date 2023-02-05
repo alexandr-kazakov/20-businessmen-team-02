@@ -19,8 +19,7 @@ export const ForumComments: React.FC = () => {
 
   const loadComments = useCallback(async () => {
     const res = await dispatch(getAnswersComment(selectedComment.id))
-    console.log(res.payload.data)
-    setComments([])
+    setComments(res.payload.data)
   }, [selectedComment, dispatch])
 
   useEffect(() => {

@@ -12,7 +12,7 @@ class CommentController {
         res.json(comments)
       } else {
         const comments = await Comment.findAll({
-          include: [Comment],
+          include: [Comment, Reaction],
           where: { id_comment: req.query.id_comment },
         })
         res.json(comments)
