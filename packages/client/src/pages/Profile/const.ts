@@ -8,16 +8,3 @@ export const profileForm: IUser = {
   display_name: 'Псевдоним',
   phone: 'Телефон',
 }
-
-export const list = [
-  {
-    id: 0,
-    first_name: '',
-    second_name: '',
-    display_name: '',
-    login: '',
-    avatar: null,
-    email: '',
-    phone: '',
-  },
-]

@@ -15,8 +15,6 @@ export interface OauthYandexId {
   redirect_uri: string
 }
 
-export type IUserKey = 'id' | 'first_name' | 'second_name' | 'display_name' | 'login' | 'avatar' | 'email' | 'phone'
-
 export type IUser = {
   avatar?: string | null
   display_name: string | null
@@ -27,3 +25,5 @@ export type IUser = {
   phone: string
   second_name: string
 }
+
+export type IUserKey = keyof IUser
