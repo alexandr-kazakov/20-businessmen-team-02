@@ -35,7 +35,7 @@ export const ForumWindow: React.FC = () => {
       if (selectedComment) {
         const comment = {
           id_topic: selectedTopic?.id,
-          id_comment: selectedComment.id,
+          id_parent: selectedComment.id,
           id_author: user?.id,
           login_author: user?.login,
           text: value,

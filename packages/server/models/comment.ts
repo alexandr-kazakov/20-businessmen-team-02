@@ -13,7 +13,7 @@ const commentModel: ModelAttributes<Model, IComment> = {
     type: DataType.STRING,
     allowNull: false,
   },
-  id_comment: {
+  id_parent: {
     type: DataType.STRING,
   },
   id_author: {

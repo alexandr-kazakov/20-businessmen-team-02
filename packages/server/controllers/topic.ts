@@ -28,15 +28,6 @@ class TopicController {
       res.status(500).json({ error })
     }
   }
-
-  deleteTopic = async (req: Request, res: Response) => {
-    try {
-      await Topic.destroy({ where: { id: req.params.id } })
-      res.status(200).json('ok')
-    } catch (error) {
-      res.status(500).json({ error })
-    }
-  }
 }
 
 export default new TopicController()

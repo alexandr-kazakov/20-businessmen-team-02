@@ -21,11 +21,11 @@ export const Topic = sequelize.define('Topic', model.topicModel)
 export const Comment = sequelize.define('Comment', model.commentModel)
 export const Reaction = sequelize.define('Reaction', model.reactionModel)
 
+Comment.hasMany(Comment, { foreignKey: 'id_parent' })
+Comment.belongsTo(Comment, { foreignKey: 'id_parent', targetKey: 'id' })
+
 Comment.hasMany(Reaction, { foreignKey: 'id_comment' })
 Reaction.belongsTo(Comment, { foreignKey: 'id_comment', targetKey: 'id' })
-
-Comment.hasMany(Comment, { foreignKey: 'id_comment' })
-Comment.belongsTo(Comment, { foreignKey: 'id_comment', targetKey: 'id' })
 
 export const dbConnect = async () => {
   try {
