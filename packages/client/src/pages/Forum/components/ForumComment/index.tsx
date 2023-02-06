@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Picker from '@emoji-mart/react'
 
 import { useAppDispatch, useAppSelector } from '../../../../app/redux/hooks'
-import { getCommentsTopic, createReaction, setSelectedIdComment } from '../../redux/forumSlice'
+import { getCommentsTopic, getComment, createReaction } from '../../redux/forumSlice'
 import { ForumEmoji } from '../ForumEmoji'
 
 import styles from './styles.module.scss'
@@ -24,8 +24,8 @@ export const ForumComment: React.FC<IComponent> = props => {
     setIsEmoji(prev => !prev)
   }
 
-  const handlerClick = () => {
-    dispatch(setSelectedIdComment(comment.id))
+  const handlerClick = async () => {
+    await dispatch(getComment(comment.id))
   }
 
   const onEmojiSelect = async (event: any) => {
@@ -53,8 +53,8 @@ export const ForumComment: React.FC<IComponent> = props => {
         <button className={styles.plus} onClick={toggleEmoji}>
           +
         </button>
-        {comment.Reactions.length !== 0 &&
-          comment.Reactions.map((emoji: any) => <ForumEmoji key={emoji.id} emoji={emoji} />)}
+        {comment.Reactions?.length !== 0 &&
+          comment.Reactions?.map((emoji: any) => <ForumEmoji key={emoji.id} emoji={emoji} />)}
         {isEmoji && (
           <div className={styles.picker}>
             <Picker

@@ -7,7 +7,7 @@ class CommentController {
       if (req.query.id_topic) {
         const comments = await Comment.findAll({
           include: [Reaction],
-          where: { id_topic: req.query.id_topic },
+          where: { id_topic: req.query.id_topic, id_comment: null },
         })
         res.json(comments)
       } else {
@@ -24,8 +24,8 @@ class CommentController {
 
   getComment = async (req: Request, res: Response) => {
     try {
-      const comment = await Comment.findAll({
-        include: [Reaction],
+      const comment = await Comment.findOne({
+        include: [Comment, Reaction],
         where: { id: req.params.id },
       })
       res.json(comment)

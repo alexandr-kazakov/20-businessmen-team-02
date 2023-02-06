@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 import { Reaction } from '../db'
 
 class ReactionController {
-  getAllReactions = async (_: Request, res: Response) => {
+  getReactions = async (_: Request, res: Response) => {
     try {
       const reactions = await Reaction.findAll()
       res.json(reactions)

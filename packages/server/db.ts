@@ -17,10 +17,9 @@ const sequelizeOptions: SequelizeOptions = {
 
 const sequelize = new Sequelize(sequelizeOptions)
 
-export const Topic = sequelize.define('Topic', model.topicModel, {})
-export const Comment = sequelize.define('Comment', model.commentModel, {})
-export const Reaction = sequelize.define('Reaction', model.reactionModel, {})
-export const User = sequelize.define('User', model.userModel, {})
+export const Topic = sequelize.define('Topic', model.topicModel)
+export const Comment = sequelize.define('Comment', model.commentModel)
+export const Reaction = sequelize.define('Reaction', model.reactionModel)
 
 Comment.hasMany(Reaction, { foreignKey: 'id_comment' })
 Reaction.belongsTo(Comment, { foreignKey: 'id_comment', targetKey: 'id' })

@@ -3,7 +3,7 @@ import { reactionController } from '../controllers'
 
 const router: Router = Router()
 
-router.get('/', reactionController.getAllReactions)
+router.get('/', reactionController.getReactions)
 router.post('/', reactionController.createReaction)
 
 export default router

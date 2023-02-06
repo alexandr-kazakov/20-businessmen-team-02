@@ -53,18 +53,18 @@ interface IInitialState {
   status: StatusType | ''
   isCreateTopic: boolean
   topicsList: TForum[]
-  commentsTopic: any[]
   selectedIdTopic: number | null
-  selectedIdComment: number | null
+  commentsTopic: any[]
+  selectedComment: any
 }
 
 const initialState: IInitialState = {
   status: '',
   isCreateTopic: false,
   topicsList: [],
-  commentsTopic: [],
   selectedIdTopic: null,
-  selectedIdComment: null,
+  commentsTopic: [],
+  selectedComment: null,
 }
 
 export const forumSlice = createSlice({
@@ -77,8 +77,8 @@ export const forumSlice = createSlice({
     setSelectedIdTopic(state, { payload }) {
       state.selectedIdTopic = payload
     },
-    setSelectedIdComment(state, { payload }) {
-      state.selectedIdComment = payload
+    setSelectedComment(state, { payload }) {
+      state.selectedComment = payload
     },
   },
   extraReducers: builder => {
@@ -141,7 +141,8 @@ export const forumSlice = createSlice({
     builder.addCase(getComment.pending, state => {
       state.status = StatusType.loading
     })
-    builder.addCase(getComment.fulfilled, state => {
+    builder.addCase(getComment.fulfilled, (state, { payload }) => {
+      state.selectedComment = payload.data
       state.status = StatusType.success
     })
     builder.addCase(getComment.rejected, state => {
@@ -173,11 +174,6 @@ export const getSelectedTopic = createSelector(
   stateForum => stateForum.topicsList.find((topic: TForum) => topic.id === stateForum.selectedIdTopic)
 )
 
-export const getSelectedComment = createSelector(
-  (state: RootState) => state.forum,
-  stateForum => stateForum.commentsTopic.find((comment: any) => comment.id === stateForum.selectedIdComment)
-)
-
-export const { setIsCreateTopic, setSelectedIdTopic, setSelectedIdComment } = forumSlice.actions
+export const { setIsCreateTopic, setSelectedIdTopic, setSelectedComment } = forumSlice.actions
 
 export default forumSlice.reducer

@@ -2,13 +2,7 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { useAppDispatch, useAppSelector } from '../../../../app/redux/hooks'
-import {
-  getCommentsTopic,
-  getAnswersComment,
-  createComment,
-  getSelectedTopic,
-  getSelectedComment,
-} from '../../redux/forumSlice'
+import { getCommentsTopic, getComment, createComment, getSelectedTopic } from '../../redux/forumSlice'
 import { ForumComments } from '../ForumComments'
 import { ForumEmpty } from '../ForumEmpty'
 import { Input } from '../../../../components/UI/Input'
@@ -20,9 +14,9 @@ export const ForumWindow: React.FC = () => {
   const dispatch = useAppDispatch()
 
   const { user } = useAppSelector(state => state.auth)
+  const { selectedComment } = useAppSelector(state => state.forum)
 
   const selectedTopic = useSelector(getSelectedTopic)
-  const selectedComment = useSelector(getSelectedComment)
 
   let date = null
 
@@ -48,7 +42,7 @@ export const ForumWindow: React.FC = () => {
         }
 
         await dispatch(createComment(comment))
-        await dispatch(getAnswersComment(selectedComment.id))
+        await dispatch(getComment(selectedComment.id))
 
         setValue('')
       } else {

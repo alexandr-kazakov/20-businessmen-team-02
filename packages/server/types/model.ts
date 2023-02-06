@@ -20,14 +20,3 @@ export interface ITopic {
   title: string
   description: string
 }
-
-export interface IUser {
-  id: number
-  email: string
-  login: string
-  avatar: string | null
-  display_name: string | null
-  first_name: string
-  second_name: string
-  phone: string
-}
