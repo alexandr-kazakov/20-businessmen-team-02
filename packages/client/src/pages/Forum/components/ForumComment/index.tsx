@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Picker from '@emoji-mart/react'
 
 import { useAppDispatch, useAppSelector } from '../../../../app/redux/hooks'
-import { getCommentsTopic, getComment, createReaction } from '../../redux/forumSlice'
+import { getComments, getComment, createReaction } from '../../redux/forumSlice'
 import { ForumEmoji } from '../ForumEmoji'
 
 import styles from './styles.module.scss'
@@ -36,7 +36,7 @@ export const ForumComment: React.FC<IComponent> = props => {
     }
 
     await dispatch(createReaction(reaction))
-    await dispatch(getCommentsTopic(comment.id_topic))
+    await dispatch(getComments(comment.id_topic))
 
     toggleEmoji()
   }

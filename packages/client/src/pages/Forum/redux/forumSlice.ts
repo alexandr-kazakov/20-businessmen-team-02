@@ -17,12 +17,8 @@ export const postTopic: any = createAsyncThunk('forum/postTopic', (data: any) =>
   return api.post('topic/', data, true)
 })
 
-export const getCommentsTopic: any = createAsyncThunk('forum/getCommentsTopic', (topicId: string) => {
+export const getComments: any = createAsyncThunk('forum/getComments', (topicId: string) => {
   return api.get(`comment/?id_topic=${topicId}`, undefined, true)
-})
-
-export const getAnswersComment: any = createAsyncThunk('forum/getAnswersComment', (commentId: string) => {
-  return api.get(`comment/?id_comment=${commentId}`, undefined, true)
 })
 
 export const getComment: any = createAsyncThunk('forum/getComment', (commentId: string) => {
@@ -98,23 +94,14 @@ export const forumSlice = createSlice({
     builder.addCase(postTopic.rejected, state => {
       state.status = StatusType.error
     })
-    builder.addCase(getCommentsTopic.pending, state => {
+    builder.addCase(getComments.pending, state => {
       state.status = StatusType.loading
     })
-    builder.addCase(getCommentsTopic.fulfilled, (state, { payload }) => {
+    builder.addCase(getComments.fulfilled, (state, { payload }) => {
       state.commentsTopic = payload.data
       state.status = StatusType.success
     })
-    builder.addCase(getCommentsTopic.rejected, state => {
-      state.status = StatusType.error
-    })
-    builder.addCase(getAnswersComment.pending, state => {
-      state.status = StatusType.loading
-    })
-    builder.addCase(getAnswersComment.fulfilled, state => {
-      state.status = StatusType.success
-    })
-    builder.addCase(getAnswersComment.rejected, state => {
+    builder.addCase(getComments.rejected, state => {
       state.status = StatusType.error
     })
     builder.addCase(getComment.pending, state => {

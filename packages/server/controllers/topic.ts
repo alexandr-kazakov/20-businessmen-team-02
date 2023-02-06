@@ -5,7 +5,7 @@ class TopicController {
   getTopics = async (_: Request, res: Response) => {
     try {
       const topics = await Topic.findAll()
-      res.json(topics)
+      res.status(200).json(topics)
     } catch (error) {
       res.status(500).json({ error })
     }
@@ -14,7 +14,7 @@ class TopicController {
   getTopic = async (req: Request, res: Response) => {
     try {
       const topic = await Topic.findOne({ where: { id: req.params.id } })
-      res.json(topic)
+      res.status(200).json(topic)
     } catch (error) {
       res.status(500).json({ error })
     }
