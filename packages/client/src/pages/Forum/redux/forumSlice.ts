@@ -5,7 +5,7 @@ import { StatusType } from '../../../app/apiTypes'
 import type { TForum } from '../types'
 import type { RootState } from '../../../app/redux/store'
 
-export const getAllTopics: any = createAsyncThunk('forum/getAllTopics', () => {
+export const getTopics: any = createAsyncThunk('forum/getTopics', () => {
   return api.get('topic/', undefined, true)
 })
 
@@ -15,10 +15,6 @@ export const getTopic: any = createAsyncThunk('forum/getTopic', (topicId: string
 
 export const postTopic: any = createAsyncThunk('forum/postTopic', (data: any) => {
   return api.post('topic/', data, true)
-})
-
-export const deleteTopic: any = createAsyncThunk('forum/deleteTopic', (topicId: string) => {
-  return api.delete(`topic/${topicId}`, true)
 })
 
 export const getCommentsTopic: any = createAsyncThunk('forum/getCommentsTopic', (topicId: string) => {
@@ -35,14 +31,6 @@ export const getComment: any = createAsyncThunk('forum/getComment', (commentId: 
 
 export const createComment: any = createAsyncThunk('forum/createComment', (data: any) => {
   return api.post('comment/', data, true)
-})
-
-export const deleteComment: any = createAsyncThunk('forum/deleteComment', (commentId: string) => {
-  return api.delete(`comment/${commentId}`, true)
-})
-
-export const getAllReactions: any = createAsyncThunk('forum/getAllReactions', () => {
-  return api.get('reaction/', true)
 })
 
 export const createReaction: any = createAsyncThunk('forum/createReaction', (data: any) => {
@@ -82,14 +70,14 @@ export const forumSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(getAllTopics.pending, state => {
+    builder.addCase(getTopics.pending, state => {
       state.status = StatusType.loading
     })
-    builder.addCase(getAllTopics.fulfilled, (state, { payload }) => {
+    builder.addCase(getTopics.fulfilled, (state, { payload }) => {
       state.topicsList = payload.data
       state.status = StatusType.success
     })
-    builder.addCase(getAllTopics.rejected, state => {
+    builder.addCase(getTopics.rejected, state => {
       state.status = StatusType.error
     })
     builder.addCase(getTopic.pending, state => {
@@ -108,15 +96,6 @@ export const forumSlice = createSlice({
       state.status = StatusType.success
     })
     builder.addCase(postTopic.rejected, state => {
-      state.status = StatusType.error
-    })
-    builder.addCase(deleteTopic.pending, state => {
-      state.status = StatusType.loading
-    })
-    builder.addCase(deleteTopic.fulfilled, state => {
-      state.status = StatusType.success
-    })
-    builder.addCase(deleteTopic.rejected, state => {
       state.status = StatusType.error
     })
     builder.addCase(getCommentsTopic.pending, state => {
@@ -157,13 +136,13 @@ export const forumSlice = createSlice({
     builder.addCase(createComment.rejected, state => {
       state.status = StatusType.error
     })
-    builder.addCase(deleteComment.pending, state => {
+    builder.addCase(createReaction.pending, state => {
       state.status = StatusType.loading
     })
-    builder.addCase(deleteComment.fulfilled, state => {
+    builder.addCase(createReaction.fulfilled, state => {
       state.status = StatusType.success
     })
-    builder.addCase(deleteComment.rejected, state => {
+    builder.addCase(createReaction.rejected, state => {
       state.status = StatusType.error
     })
   },

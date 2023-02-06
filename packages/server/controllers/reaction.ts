@@ -2,15 +2,6 @@ import type { Request, Response } from 'express'
 import { Reaction } from '../db'
 
 class ReactionController {
-  getReactions = async (_: Request, res: Response) => {
-    try {
-      const reactions = await Reaction.findAll()
-      res.json(reactions)
-    } catch (error) {
-      res.status(500).json({ error })
-    }
-  }
-
   createReaction = async (req: Request, res: Response) => {
     try {
       const foundReaction = await Reaction.findOne({

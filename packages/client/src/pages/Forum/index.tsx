@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
 import { useAppDispatch } from '../../app/redux/hooks'
-import { getAllTopics } from './redux/forumSlice'
+import { getTopics } from './redux/forumSlice'
 import { ForumList } from './components/ForumList'
 import { ForumView } from './components/ForumView'
 
@@ -11,7 +11,7 @@ const ForumPage: React.FC = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getAllTopics())
+    dispatch(getTopics())
   }, [dispatch])
 
   return (

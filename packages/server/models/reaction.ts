@@ -15,9 +15,11 @@ const reactionModel: ModelAttributes<Model, IReaction> = {
   },
   id_author: {
     type: DataType.STRING,
+    allowNull: false,
   },
   value: {
     type: DataType.STRING,
+    allowNull: false,
   },
 }
 
