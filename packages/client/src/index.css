@@ -36,10 +36,3 @@ svg:not(:root) {
 a{
   text-decoration: none;
 }
-
-.buttons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}

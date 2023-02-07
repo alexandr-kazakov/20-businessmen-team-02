@@ -37,7 +37,7 @@ const ProfilePage: React.FC = () => {
   const buttons = profileView ? (
     <EditButton>Изменить</EditButton>
   ) : (
-    <div className="buttons">
+    <div className={styles.buttons}>
       <SubmitButton />
       <EditButton variant={ButtonVariant.SECONDARY}>Отмена</EditButton>
     </div>
