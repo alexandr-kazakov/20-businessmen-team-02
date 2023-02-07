@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { api } from '../../../app/api'
 import { StatusType } from '../../../app/apiTypes'
 
-import type { IAuthSignIn, IAuthSignup, OauthYandexId } from '../types'
+import type { IAuthSignIn, IAuthSignup, IUser, OauthYandexId } from '../types'
 
 // TODO: после деплоя добавить продакшн урл..
 export const OAUTH_YANDEX_REDIRECT = 'http://localhost:3000'
@@ -31,7 +31,7 @@ export const signin: any = createAsyncThunk('auth/signin', async (data: IAuthSig
 export const signup: any = createAsyncThunk('auth/signup', async (data: IAuthSignup) => {
   const response = await api.post('auth/signup/', data)
 
-  if (response.data.id) {
+  if (response.data?.id) {
     return api.get('auth/user/')
   }
 })
@@ -40,22 +40,24 @@ export const logout: any = createAsyncThunk('auth/logout', () => {
   return api.post('auth/logout/')
 })
 
+export const getProfile: any = createAsyncThunk('getProfile', () => {
+  return api.get('auth/user/')
+})
+
+export const changeUserProfile: any = createAsyncThunk('profile', async (data: any) => {
+  const response = await api.put('user/profile/', data)
+
+  if (response.data?.id) {
+    return api.get('auth/user/')
+  }
+})
+
 interface IInitialState {
   status: StatusType | ''
   isLoadingProtectedRouter: boolean
   user: IUser | null
   isSigninView: boolean
-}
-
-interface IUser {
-  avatar: any | null
-  display_name: string | null
-  email: string
-  first_name: string
-  id: number
-  login: string
-  phone: string
-  second_name: string
+  profileView: boolean
 }
 
 const initialState: IInitialState = {
@@ -63,6 +65,7 @@ const initialState: IInitialState = {
   isLoadingProtectedRouter: true,
   user: null,
   isSigninView: true,
+  profileView: true,
 }
 
 export const authSlice = createSlice({
@@ -77,6 +80,9 @@ export const authSlice = createSlice({
     },
     setIsSigninView(state) {
       state.isSigninView = !state.isSigninView
+    },
+    setProfileView(state) {
+      state.profileView = !state.profileView
     },
   },
   extraReducers: builder => {
@@ -130,9 +136,33 @@ export const authSlice = createSlice({
       localStorage.removeItem('user')
       state.user = null
     })
+    builder.addCase(getProfile.pending, state => {
+      state.status = StatusType.loading
+    })
+    builder.addCase(getProfile.fulfilled, (state, { payload }) => {
+      localStorage.setItem('user', JSON.stringify(payload.data))
+
+      state.user = payload.data
+      state.status = StatusType.success
+    })
+    builder.addCase(getProfile.rejected, state => {
+      state.status = StatusType.error
+    })
+    builder.addCase(changeUserProfile.pending, state => {
+      state.status = StatusType.loading
+    })
+    builder.addCase(changeUserProfile.fulfilled, (state, { payload }) => {
+      localStorage.setItem('user', JSON.stringify(payload.data))
+
+      state.user = payload.data
+      state.status = StatusType.success
+    })
+    builder.addCase(changeUserProfile.rejected, state => {
+      state.status = StatusType.error
+    })
   },
 })
 
-export const { setIsLoadingProtectedRouter, setUser, setIsSigninView } = authSlice.actions
+export const { setIsLoadingProtectedRouter, setUser, setIsSigninView, setProfileView } = authSlice.actions
 
 export default authSlice.reducer
