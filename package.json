@@ -6,7 +6,7 @@
     "build": "yarn build:client && yarn build:server",
     "build:client": "lerna run build --scope=client",
     "build:server": "lerna run build --scope=server",
-    "dev": "yarn dev:client && yarn dev:server",
+    "dev": "lerna run dev",
     "dev:client": "lerna run dev --scope=client",
     "dev:server": "lerna run dev --scope=server",
     "test": "lerna run test",
