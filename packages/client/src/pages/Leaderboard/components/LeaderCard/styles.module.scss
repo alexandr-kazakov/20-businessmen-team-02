@@ -29,11 +29,11 @@
 
 .leader_third {
   .avatar {
-    background: linear-gradient(to left, $purply, $purply-ligth);
+    background: linear-gradient(to left, $purply, $purply-light);
   }
   .name,
   .score {
-    color: $purply-ligth;
+    color: $purply-light;
   }
 }
 
