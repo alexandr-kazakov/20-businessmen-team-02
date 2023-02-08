@@ -2,18 +2,14 @@ import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit'
 import { api } from '../../../app/api'
 import { StatusType } from '../../../app/apiTypes'
 
-import type { TForum } from '../types'
+import type { ITopic, IComment, INewTopic, INewComment, INewReaction } from '../types'
 import type { RootState } from '../../../app/redux/store'
 
 export const getTopics: any = createAsyncThunk('forum/getTopics', () => {
   return api.get('topic/', undefined, true)
 })
 
-export const getTopic: any = createAsyncThunk('forum/getTopic', (topicId: string) => {
-  return api.get(`topic/${topicId}`, undefined, true)
-})
-
-export const postTopic: any = createAsyncThunk('forum/postTopic', (data: any) => {
+export const createTopic: any = createAsyncThunk('forum/createTopic', (data: INewTopic) => {
   return api.post('topic/', data, true)
 })
 
@@ -25,21 +21,20 @@ export const getComment: any = createAsyncThunk('forum/getComment', (commentId: 
   return api.get(`comment/${commentId}`, undefined, true)
 })
 
-export const createComment: any = createAsyncThunk('forum/createComment', (data: any) => {
+export const createComment: any = createAsyncThunk('forum/createComment', (data: INewComment) => {
   return api.post('comment/', data, true)
 })
 
-export const createReaction: any = createAsyncThunk('forum/createReaction', (data: any) => {
+export const createReaction: any = createAsyncThunk('forum/createReaction', (data: INewReaction) => {
   return api.post('reaction/', data, true)
 })
 
 interface IInitialState {
   status: StatusType | ''
   isCreateTopic: boolean
-  topicsList: TForum[]
-  selectedIdTopic: number | null
-  commentsTopic: any[]
-  selectedComment: any
+  topicsList: ITopic[]
+  selectedIdTopic: string | null
+  commentsTopic: IComment[]
 }
 
 const initialState: IInitialState = {
@@ -48,7 +43,6 @@ const initialState: IInitialState = {
   topicsList: [],
   selectedIdTopic: null,
   commentsTopic: [],
-  selectedComment: null,
 }
 
 export const forumSlice = createSlice({
@@ -60,9 +54,6 @@ export const forumSlice = createSlice({
     },
     setSelectedIdTopic(state, { payload }) {
       state.selectedIdTopic = payload
-    },
-    setSelectedComment(state, { payload }) {
-      state.selectedComment = payload
     },
   },
   extraReducers: builder => {
@@ -76,22 +67,13 @@ export const forumSlice = createSlice({
     builder.addCase(getTopics.rejected, state => {
       state.status = StatusType.error
     })
-    builder.addCase(getTopic.pending, state => {
+    builder.addCase(createTopic.pending, state => {
       state.status = StatusType.loading
     })
-    builder.addCase(getTopic.fulfilled, state => {
+    builder.addCase(createTopic.fulfilled, state => {
       state.status = StatusType.success
     })
-    builder.addCase(getTopic.rejected, state => {
-      state.status = StatusType.error
-    })
-    builder.addCase(postTopic.pending, state => {
-      state.status = StatusType.loading
-    })
-    builder.addCase(postTopic.fulfilled, state => {
-      state.status = StatusType.success
-    })
-    builder.addCase(postTopic.rejected, state => {
+    builder.addCase(createTopic.rejected, state => {
       state.status = StatusType.error
     })
     builder.addCase(getComments.pending, state => {
@@ -107,8 +89,7 @@ export const forumSlice = createSlice({
     builder.addCase(getComment.pending, state => {
       state.status = StatusType.loading
     })
-    builder.addCase(getComment.fulfilled, (state, { payload }) => {
-      state.selectedComment = payload.data
+    builder.addCase(getComment.fulfilled, state => {
       state.status = StatusType.success
     })
     builder.addCase(getComment.rejected, state => {
@@ -137,9 +118,9 @@ export const forumSlice = createSlice({
 
 export const getSelectedTopic = createSelector(
   (state: RootState) => state.forum,
-  stateForum => stateForum.topicsList.find((topic: TForum) => topic.id === stateForum.selectedIdTopic)
+  stateForum => stateForum.topicsList.find((topic: ITopic) => topic.id === stateForum.selectedIdTopic)
 )
 
-export const { setIsCreateTopic, setSelectedIdTopic, setSelectedComment } = forumSlice.actions
+export const { setIsCreateTopic, setSelectedIdTopic } = forumSlice.actions
 
 export default forumSlice.reducer

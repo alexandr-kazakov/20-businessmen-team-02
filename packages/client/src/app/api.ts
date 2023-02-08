@@ -12,11 +12,9 @@ const getHeaders = (userToken: string | null) => {
   const headers = {
     Authorization: <string | undefined>undefined,
   }
-
   if (userToken) {
     headers.Authorization = `Bearer ${userToken}`
   }
-
   return headers
 }
 
@@ -34,77 +32,54 @@ export const api = {
    */
   setUserToken: (token: string | null) => {
     api.userToken = token
-
     if (DEV) {
       console.info('[API] change token', getHeaders(token))
     }
-
     return api
   },
 
   request: (method: Method, path: string, params?: AxiosRequestConfig, isOutUrl?: boolean) => {
     let url = ''
+    let config = {}
 
     if (isOutUrl) {
       url = getOutURL(path)
+      config = {
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
     } else {
       url = getURL(path)
+      config = {
+        withCredentials: true,
+      }
     }
 
     if (DEV) {
       console.info('[API] ->', method, url, params || '')
     }
 
-    if (isOutUrl) {
-      return axios
-        .create({
-          headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-            'Access-Control-Allow-Origin': '*',
-          },
-        })
-        .request({
-          method,
-          url,
-          ...params,
-        })
-        .then(response => {
-          if (DEV) {
-            console.info('[API] <- ok', method, url, response.data)
-          }
-
-          return response
-        })
-        .catch(error => {
-          if (DEV) {
-            console.error('[API] <- error', method, url, error)
-          }
-
-          throw error
-        })
-    } else {
-      return axios
-        .create({ withCredentials: true })
-        .request({
-          method,
-          url,
-          ...params,
-        })
-        .then(response => {
-          if (DEV) {
-            console.info('[API] <- ok', method, url, response.data)
-          }
-
-          return response
-        })
-        .catch(error => {
-          if (DEV) {
-            console.error('[API] <- error', method, url, error)
-          }
-
-          throw error
-        })
-    }
+    return axios
+      .create(config)
+      .request({
+        method,
+        url,
+        ...params,
+      })
+      .then(response => {
+        if (DEV) {
+          console.info('[API] <- ok', method, url, response.data)
+        }
+        return response
+      })
+      .catch(error => {
+        if (DEV) {
+          console.error('[API] <- error', method, url, error)
+        }
+        throw error
+      })
   },
 
   get: (path: string, params?: AxiosRequestConfig['params'], isOutUrl?: boolean) =>

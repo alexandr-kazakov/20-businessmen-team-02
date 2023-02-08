@@ -1,30 +1,26 @@
 import React from 'react'
 
 import { useAppDispatch, useAppSelector } from '../../../../app/redux/hooks'
-import { getComments, setIsCreateTopic, setSelectedIdTopic, setSelectedComment } from '../../redux/forumSlice'
+import { getComments, setIsCreateTopic, setSelectedIdTopic } from '../../redux/forumSlice'
 
-import type { TForum } from '../../types'
+import type { ITopic } from '../../types'
 
 import styles from './styles.module.scss'
 
 type Props = {
-  topic: TForum
+  topic: ITopic
 }
 
 export const ForumItem: React.FC<Props> = ({ topic }) => {
   const dispatch = useAppDispatch()
 
-  const { isCreateTopic, selectedIdTopic, selectedComment } = useAppSelector(state => state.forum)
+  const { isCreateTopic, selectedIdTopic } = useAppSelector(state => state.forum)
 
   const date = new Date(topic.createdAt).toLocaleDateString()
 
   const handlerClick = async () => {
     if (isCreateTopic) {
       dispatch(setIsCreateTopic(false))
-    }
-
-    if (selectedComment) {
-      dispatch(setSelectedComment(null))
     }
 
     if (selectedIdTopic !== topic.id) {

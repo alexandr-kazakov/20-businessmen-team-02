@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 import classnames from 'classnames'
 
 import { useAppDispatch, useAppSelector } from '../../../../app/redux/hooks'
-import { getTopics, postTopic, setIsCreateTopic } from '../../redux/forumSlice'
+import { getTopics, createTopic, setIsCreateTopic } from '../../redux/forumSlice'
 import { Input } from '../../../../components/UI/Input'
 import { Button } from '../../../../components/UI/Button'
 
@@ -65,7 +65,7 @@ export const ForumCreate: React.FC = () => {
         description: values.description,
       }
 
-      await dispatch(postTopic(topic))
+      await dispatch(createTopic(topic))
       await dispatch(getTopics())
 
       dispatch(setIsCreateTopic(false))

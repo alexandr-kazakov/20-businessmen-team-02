@@ -18,7 +18,7 @@ class CommentController {
     try {
       const comment = await Comment.findOne({
         where: { id: req.params.id },
-        include: [{ model: Comment, include: [Reaction] }, Reaction],
+        include: [Reaction],
       })
       res.json(comment)
     } catch (error) {

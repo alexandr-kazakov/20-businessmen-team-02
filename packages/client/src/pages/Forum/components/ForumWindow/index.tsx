@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { useAppDispatch, useAppSelector } from '../../../../app/redux/hooks'
-import { getComments, getComment, createComment, getSelectedTopic } from '../../redux/forumSlice'
+import { getComments, createComment, getSelectedTopic } from '../../redux/forumSlice'
 import { ForumComments } from '../ForumComments'
 import { ForumEmpty } from '../ForumEmpty'
 import { Input } from '../../../../components/UI/Input'
@@ -14,7 +14,6 @@ export const ForumWindow: React.FC = () => {
   const dispatch = useAppDispatch()
 
   const { user } = useAppSelector(state => state.auth)
-  const { selectedComment } = useAppSelector(state => state.forum)
 
   const selectedTopic = useSelector(getSelectedTopic)
 
@@ -32,32 +31,17 @@ export const ForumWindow: React.FC = () => {
 
   const handlerClick = async () => {
     if (value) {
-      if (selectedComment) {
-        const comment = {
-          id_topic: selectedTopic?.id,
-          id_parent: selectedComment.id,
-          id_author: user?.id,
-          login_author: user?.login,
-          text: value,
-        }
-
-        await dispatch(createComment(comment))
-        await dispatch(getComment(selectedComment.id))
-
-        setValue('')
-      } else {
-        const comment = {
-          id_topic: selectedTopic?.id,
-          id_author: user?.id,
-          login_author: user?.login,
-          text: value,
-        }
-
-        await dispatch(createComment(comment))
-        await dispatch(getComments(selectedTopic?.id))
-
-        setValue('')
+      const comment = {
+        id_topic: selectedTopic?.id,
+        id_author: user?.id,
+        login_author: user?.login,
+        text: value,
       }
+
+      await dispatch(createComment(comment))
+      await dispatch(getComments(selectedTopic?.id))
+
+      setValue('')
     }
   }
 
