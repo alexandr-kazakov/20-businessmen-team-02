@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useAppDispatch, useAppSelector } from '../../../../app/redux/hooks'
-import { getComments, setIsCreateTopic, setSelectedIdTopic } from '../../redux/forumSlice'
+import { getComments, setIsCreateTopic } from '../../redux/forumSlice'
 
 import type { ITopic } from '../../types'
 
@@ -25,7 +25,6 @@ export const ForumItem: React.FC<Props> = ({ topic }) => {
 
     if (selectedIdTopic !== topic.id) {
       await dispatch(getComments(topic.id))
-      dispatch(setSelectedIdTopic(topic.id))
     }
   }
 

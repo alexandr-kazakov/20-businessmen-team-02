@@ -7,11 +7,10 @@ type InputProps = {
   isValid?: boolean
 } & InputHTMLAttributes<HTMLInputElement>
 
-export const Input: React.FC<InputProps> = memo(({ isValid = true, ...inputProps }) => {
-  const className = classnames(styles.input, {
-    [`${inputProps.className}`]: inputProps.className,
+export const Input: React.FC<InputProps> = memo(({ isValid = true, ...props }) => {
+  const className = classnames(styles.input, props.className, {
     [styles.error]: !isValid,
   })
 
-  return <input {...inputProps} className={className} />
+  return <input {...props} className={className} />
 })

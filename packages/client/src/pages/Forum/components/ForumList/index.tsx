@@ -13,11 +13,7 @@ export const ForumList: React.FC = () => {
   const { isCreateTopic, topicsList } = useAppSelector(state => state.forum)
 
   const handlerClick = () => {
-    if (isCreateTopic) {
-      dispatch(setIsCreateTopic(false))
-    } else {
-      dispatch(setIsCreateTopic(true))
-    }
+    dispatch(setIsCreateTopic(!isCreateTopic))
   }
 
   const listNodes = useMemo(() => topicsList.map(topic => <ForumItem key={topic.id} topic={topic} />), [topicsList])

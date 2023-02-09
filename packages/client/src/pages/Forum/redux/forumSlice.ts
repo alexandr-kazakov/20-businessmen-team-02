@@ -9,12 +9,16 @@ export const getTopics: any = createAsyncThunk('forum/getTopics', () => {
   return api.get('topic/', undefined, true)
 })
 
-export const createTopic: any = createAsyncThunk('forum/createTopic', (data: INewTopic) => {
-  return api.post('topic/', data, true)
+export const createTopic: any = createAsyncThunk('forum/createTopic', (data: INewTopic, { dispatch }) => {
+  const res = api.post('topic/', data, true)
+  dispatch(getTopics())
+  return res
 })
 
-export const getComments: any = createAsyncThunk('forum/getComments', (topicId: string) => {
-  return api.get(`comment/?id_topic=${topicId}`, undefined, true)
+export const getComments: any = createAsyncThunk('forum/getComments', (topicId: string, { dispatch }) => {
+  const res = api.get(`comment/?id_topic=${topicId}`, undefined, true)
+  dispatch(setSelectedIdTopic(topicId))
+  return res
 })
 
 export const getComment: any = createAsyncThunk('forum/getComment', (commentId: string) => {
@@ -71,6 +75,7 @@ export const forumSlice = createSlice({
       state.status = StatusType.loading
     })
     builder.addCase(createTopic.fulfilled, state => {
+      state.isCreateTopic = false
       state.status = StatusType.success
     })
     builder.addCase(createTopic.rejected, state => {
