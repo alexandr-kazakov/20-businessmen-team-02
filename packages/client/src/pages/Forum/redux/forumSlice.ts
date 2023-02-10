@@ -9,14 +9,14 @@ export const getTopics: any = createAsyncThunk('forum/getTopics', () => {
   return api.get('topic/', undefined, true)
 })
 
-export const createTopic: any = createAsyncThunk('forum/createTopic', (data: INewTopic, { dispatch }) => {
-  const res = api.post('topic/', data, true)
-  dispatch(getTopics())
+export const createTopic: any = createAsyncThunk('forum/createTopic', async (data: INewTopic, { dispatch }) => {
+  const res = await api.post('topic/', data, true)
+  await dispatch(getTopics())
   return res
 })
 
-export const getComments: any = createAsyncThunk('forum/getComments', (topicId: string, { dispatch }) => {
-  const res = api.get(`comment/?id_topic=${topicId}`, undefined, true)
+export const getComments: any = createAsyncThunk('forum/getComments', async (topicId: string, { dispatch }) => {
+  const res = await api.get(`comment/?id_topic=${topicId}`, undefined, true)
   dispatch(setSelectedIdTopic(topicId))
   return res
 })
@@ -61,63 +61,33 @@ export const forumSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(getTopics.pending, state => {
-      state.status = StatusType.loading
-    })
     builder.addCase(getTopics.fulfilled, (state, { payload }) => {
       state.topicsList = payload.data
-      state.status = StatusType.success
-    })
-    builder.addCase(getTopics.rejected, state => {
-      state.status = StatusType.error
-    })
-    builder.addCase(createTopic.pending, state => {
-      state.status = StatusType.loading
     })
     builder.addCase(createTopic.fulfilled, state => {
       state.isCreateTopic = false
-      state.status = StatusType.success
-    })
-    builder.addCase(createTopic.rejected, state => {
-      state.status = StatusType.error
-    })
-    builder.addCase(getComments.pending, state => {
-      state.status = StatusType.loading
     })
     builder.addCase(getComments.fulfilled, (state, { payload }) => {
       state.commentsTopic = payload.data
-      state.status = StatusType.success
     })
-    builder.addCase(getComments.rejected, state => {
-      state.status = StatusType.error
-    })
-    builder.addCase(getComment.pending, state => {
-      state.status = StatusType.loading
-    })
-    builder.addCase(getComment.fulfilled, state => {
-      state.status = StatusType.success
-    })
-    builder.addCase(getComment.rejected, state => {
-      state.status = StatusType.error
-    })
-    builder.addCase(createComment.pending, state => {
-      state.status = StatusType.loading
-    })
-    builder.addCase(createComment.fulfilled, state => {
-      state.status = StatusType.success
-    })
-    builder.addCase(createComment.rejected, state => {
-      state.status = StatusType.error
-    })
-    builder.addCase(createReaction.pending, state => {
-      state.status = StatusType.loading
-    })
-    builder.addCase(createReaction.fulfilled, state => {
-      state.status = StatusType.success
-    })
-    builder.addCase(createReaction.rejected, state => {
-      state.status = StatusType.error
-    })
+    builder.addMatcher(
+      action => action.type.endsWith('/pending'),
+      state => {
+        state.status = StatusType.loading
+      }
+    )
+    builder.addMatcher(
+      action => action.type.endsWith('/fulfilled'),
+      state => {
+        state.status = StatusType.success
+      }
+    )
+    builder.addMatcher(
+      action => action.type.endsWith('/rejected'),
+      state => {
+        state.status = StatusType.error
+      }
+    )
   },
 })
 
