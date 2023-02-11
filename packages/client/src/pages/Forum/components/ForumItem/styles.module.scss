@@ -24,6 +24,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding: 5px 0;
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
@@ -41,10 +42,10 @@
 }
 
 .description {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 5px 0;
   margin: 0;
   font-style: normal;
   font-weight: 500;

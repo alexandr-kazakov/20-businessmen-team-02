@@ -16,10 +16,12 @@ const MainPage: React.FC = () => {
     const oauthCode = query.get('code')
 
     if (oauthCode) {
-      dispatch(oAuthSignIn({
-        code: oauthCode,
-        redirect_uri: OAUTH_YANDEX_REDIRECT,
-      }))
+      dispatch(
+        oAuthSignIn({
+          code: oauthCode,
+          redirect_uri: OAUTH_YANDEX_REDIRECT,
+        })
+      )
     }
   }, [dispatch, query])
 

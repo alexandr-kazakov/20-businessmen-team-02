@@ -13,7 +13,6 @@ export const createStore = (preloadedState: any) => {
       leaderboard: leaderboardSlice,
     },
     preloadedState,
-    devTools: process.env.NODE_ENV !== 'production',
   })
 }
 

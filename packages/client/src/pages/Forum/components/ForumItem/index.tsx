@@ -1,33 +1,40 @@
 import React from 'react'
 
 import { useAppDispatch, useAppSelector } from '../../../../app/redux/hooks'
-import { setSelectedIdForum } from '../../redux/forumSlice'
+import { getComments, setIsCreateTopic } from '../../redux/forumSlice'
 
-import type { TForum } from '../../types'
+import type { ITopic } from '../../types'
 
 import styles from './styles.module.scss'
 
 type Props = {
-  forum: TForum
+  topic: ITopic
 }
 
-export const ForumItem: React.FC<Props> = ({ forum }) => {
+export const ForumItem: React.FC<Props> = ({ topic }) => {
   const dispatch = useAppDispatch()
-  const { selectedIdForum } = useAppSelector(state => state.forum)
 
-  const handlerClick = () => {
-    if (selectedIdForum !== forum.id) {
-      dispatch(setSelectedIdForum(forum.id))
+  const { isCreateTopic, selectedIdTopic } = useAppSelector(state => state.forum)
+
+  const date = new Date(topic.createdAt).toLocaleDateString()
+
+  const handlerClick = async () => {
+    if (isCreateTopic) {
+      dispatch(setIsCreateTopic(false))
+    }
+
+    if (selectedIdTopic !== topic.id) {
+      await dispatch(getComments(topic.id))
     }
   }
 
   return (
     <li className={styles.item} onClick={handlerClick}>
       <div className={styles.row}>
-        <span className={styles.title}>{forum.title}</span>
-        <time className={styles.date}>{forum.date}</time>
+        <span className={styles.title}>{topic.title}</span>
+        <time className={styles.date}>{date}</time>
       </div>
-      <p className={styles.description}>{forum.description}</p>
+      <p className={styles.description}>{topic.description}</p>
     </li>
   )
 }

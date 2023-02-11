@@ -7,8 +7,12 @@
   font-size: 13px;
   line-height: 13px;
   color: #1e1e1e;
+}
 
-  &.error {
-    background-color: rgb(204, 85, 85);
+.error {
+  background-color: rgb(204, 85, 85);
+
+  &::placeholder {
+    color: #fff;
   }
 }
