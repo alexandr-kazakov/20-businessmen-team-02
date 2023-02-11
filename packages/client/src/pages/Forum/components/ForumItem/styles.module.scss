@@ -28,7 +28,7 @@
   font-weight: 500;
   font-size: 20px;
   line-height: 20px;
-  color: #fff;
+  color: var(--text-color);
 }
 
 .date {
@@ -37,7 +37,7 @@
   font-weight: 500;
   font-size: 16px;
   line-height: 16px;
-  color: #fff;
+  color: var(--text-color);
 }
 
 .description {
@@ -50,5 +50,5 @@
   font-weight: 500;
   font-size: 16px;
   line-height: 16px;
-  color: #fff;
+  color: var(--text-color);
 }

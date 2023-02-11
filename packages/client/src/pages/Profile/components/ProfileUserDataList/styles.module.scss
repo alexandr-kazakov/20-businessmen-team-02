@@ -1,5 +1,5 @@
 .profile_user_data {
-  color: #fff;
+  color: var(--text-color);
   display: block;
   margin-bottom: 30px!important;
 
@@ -30,7 +30,7 @@
     box-shadow: none;
     border: none;
     background-image:none;
-    color: #fff;
+    color: var(--text-color);
     outline: none;
     -webkit-appearance: none;
   }

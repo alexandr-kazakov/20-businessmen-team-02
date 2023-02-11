@@ -17,6 +17,7 @@ import { ProtectedRoute } from '../../components/Routers/ProtectedRoute'
 import { ErrorBoundary } from '../../components/UI/Error'
 import { Snackbar } from '../../components/Snackbar'
 import { RoutersPaths } from '../../components/Routers/types'
+import { Theme } from '../../components/Theme'
 
 import styles from './styles.module.scss'
 
@@ -50,6 +51,7 @@ export const App: React.FC = () => {
   return (
     <div className={styles.app}>
       <ErrorBoundary>
+        <Theme />
         <Navigation />
         <Switch>
           <Route path={RoutersPaths.main} exact component={MainPage} />
