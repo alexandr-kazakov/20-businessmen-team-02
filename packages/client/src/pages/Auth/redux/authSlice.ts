@@ -52,6 +52,10 @@ export const changeUserProfile: any = createAsyncThunk('profile', async (data: a
   }
 })
 
+export const changeUserAvatar: any = createAsyncThunk('avatar', async (data: any) => {
+  return await api.updateFile('user/profile/avatar', data)
+})
+
 interface IInitialState {
   status: StatusType | ''
   isLoadingProtectedRouter: boolean
@@ -86,6 +90,12 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: builder => {
+    builder.addCase(changeUserAvatar.fulfilled, (state, { payload }) => {
+      localStorage.setItem('user', JSON.stringify(payload.data))
+
+      state.user = payload.data
+      state.status = StatusType.success
+    })
     builder.addCase(oAuthSignIn.pending, state => {
       state.status = StatusType.loading
     })
