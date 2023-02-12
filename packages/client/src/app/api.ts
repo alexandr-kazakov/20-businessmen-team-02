@@ -110,7 +110,7 @@ export const api = {
     }),
 
   updateFile: (path: string, data: AxiosRequestConfig['data']) =>
-    api.request('PATCH', path, {
+    api.request('PUT', path, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
