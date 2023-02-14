@@ -1,0 +1,36 @@
+.upload {
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+
+  & .input {
+    pointer-events: none;
+    position: absolute;
+    display: none;
+  }
+}
+
+.image {
+  width: 200px;
+  height: 200px;
+  min-width: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.close {
+  cursor: pointer;
+}
+
+.save {
+  cursor: pointer;
+}
+
+.preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}

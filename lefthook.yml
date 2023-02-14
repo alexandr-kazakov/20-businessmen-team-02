@@ -4,6 +4,9 @@ pre-commit:
     lint:
       glob: '*.{ts,tsx}'
       run: yarn eslint {staged_files}
+    prettier:
+      glob: '*.{ts,tsx}'
+      run: yarn prettier --write {staged_files}
 commit-msg:
   commands:
     commitlint:

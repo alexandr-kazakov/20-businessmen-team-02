@@ -1,0 +1,65 @@
+.game {
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.congrat {
+  position: absolute;
+  top: 0;
+  margin-top: 10px;
+  width: 100vw;
+  text-align: center;
+  color: red;
+}
+
+.start {
+  width: 300px;
+}
+
+.startHeader {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.restart {
+  position: absolute;
+  top: 80px;
+  left: calc(100vw / 2 - 100px);
+  width: 200px;
+}
+
+.select {
+  margin: 20px 0;
+}
+
+.selectLabel {
+  color: white;
+  margin-right: 10px;
+}
+
+.show {
+  display: block;
+}
+
+.hide {
+  display: none;
+}
+
+.dropZone {
+  height: 100px;
+  color: white;
+  text-align: center;
+  border: 2px dashed white;
+}
+
+.dropZoneLabel {
+  margin: 15px;
+}

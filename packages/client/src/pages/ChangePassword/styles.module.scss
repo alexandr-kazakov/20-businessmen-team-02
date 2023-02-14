@@ -1,0 +1,37 @@
+@use '../../styles/common.module.scss';
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  max-width: 340px;
+  width: 100%;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.14);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 20px;
+  color: #fff;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}

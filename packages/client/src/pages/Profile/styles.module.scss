@@ -1,0 +1,9 @@
+@use '../../styles/common.module.scss';
+
+.profile {
+  padding-top: 50px;
+
+  & .list {
+    margin-bottom: 30px;
+  }
+}

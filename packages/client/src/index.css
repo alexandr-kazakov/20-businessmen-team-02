@@ -1,0 +1,38 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #204969;
+  font-family: 'Inter', 'Times New Roman', Times, sans-serif;
+  font-size: 16px;
+}
+
+p {
+  font-size: 16px;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+.clear-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1140px;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+a{
+  text-decoration: none;
+}

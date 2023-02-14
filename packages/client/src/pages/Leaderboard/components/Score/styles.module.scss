@@ -1,0 +1,29 @@
+@import '../../../../styles/mixins.scss';
+@import '../../../../styles/variables.scss';
+
+.scores {
+  color: $primary;
+  position: relative;
+  padding-right: 30px;
+}
+
+.scores_desc::before,
+.scores_asc::before {
+  content: '';
+  position: absolute;
+  right: 30px;
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 0px 10px 10px 10px;
+}
+
+.scores_asc::before {
+  transform: translate(30px, 50%);
+  border-color: transparent transparent $green transparent;
+}
+
+.scores_desc::before {
+  transform: translate(30px, 50%) rotate(180deg);
+  border-color: transparent transparent $red transparent;
+}

@@ -3,14 +3,17 @@
   "private": true,
   "scripts": {
     "bootstrap": "yarn && node init.js && lerna clean && yarn && lerna bootstrap && git config --local commit.template .gitcommittemplate",
-    "build": "lerna run build",
-    "dev:client": "lerna run dev  --scope=client",
-    "dev:server": "lerna run dev --scope=server",
+    "build": "yarn build:client && yarn build:server",
+    "build:client": "lerna run build --scope=client",
+    "build:server": "lerna run build --scope=server",
     "dev": "lerna run dev",
+    "dev:client": "lerna run dev --scope=client",
+    "dev:server": "lerna run dev --scope=server",
     "test": "lerna run test",
     "lint": "lerna run lint",
     "format": "lerna run format",
-    "preview": "lerna run preview"
+    "preview": "lerna run preview",
+    "preview:server": "lerna run preview --scope=server"
   },
   "license": "MIT",
   "workspaces": [
@@ -24,5 +27,6 @@
     "@commitlint/config-conventional": "17.3.0",
     "@evilmartians/lefthook": "^1.1.1",
     "lerna": "^5.4.3"
-  }
+  },
+  "packageManager": "yarn@1.22.19"
 }
