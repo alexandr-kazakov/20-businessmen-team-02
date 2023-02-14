@@ -16,7 +16,7 @@ const TIMEBAR_HIGHT = 40,
   },
   TIME_LIMIT = 20000
 
-const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initStart, src }) => {
+const CanvasComponent: React.FC<Props> = ({ className, scores, setScores, level, initStart, src }) => {
   const ref = useRef(null)
 
   const [sourceSizes, setSourceSizes] = useState({ sourceFullWidth: CHEBURASHKA, sourceFullHeight: CHEBURASHKA })
@@ -61,9 +61,11 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
   const [imageArray, setImageArray] = useState<ImageObj[]>([])
   const [finishedPlay, setFinished] = useState(false)
   const [start, setStart] = useState(-1)
+  const imageElement = new Image()
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>
+    let finished = true
 
     const handleResize = () => {
       timer && clearTimeout(timer)
@@ -101,7 +103,7 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
 
         drawTimebar()
 
-        let finished = finishedPlay
+        finished = finishedPlay
         const startPos: Position[] = []
         let draggable: ImageObj | null = null,
           first: ImageObj | null = null,
@@ -118,7 +120,7 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
         }
 
         let imgArr: ImageObj[] = []
-        const imageElement = new Image()
+
         imageElement.onload = function () {
           const { width, height } = this as HTMLImageElement
           const { sourceFullWidth, sourceFullHeight } = sourceSizes
@@ -181,7 +183,7 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
         imageElement.src = src || '/assets/images/cheburashka.png'
 
         canvas.onmousedown = e => {
-          if (!finished) {
+          if (!finished && scores < 0) {
             for (const imgObj of imgArr) {
               const posX = getCoordX(imgObj.posX, imgPartWidth),
                 posY = getCoordY(imgObj.posY, imgPartHeight)
@@ -289,14 +291,15 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
               )
             }
           })
-          if (result && !finished) {
-            let scores = Math.round((initStart + timeLimit - performance.now()) / 100)
-            scores < 0 && (scores = 0)
+          // console.log(finished)
+          if (result && !finished && scores < 0) {
+            let newScores = Math.round((initStart + timeLimit - performance.now()) / 100)
+            newScores < 0 && (newScores = 0)
             finished = true
-            setFinished(true)
+            // setFinished(true)
             timer = setTimeout(() => {
               // окончание игры
-              setScores(scores)
+              setScores(newScores)
             }, DELAY)
           }
         }
@@ -342,17 +345,23 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
           ctx.stroke()
           ctx.fill()
           drawTimebar()
+          console.log(finished)
           if (!finished && initStart + timeLimit - performance.now() > 0) {
             requestAnimationFrame(animateTimeBar)
           }
         }
-        animateTimeBar()
+
+        console.log('root', finished, initStart)
+
+        scores === -1 && initStart > 0 && animateTimeBar()
       }
     }
 
     return () => {
       timer && clearTimeout(timer)
       window.removeEventListener('resize', handleResize)
+      imageElement.src = ''
+      finished = true
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

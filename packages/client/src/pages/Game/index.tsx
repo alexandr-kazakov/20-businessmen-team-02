@@ -174,6 +174,7 @@ const GamePage: React.FC = () => {
       <div className={styles.container}>
         <CanvasComponent
           className={initStart ? styles.show : styles.hide}
+          scores={scores}
           setScores={setScoresAndPostUserScores}
           level={level}
           initStart={initStart}
