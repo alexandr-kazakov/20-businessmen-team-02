@@ -59,13 +59,12 @@ const CanvasComponent: React.FC<Props> = ({ className, scores, setScores, level,
   const getCoordY = (x: number, size: number) => x * (size + IMG_DIVIDER) + IMG_BORDER + TIMEBAR_HIGHT
 
   const [imageArray, setImageArray] = useState<ImageObj[]>([])
-  const [finishedPlay, setFinished] = useState(false)
   const [start, setStart] = useState(-1)
   const imageElement = new Image()
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>
-    let finished = true
+    let finished = scores >= 0
 
     const handleResize = () => {
       timer && clearTimeout(timer)
@@ -88,7 +87,7 @@ const CanvasComponent: React.FC<Props> = ({ className, scores, setScores, level,
           const color = 'green',
             rate = (initStart + timeLimit - performance.now()) / timeLimit
 
-          if (rate > 0) {
+          if (scores === -1 && rate > 0) {
             const width = Math.round(rate * (canvasWidth - IMG_BORDER * 2))
             ctx.strokeStyle = color
             ctx.fillStyle = color
@@ -103,7 +102,6 @@ const CanvasComponent: React.FC<Props> = ({ className, scores, setScores, level,
 
         drawTimebar()
 
-        finished = finishedPlay
         const startPos: Position[] = []
         let draggable: ImageObj | null = null,
           first: ImageObj | null = null,
@@ -173,8 +171,6 @@ const CanvasComponent: React.FC<Props> = ({ className, scores, setScores, level,
             }
             setStart(initStart)
             setImageArray([...imgArr])
-            finished = false
-            setFinished(false)
           } else {
             imgArr = [...imageArray]
             refreshCanvas()
@@ -291,12 +287,10 @@ const CanvasComponent: React.FC<Props> = ({ className, scores, setScores, level,
               )
             }
           })
-          // console.log(finished)
           if (result && !finished && scores < 0) {
             let newScores = Math.round((initStart + timeLimit - performance.now()) / 100)
             newScores < 0 && (newScores = 0)
             finished = true
-            // setFinished(true)
             timer = setTimeout(() => {
               // окончание игры
               setScores(newScores)
@@ -345,13 +339,11 @@ const CanvasComponent: React.FC<Props> = ({ className, scores, setScores, level,
           ctx.stroke()
           ctx.fill()
           drawTimebar()
-          console.log(finished)
+
           if (!finished && initStart + timeLimit - performance.now() > 0) {
             requestAnimationFrame(animateTimeBar)
           }
         }
-
-        console.log('root', finished, initStart)
 
         scores === -1 && initStart > 0 && animateTimeBar()
       }

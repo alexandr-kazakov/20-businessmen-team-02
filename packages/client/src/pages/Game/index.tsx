@@ -23,6 +23,7 @@ const getEnding = (num: number) => {
 
 const GamePage: React.FC = () => {
   const elementRef = useRef<HTMLDivElement | null>(null)
+  const musicRef = useRef<HTMLAudioElement | null>(null)
   const [initStart, setInitStart] = useState(0)
   const [scores, setScores] = useState(-1)
   const [level, setLevel] = useState(localStorage.getItem(LOCAL_STORAGE_LEVEL_LABEL) || '0')
@@ -31,6 +32,12 @@ const GamePage: React.FC = () => {
     scores < 0 ? null : scores === 0 ? 'У Вас 0 очков' : `Поздравляем у Вас ${scores} очк${getEnding(scores)}!`
 
   const clickStart = useCallback(() => {
+    const musicEl = musicRef.current
+    if (musicEl) {
+      musicEl.loop = true
+      musicEl.currentTime = 0
+      musicEl.play()
+    }
     setInitStart(performance.now())
   }, [])
 
@@ -41,20 +48,26 @@ const GamePage: React.FC = () => {
 
   const user = useAppSelector(state => state.auth.user)
 
-  const setScoresAndPostUserScores = (scores: number) => {
-    setScores(scores)
-
-    if (user && scores > 0) {
-      const { id, avatar, display_name } = user
-      const payload = {
-        data: { id, avatar, display_name, scores },
-        ratingFieldName: RATING_FIELD_NAME,
-        teamName: TEAM_NAME,
+  const setScoresAndPostUserScores = useCallback(
+    (scores: number) => {
+      if (scores >= 0 && musicRef.current) {
+        musicRef.current.pause()
       }
+      setScores(scores)
 
-      api.post('/leaderboard', payload)
-    }
-  }
+      if (user && scores > 0) {
+        const { id, avatar, display_name } = user
+        const payload = {
+          data: { id, avatar, display_name, scores },
+          ratingFieldName: RATING_FIELD_NAME,
+          teamName: TEAM_NAME,
+        }
+
+        api.post('/leaderboard', payload)
+      }
+    },
+    [user]
+  )
 
   const selectLevelHandle = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target
@@ -184,6 +197,7 @@ const GamePage: React.FC = () => {
       </div>
       {header && <h1 className={styles.congrat}>{header}</h1>}
       {header && playAgainButton}
+      <audio controls src="/assets/music/music.mp3" ref={musicRef} className={styles.audio}></audio>
     </div>
   )
 }
