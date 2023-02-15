@@ -7,7 +7,7 @@ const TIMEBAR_HIGHT = 40,
   IMG_DIVIDER = 2,
   CANVAS_COLOR = 'gray',
   DELAY = 200,
-  LEFT_MENU_WIDTH = 40,
+  LEFT_MENU_WIDTH = 80,
   CHEBURASHKA = 600,
   AMOUNT_PART_BY_LEVEL: AmountPartByLevel = {
     '0': 3,

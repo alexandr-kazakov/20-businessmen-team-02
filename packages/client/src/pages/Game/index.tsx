@@ -24,6 +24,7 @@ const getEnding = (num: number) => {
 const GamePage: React.FC = () => {
   const elementRef = useRef<HTMLDivElement | null>(null)
   const musicRef = useRef<HTMLAudioElement | null>(null)
+  const volumeRef = useRef<HTMLInputElement | null>(null)
   const [initStart, setInitStart] = useState(0)
   const [scores, setScores] = useState(-1)
   const [level, setLevel] = useState(localStorage.getItem(LOCAL_STORAGE_LEVEL_LABEL) || '0')
@@ -177,27 +178,48 @@ const GamePage: React.FC = () => {
   useEffect(() => {
     document.addEventListener('keydown', handlerKeyDown)
 
+    const volume = localStorage.getItem('sound') || '100'
+    musicRef.current && (musicRef.current.volume = Number(volume) / 100)
+    volumeRef.current && (volumeRef.current.value = volume)
+
     return () => {
       document.removeEventListener('keydown', handlerKeyDown)
     }
   }, [handlerKeyDown])
 
+  const handleVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    if (musicRef.current) {
+      musicRef.current.volume = Number(value) / 100
+    }
+    localStorage.setItem('sound', value)
+  }
+
   return (
-    <div className={styles.game} ref={elementRef}>
-      <div className={styles.container}>
-        <CanvasComponent
-          className={initStart ? styles.show : styles.hide}
-          scores={scores}
-          setScores={setScoresAndPostUserScores}
-          level={level}
-          initStart={initStart}
-          src={src}
-        />
-        {startBlock(!initStart)}
+    <div className={styles.columns} ref={elementRef}>
+      <div className={styles.game}>
+        <div className={styles.container}>
+          <CanvasComponent
+            className={initStart ? styles.show : styles.hide}
+            scores={scores}
+            setScores={setScoresAndPostUserScores}
+            level={level}
+            initStart={initStart}
+            src={src}
+          />
+          {startBlock(!initStart)}
+        </div>
+        <audio controls src="/assets/music/music.mp3" ref={musicRef} className={styles.audio}></audio>
+      </div>
+      <div className={styles.leftPanel}></div>
+      <div className={styles.rightPanel}>
+        <div className={styles.volumeBlock}>
+          <i className={styles.volume}></i>
+          <input type="range" orient="vertical" onChange={handleVolume} ref={volumeRef} />
+        </div>
       </div>
       {header && <h1 className={styles.congrat}>{header}</h1>}
       {header && playAgainButton}
-      <audio controls src="/assets/music/music.mp3" ref={musicRef} className={styles.audio}></audio>
     </div>
   )
 }
