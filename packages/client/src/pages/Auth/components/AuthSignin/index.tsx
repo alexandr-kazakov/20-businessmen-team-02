@@ -8,6 +8,7 @@ import { Input } from '../../../../components/UI/Input'
 import { Button, ButtonVariant } from '../../../../components/UI/Button'
 import type { IAuthSignIn } from '../../types'
 import { RoutersPaths } from '../../../../components/Routers/types'
+import { purifyValues } from '../../../../helpers'
 
 import styles from './styles.module.scss'
 
@@ -17,6 +18,7 @@ export const AuthSignIn: React.FC = () => {
 
   const [values, setValues] = useState<IAuthSignIn>({ login: '', password: '' })
   const [disabled, setDisabled] = useState(true)
+  const [oAuthYandexUrl, setOAuthYandexUrl] = useState('')
 
   const handlerChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,18 +28,12 @@ export const AuthSignIn: React.FC = () => {
     [values]
   )
 
-  const [oAuthYandexUrl, setOAuthYandexUrl] = useState('')
-
-  useEffect(() => {
-    if (!oAuthYandexUrl) {
-      getOAuthUrl().then(setOAuthYandexUrl)
-    }
-  }, [oAuthYandexUrl])
-
   const handlerSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    const response = await dispatch(signin(values))
+    const sanitizeValues = purifyValues(values)
+
+    const response = await dispatch(signin(sanitizeValues))
 
     if (response.error) {
       dispatch(showSnackBar(response.error.message))
@@ -50,6 +46,12 @@ export const AuthSignIn: React.FC = () => {
     event.preventDefault()
     dispatch(setIsSigninView())
   }
+
+  useEffect(() => {
+    if (!oAuthYandexUrl) {
+      getOAuthUrl().then(setOAuthYandexUrl)
+    }
+  }, [oAuthYandexUrl])
 
   useEffect(() => {
     if (!values.login || !values.password) {

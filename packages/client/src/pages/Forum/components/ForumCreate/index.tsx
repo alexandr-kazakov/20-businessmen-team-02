@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../../../app/redux/hooks'
 import { createTopic } from '../../redux/forumSlice'
 import { Input } from '../../../../components/UI/Input'
 import { Button } from '../../../../components/UI/Button'
+import { purifyValues } from '../../../../helpers'
 
 import styles from './styles.module.scss'
 
@@ -59,10 +60,12 @@ export const ForumCreate: React.FC = () => {
         setIsValidDescription(false)
       }
     } else {
+      const sanitizeValues = purifyValues(values)
+
       const topic = {
         id_author: user?.id,
-        title: values.title,
-        description: values.description,
+        title: sanitizeValues.title,
+        description: sanitizeValues.description,
       }
 
       await dispatch(createTopic(topic))

@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 import cors from 'cors'
 import express from 'express'
+import helmet from 'helmet'
 import * as fs from 'fs'
 import * as path from 'path'
 import { createServer as createViteServer } from 'vite'
@@ -27,6 +28,8 @@ const startServer = async () => {
   app.use(cors())
   app.use(express.json())
   app.use(cookieParser)
+
+  app.use(helmet.xssFilter())
 
   app.use('/api', routers)
 

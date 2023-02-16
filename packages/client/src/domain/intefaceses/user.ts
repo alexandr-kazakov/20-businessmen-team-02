@@ -1,3 +1,7 @@
+export interface IObjectKeys {
+  [key: string]: any
+}
+
 export interface User {
   id: number
   first_name: string
