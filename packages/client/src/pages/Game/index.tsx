@@ -23,6 +23,8 @@ const getEnding = (num: number) => {
 
 const GamePage: React.FC = () => {
   const elementRef = useRef<HTMLDivElement | null>(null)
+  const musicRef = useRef<HTMLAudioElement | null>(null)
+  const volumeRef = useRef<HTMLInputElement | null>(null)
   const [initStart, setInitStart] = useState(0)
   const [scores, setScores] = useState(-1)
   const [level, setLevel] = useState(localStorage.getItem(LOCAL_STORAGE_LEVEL_LABEL) || '0')
@@ -31,6 +33,12 @@ const GamePage: React.FC = () => {
     scores < 0 ? null : scores === 0 ? 'У Вас 0 очков' : `Поздравляем у Вас ${scores} очк${getEnding(scores)}!`
 
   const clickStart = useCallback(() => {
+    const musicEl = musicRef.current
+    if (musicEl) {
+      musicEl.loop = true
+      musicEl.currentTime = 0
+      musicEl.play()
+    }
     setInitStart(performance.now())
   }, [])
 
@@ -41,20 +49,26 @@ const GamePage: React.FC = () => {
 
   const user = useAppSelector(state => state.auth.user)
 
-  const setScoresAndPostUserScores = (scores: number) => {
-    setScores(scores)
-
-    if (user && scores > 0) {
-      const { id, avatar, display_name } = user
-      const payload = {
-        data: { id, avatar, display_name, scores },
-        ratingFieldName: RATING_FIELD_NAME,
-        teamName: TEAM_NAME,
+  const setScoresAndPostUserScores = useCallback(
+    (scores: number) => {
+      if (scores >= 0 && musicRef.current) {
+        musicRef.current.pause()
       }
+      setScores(scores)
 
-      api.post('/leaderboard', payload)
-    }
-  }
+      if (user && scores > 0) {
+        const { id, avatar, display_name } = user
+        const payload = {
+          data: { id, avatar, display_name, scores },
+          ratingFieldName: RATING_FIELD_NAME,
+          teamName: TEAM_NAME,
+        }
+
+        api.post('/leaderboard', payload)
+      }
+    },
+    [user]
+  )
 
   const selectLevelHandle = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target
@@ -164,22 +178,45 @@ const GamePage: React.FC = () => {
   useEffect(() => {
     document.addEventListener('keydown', handlerKeyDown)
 
+    const volume = localStorage.getItem('sound') || '100'
+    musicRef.current && (musicRef.current.volume = Number(volume) / 100)
+    volumeRef.current && (volumeRef.current.value = volume)
+
     return () => {
       document.removeEventListener('keydown', handlerKeyDown)
     }
   }, [handlerKeyDown])
 
+  const handleVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    if (musicRef.current) {
+      musicRef.current.volume = Number(value) / 100
+    }
+    localStorage.setItem('sound', value)
+  }
+
   return (
-    <div className={styles.game} ref={elementRef}>
-      <div className={styles.container}>
-        <CanvasComponent
-          className={initStart ? styles.show : styles.hide}
-          setScores={setScoresAndPostUserScores}
-          level={level}
-          initStart={initStart}
-          src={src}
-        />
-        {startBlock(!initStart)}
+    <div className={styles.columns} ref={elementRef}>
+      <div className={styles.game}>
+        <div className={styles.container}>
+          <CanvasComponent
+            className={initStart ? styles.show : styles.hide}
+            scores={scores}
+            setScores={setScoresAndPostUserScores}
+            level={level}
+            initStart={initStart}
+            src={src}
+          />
+          {startBlock(!initStart)}
+        </div>
+        <audio controls src="/assets/music/music.mp3" ref={musicRef} className={styles.audio}></audio>
+      </div>
+      <div className={styles.leftPanel}></div>
+      <div className={styles.rightPanel}>
+        <div className={styles.volumeBlock}>
+          <i className={styles.volume}></i>
+          <input type="range" orient="vertical" onChange={handleVolume} ref={volumeRef} />
+        </div>
       </div>
       {header && <h1 className={styles.congrat}>{header}</h1>}
       {header && playAgainButton}

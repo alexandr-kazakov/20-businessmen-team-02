@@ -20,6 +20,7 @@ export type ImageObj = {
 
 type OwnProps = {
   className: string
+  scores: number
   setScores: (value: number) => void
   level: string
   initStart: number

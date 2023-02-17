@@ -7,7 +7,7 @@ const TIMEBAR_HIGHT = 40,
   IMG_DIVIDER = 2,
   CANVAS_COLOR = 'gray',
   DELAY = 200,
-  LEFT_MENU_WIDTH = 40,
+  LEFT_MENU_WIDTH = 80,
   CHEBURASHKA = 600,
   AMOUNT_PART_BY_LEVEL: AmountPartByLevel = {
     '0': 3,
@@ -16,7 +16,7 @@ const TIMEBAR_HIGHT = 40,
   },
   TIME_LIMIT = 20000
 
-const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initStart, src }) => {
+const CanvasComponent: React.FC<Props> = ({ className, scores, setScores, level, initStart, src }) => {
   const ref = useRef(null)
 
   const [sourceSizes, setSourceSizes] = useState({ sourceFullWidth: CHEBURASHKA, sourceFullHeight: CHEBURASHKA })
@@ -59,11 +59,12 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
   const getCoordY = (x: number, size: number) => x * (size + IMG_DIVIDER) + IMG_BORDER + TIMEBAR_HIGHT
 
   const [imageArray, setImageArray] = useState<ImageObj[]>([])
-  const [finishedPlay, setFinished] = useState(false)
   const [start, setStart] = useState(-1)
+  const imageElement = new Image()
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>
+    let finished = scores >= 0
 
     const handleResize = () => {
       timer && clearTimeout(timer)
@@ -86,7 +87,7 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
           const color = 'green',
             rate = (initStart + timeLimit - performance.now()) / timeLimit
 
-          if (rate > 0) {
+          if (scores === -1 && rate > 0) {
             const width = Math.round(rate * (canvasWidth - IMG_BORDER * 2))
             ctx.strokeStyle = color
             ctx.fillStyle = color
@@ -101,7 +102,6 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
 
         drawTimebar()
 
-        let finished = finishedPlay
         const startPos: Position[] = []
         let draggable: ImageObj | null = null,
           first: ImageObj | null = null,
@@ -118,7 +118,7 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
         }
 
         let imgArr: ImageObj[] = []
-        const imageElement = new Image()
+
         imageElement.onload = function () {
           const { width, height } = this as HTMLImageElement
           const { sourceFullWidth, sourceFullHeight } = sourceSizes
@@ -171,8 +171,6 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
             }
             setStart(initStart)
             setImageArray([...imgArr])
-            finished = false
-            setFinished(false)
           } else {
             imgArr = [...imageArray]
             refreshCanvas()
@@ -181,7 +179,7 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
         imageElement.src = src || '/assets/images/cheburashka.png'
 
         canvas.onmousedown = e => {
-          if (!finished) {
+          if (!finished && scores < 0) {
             for (const imgObj of imgArr) {
               const posX = getCoordX(imgObj.posX, imgPartWidth),
                 posY = getCoordY(imgObj.posY, imgPartHeight)
@@ -289,14 +287,13 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
               )
             }
           })
-          if (result && !finished) {
-            let scores = Math.round((initStart + timeLimit - performance.now()) / 100)
-            scores < 0 && (scores = 0)
+          if (result && !finished && scores < 0) {
+            let newScores = Math.round((initStart + timeLimit - performance.now()) / 100)
+            newScores < 0 && (newScores = 0)
             finished = true
-            setFinished(true)
             timer = setTimeout(() => {
               // окончание игры
-              setScores(scores)
+              setScores(newScores)
             }, DELAY)
           }
         }
@@ -342,17 +339,21 @@ const CanvasComponent: React.FC<Props> = ({ className, setScores, level, initSta
           ctx.stroke()
           ctx.fill()
           drawTimebar()
+
           if (!finished && initStart + timeLimit - performance.now() > 0) {
             requestAnimationFrame(animateTimeBar)
           }
         }
-        animateTimeBar()
+
+        scores === -1 && initStart > 0 && animateTimeBar()
       }
     }
 
     return () => {
       timer && clearTimeout(timer)
       window.removeEventListener('resize', handleResize)
+      imageElement.src = ''
+      finished = true
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
