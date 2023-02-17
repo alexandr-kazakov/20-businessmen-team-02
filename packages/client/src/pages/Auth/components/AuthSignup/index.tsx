@@ -8,7 +8,7 @@ import { Input } from '../../../../components/UI/Input'
 import { Button, ButtonVariant } from '../../../../components/UI/Button'
 import type { IAuthSignup } from '../../types'
 import { RoutersPaths } from '../../../../components/Routers/types'
-import { purifyValues } from '../../../../helpers'
+import { purify } from '../../../../helpers'
 
 import styles from './styles.module.scss'
 
@@ -48,11 +48,18 @@ export const AuthSignUp: React.FC = () => {
     if (values.password !== values.check_password) {
       setIsValidPasswords(false)
     } else {
-      const sanitizeValues = purifyValues(values)
+      const { email, login, first_name, second_name, phone, password } = values
 
-      const { email, login, first_name, second_name, phone, password } = sanitizeValues
-
-      const response = await dispatch(signup({ email, login, first_name, second_name, phone, password }))
+      const response = await dispatch(
+        signup({
+          email: purify(email),
+          login: purify(login),
+          first_name: purify(first_name),
+          second_name: purify(second_name),
+          phone: purify(phone),
+          password,
+        })
+      )
 
       if (response.error) {
         dispatch(showSnackBar(response.error.message))

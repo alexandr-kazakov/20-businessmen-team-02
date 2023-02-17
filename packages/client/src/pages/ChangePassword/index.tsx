@@ -5,7 +5,6 @@ import { Input } from '../../components/UI/Input'
 
 import { useAppSelector } from '../../app/redux/hooks'
 import { api } from '../../app/api'
-import { purifyValues } from '../../helpers'
 
 import styles from './styles.module.scss'
 
@@ -25,9 +24,7 @@ const ChangePassword: React.FC = () => {
       e.preventDefault()
 
       try {
-        const sanitizeValues = purifyValues(values)
-
-        const { newPassword, oldPassword } = sanitizeValues
+        const { newPassword, oldPassword } = values
 
         await api.put('user/password/', { login: user?.login, newPassword, oldPassword })
         /** TODO: показывать успешное выполнение в <Snackbar/> */

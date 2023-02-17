@@ -8,7 +8,6 @@ import { Input } from '../../../../components/UI/Input'
 import { Button, ButtonVariant } from '../../../../components/UI/Button'
 import type { IAuthSignIn } from '../../types'
 import { RoutersPaths } from '../../../../components/Routers/types'
-import { purifyValues } from '../../../../helpers'
 
 import styles from './styles.module.scss'
 
@@ -31,9 +30,7 @@ export const AuthSignIn: React.FC = () => {
   const handlerSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    const sanitizeValues = purifyValues(values)
-
-    const response = await dispatch(signin(sanitizeValues))
+    const response = await dispatch(signin(values))
 
     if (response.error) {
       dispatch(showSnackBar(response.error.message))
