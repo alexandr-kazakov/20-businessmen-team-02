@@ -52,10 +52,10 @@ export const ForumWindow: React.FC = () => {
         <>
           <div className={styles.header}>
             <div className={styles.row}>
-              <span className={styles.title}>Топик: {selectedTopic.title}</span>
+              <span className={styles.title}>Топик: {purify(selectedTopic.title)}</span>
               <time className={styles.date}>{date}</time>
             </div>
-            <p className={styles.description}>{selectedTopic.description}</p>
+            <p className={styles.description}>{purify(selectedTopic.description)}</p>
             <ForumComments />
           </div>
           <div className={styles.footer}>
