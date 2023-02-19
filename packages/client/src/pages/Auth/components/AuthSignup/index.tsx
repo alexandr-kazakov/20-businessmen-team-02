@@ -8,7 +8,6 @@ import { Input } from '../../../../components/UI/Input'
 import { Button, ButtonVariant } from '../../../../components/UI/Button'
 import type { IAuthSignup } from '../../types'
 import { RoutersPaths } from '../../../../components/Routers/types'
-import { purify } from '../../../../helpers'
 
 import styles from './styles.module.scss'
 
@@ -50,16 +49,7 @@ export const AuthSignUp: React.FC = () => {
     } else {
       const { email, login, first_name, second_name, phone, password } = values
 
-      const response = await dispatch(
-        signup({
-          email: purify(email),
-          login: purify(login),
-          first_name: purify(first_name),
-          second_name: purify(second_name),
-          phone: purify(phone),
-          password,
-        })
-      )
+      const response = await dispatch(signup({ email, login, first_name, second_name, phone, password }))
 
       if (response.error) {
         dispatch(showSnackBar(response.error.message))

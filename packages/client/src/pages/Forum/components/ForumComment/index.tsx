@@ -4,7 +4,6 @@ import Picker from '@emoji-mart/react'
 import { useAppDispatch, useAppSelector } from '../../../../app/redux/hooks'
 import { getComments, createReaction } from '../../redux/forumSlice'
 import { ForumEmoji } from '../ForumEmoji'
-import { purify } from '../../../../helpers'
 
 import type { IComment } from '../../types'
 
@@ -44,9 +43,9 @@ export const ForumComment: React.FC<IComponent> = props => {
     <div className={styles.comment}>
       <div className={styles.container}>
         <div className={styles.wrapper}>
-          <span className={styles.author}>{purify(comment.login_author)}</span>
+          <span className={styles.author}>{comment.login_author}</span>
         </div>
-        <p className={styles.text}>{purify(comment.text)}</p>
+        <p className={styles.text}>{comment.text}</p>
       </div>
       <div className={styles.reactions}>
         <button className={styles.plus} onClick={toggleEmoji}>

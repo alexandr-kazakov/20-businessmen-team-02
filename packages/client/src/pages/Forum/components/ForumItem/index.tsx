@@ -2,7 +2,6 @@ import React from 'react'
 
 import { useAppDispatch, useAppSelector } from '../../../../app/redux/hooks'
 import { getComments, setIsCreateTopic } from '../../redux/forumSlice'
-import { purify } from '../../../../helpers'
 
 import type { ITopic } from '../../types'
 
@@ -32,7 +31,7 @@ export const ForumItem: React.FC<Props> = ({ topic }) => {
   return (
     <li className={styles.item} onClick={handlerClick}>
       <div className={styles.row}>
-        <span className={styles.title}>{purify(topic.title)}</span>
+        <span className={styles.title}>{topic.title}</span>
         <time className={styles.date}>{date}</time>
       </div>
       <p className={styles.description}>{topic.description}</p>
