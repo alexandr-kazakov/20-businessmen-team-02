@@ -1,4 +1,5 @@
-export interface IAuthSignIn {
+import type { IObjectKeys } from '../../../domain/intefaceses/user'
+export interface IAuthSignIn extends IObjectKeys {
   login: string
   password: string
 }

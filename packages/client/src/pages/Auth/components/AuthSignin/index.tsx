@@ -17,6 +17,7 @@ export const AuthSignIn: React.FC = () => {
 
   const [values, setValues] = useState<IAuthSignIn>({ login: '', password: '' })
   const [disabled, setDisabled] = useState(true)
+  const [oAuthYandexUrl, setOAuthYandexUrl] = useState('')
 
   const handlerChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,14 +26,6 @@ export const AuthSignIn: React.FC = () => {
     },
     [values]
   )
-
-  const [oAuthYandexUrl, setOAuthYandexUrl] = useState('')
-
-  useEffect(() => {
-    if (!oAuthYandexUrl) {
-      getOAuthUrl().then(setOAuthYandexUrl)
-    }
-  }, [oAuthYandexUrl])
 
   const handlerSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -50,6 +43,12 @@ export const AuthSignIn: React.FC = () => {
     event.preventDefault()
     dispatch(setIsSigninView())
   }
+
+  useEffect(() => {
+    if (!oAuthYandexUrl) {
+      getOAuthUrl().then(setOAuthYandexUrl)
+    }
+  }, [oAuthYandexUrl])
 
   useEffect(() => {
     if (!values.login || !values.password) {
