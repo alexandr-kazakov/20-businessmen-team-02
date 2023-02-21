@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "test": "jest -u"
+    "test": "jest ."
   },
   "dependencies": {
     "@emoji-mart/react": "^1.1.1",

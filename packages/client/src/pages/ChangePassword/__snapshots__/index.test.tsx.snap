@@ -10,21 +10,18 @@ exports[`should render ChangePassword component 1`] = `
       <div>
         <input
           class=""
-          name="oldPassword"
           placeholder="Старый пароль"
           type="password"
           value=""
         />
         <input
           class=""
-          name="newPassword"
           placeholder="Новый пароль"
           type="password"
           value=""
         />
         <input
           class=""
-          name="repeatPassword"
           placeholder="Повторить новый пароль"
           type="password"
           value=""
@@ -33,7 +30,6 @@ exports[`should render ChangePassword component 1`] = `
       <div>
         <button
           class=""
-          disabled=""
           type="submit"
         >
           Изменить пароль
