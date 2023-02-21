@@ -13,6 +13,7 @@ import cookieParser from './middleware/cookie'
 
 dotenv.config()
 
+const DOMAIN = process.env.DOMAIN || 'localhost'
 const PORT = Number(process.env.SERVER_PORT) || 3001
 const isDev = () => process.env.NODE_ENV === 'development'
 
@@ -49,6 +50,22 @@ const startServer = async () => {
   }
 
   app.use('/service-worker.js', express.static(path.resolve(distClientPath, 'service-worker.js')))
+
+  app.use(function (_req, res, next) {
+    res.setHeader(
+      'Report-To',
+      `{"group":"csp-endpoint","max_age":10886400,"endpoints":[{"url":"http://${DOMAIN}:${PORT}/__cspreport__"}],"include_subdomains":true}`
+    )
+    res.setHeader(
+      'Content-Security-Policy-Report-Only',
+      "default-src 'self'; font-src 'self'; img-src 'self'; script-src 'self'; style-src 'self'; frame-src 'self'"
+    )
+    next()
+  })
+
+  app.post('/__cspreport__', req => {
+    console.log(req.body)
+  })
 
   app.use('*', async (req, res, next) => {
     const url = req.originalUrl
