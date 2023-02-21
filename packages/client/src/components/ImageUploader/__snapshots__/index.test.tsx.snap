@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render ImageUploader component 1`] = `
+<DocumentFragment>
+  <div>
+    <label
+      tabindex="0"
+    >
+      <img
+        alt=""
+        src="https://ya-praktikum.tech/api/v2/resources/example.img"
+      />
+      <input
+        accept="image/jpeg, image/jpg, image/png"
+        type="file"
+      />
+    </label>
+  </div>
+</DocumentFragment>
+`;

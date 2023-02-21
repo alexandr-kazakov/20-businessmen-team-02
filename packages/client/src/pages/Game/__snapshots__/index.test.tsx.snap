@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render GamePage component 1`] = `
+<DocumentFragment>
+  <div>
+    <div>
+      <canvas
+        height="768"
+        width="728"
+      />
+      <div
+        class=""
+      >
+        <div>
+          Для переключения в полноэкранный режим нажмите Ctrl-Q
+        </div>
+        <div
+          id="dropZone"
+        >
+          <div>
+            Вы можете перенести сюда файл с картинкой, которую будете собирать
+          </div>
+        </div>
+        <label
+          for="level"
+        >
+          Выберите уровень:
+        </label>
+        <select
+          id="level"
+        >
+          <option
+            value="0"
+          >
+            Новичок
+          </option>
+          <option
+            value="1"
+          >
+            Продвинутый
+          </option>
+          <option
+            value="2"
+          >
+            Эксперт
+          </option>
+        </select>
+        <button
+          class=""
+        >
+          Старт
+        </button>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

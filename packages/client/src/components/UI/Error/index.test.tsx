@@ -1,6 +1,5 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { screen } from '@testing-library/dom'
 
 import { ErrorBoundary } from '.'
 
@@ -10,12 +9,12 @@ describe('<ErrorBoundary />', () => {
       throw new Error('Test error...')
     }
 
-    render(
+    const { asFragment } = render(
       <ErrorBoundary>
         <ThrowError />
       </ErrorBoundary>
     )
 
-    expect(screen.getByTestId('errorboundary')).toBeVisible()
+    expect(asFragment()).toMatchSnapshot()
   })
 })

@@ -1,19 +1,25 @@
-import { Button } from '../../../../components/UI/Button'
+import { Button, ButtonVariant } from '../../../../components/UI/Button'
 
-import { setprofileView } from '../../redux/profileSlice'
 import { useAppDispatch } from '../../../../app/redux/hooks'
+import { getProfile, setProfileView } from '../../../../pages/Auth/redux/authSlice'
 
-export const EditButton: React.FC = () => {
+type Props = {
+  children: string
+  variant?: ButtonVariant
+}
+
+export const EditButton: React.FC<Props> = ({ children, variant }) => {
   const dispatch = useAppDispatch()
 
   const handlerToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
-    dispatch(setprofileView())
+    dispatch(getProfile())
+    dispatch(setProfileView())
   }
 
   return (
-    <Button onClick={handlerToggle} type="button">
-      Изменить
+    <Button onClick={handlerToggle} type="button" variant={variant}>
+      {children}
     </Button>
   )
 }

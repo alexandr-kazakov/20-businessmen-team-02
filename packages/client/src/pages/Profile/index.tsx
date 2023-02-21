@@ -1,46 +1,79 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useAppSelector, useAppDispatch } from '../../app/redux/hooks'
 
 import { ProfileUserDataList } from './components/ProfileUserDataList'
 import { EditButton } from './components/EditButton'
 import { SubmitButton } from './components/SubmitButton'
-import { setprofileView, changeUserProfile } from './redux/profileSlice'
+import { ButtonVariant } from '../../components/UI/Button'
+import { showSnackBar } from '../../components/Snackbar/redux/snackbarSlice'
+import { ImageUploader } from '../../components/ImageUploader'
+import { profileForm } from './const'
+import { changeUserProfile, setProfileView, changeUserAvatar } from '../Auth/redux/authSlice'
+import { purify } from '../../helpers'
 
 import styles from './styles.module.scss'
 
 const ProfilePage: React.FC = () => {
   const dispatch = useAppDispatch()
-  const { profileView } = useAppSelector(state => state.profile)
 
-  const handlerSubmit = async (event: React.FormEvent) => {
+  const { profileView, user } = useAppSelector(state => state.auth)
+
+  const [avatar, setAvatar] = useState<File | null>(null)
+
+  const handlerSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault()
-    const { target }: any = event
-    const first_name: string = target[1].value
-    const second_name: string = target[2].value
-    const display_name: string = target[3].value
-    const login: string = target[4].value
-    const email: string = target[6].value
-    const phone: string = target[7].value
 
-    const response = await dispatch(changeUserProfile({ first_name, second_name, display_name, login, email, phone }))
+    const target = event.target as typeof event.target & { [key: string]: { value: string } }
+    const profileData: { [key: string]: string } = {}
+
+    for (const field in profileForm) {
+      if (Object.prototype.hasOwnProperty.call(profileForm, field)) {
+        target[field] && target[field].value !== undefined && (profileData[field] = purify(target[field].value))
+      }
+    }
+
+    const response = await dispatch(changeUserProfile(profileData))
 
     if (response.error) {
-      console.log(response.error)
+      dispatch(showSnackBar(response.error.message))
     } else {
-      dispatch(setprofileView())
+      dispatch(setProfileView())
     }
   }
+
+  const handleSubmitAvatar = async () => {
+    try {
+      if (avatar) {
+        const data = new FormData()
+
+        data.append('avatar', avatar)
+
+        await dispatch(changeUserAvatar(data))
+
+        setAvatar(null)
+      }
+    } catch (error: any) {
+      dispatch(showSnackBar(error.message))
+    }
+  }
+
+  const buttons = profileView ? (
+    <EditButton>Изменить</EditButton>
+  ) : (
+    <div className={styles.buttons}>
+      <SubmitButton />
+      <EditButton variant={ButtonVariant.SECONDARY}>Отмена</EditButton>
+    </div>
+  )
 
   return (
     <div className={styles.profile}>
       <div className="container">
-        <section className={styles.avatar}>
-          <img src="https://via.placeholder.com/130" alt="User avatar" />
-        </section>
+        <ImageUploader onChange={setAvatar} onClick={handleSubmitAvatar} initPreview={user?.avatar as string} />
         <section className={styles.list}>
           <form onSubmit={handlerSubmit}>
             <ProfileUserDataList />
-            {profileView ? <EditButton /> : <SubmitButton />}
+            {buttons}
           </form>
         </section>
       </div>

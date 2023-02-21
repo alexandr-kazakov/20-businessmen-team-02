@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render ChangePassword component 1`] = `
+<DocumentFragment>
+  <div>
+    <form>
+      <span>
+        Изменить пароль
+      </span>
+      <div>
+        <input
+          class=""
+          name="oldPassword"
+          placeholder="Старый пароль"
+          type="password"
+          value=""
+        />
+        <input
+          class=""
+          name="newPassword"
+          placeholder="Новый пароль"
+          type="password"
+          value=""
+        />
+        <input
+          class=""
+          name="repeatPassword"
+          placeholder="Повторить новый пароль"
+          type="password"
+          value=""
+        />
+      </div>
+      <div>
+        <button
+          class=""
+          disabled=""
+          type="submit"
+        >
+          Изменить пароль
+        </button>
+      </div>
+    </form>
+  </div>
+</DocumentFragment>
+`;

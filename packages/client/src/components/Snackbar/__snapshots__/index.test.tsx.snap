@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render Snackbar component 1`] = `
+<DocumentFragment>
+  <div>
+    <div>
+      error
+    </div>
+    <div>
+      ×
+    </div>
+  </div>
+</DocumentFragment>
+`;
