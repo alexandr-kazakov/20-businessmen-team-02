@@ -4,11 +4,11 @@ import { Snackbar } from '@/components/Snackbar/index'
 
 jest.mock('react-redux', () => ({
   useSelector: () => ({ message: 'error', isShow: true }),
-  useDispatch: jest.fn()
-}));
+  useDispatch: jest.fn(),
+}))
 
 test('should render Snackbar component', () => {
-  const {asFragment} = render(<Snackbar/>)
+  const { asFragment } = render(<Snackbar />)
 
   expect(asFragment()).toMatchSnapshot()
 })

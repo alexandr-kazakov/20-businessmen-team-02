@@ -6,20 +6,19 @@ import { ForumView } from '@/pages/Forum/components/ForumView'
 
 jest.mock('react-redux', () => ({
   useSelector: () => ({ isCreateTopic: true, topicsList: [] }),
-  useDispatch: jest.fn()
-}));
+  useDispatch: jest.fn(),
+}))
 
 describe('Forum', () => {
   test('should render ForumList component', () => {
-    const {asFragment} = render(<ForumList/>)
+    const { asFragment } = render(<ForumList />)
 
     expect(asFragment()).toMatchSnapshot()
   })
 
   test('should render ForumView component', () => {
-    const {asFragment} = render(<ForumView/>)
+    const { asFragment } = render(<ForumView />)
 
     expect(asFragment()).toMatchSnapshot()
   })
-
 })

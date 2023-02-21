@@ -9,7 +9,7 @@ describe('<ErrorBoundary />', () => {
       throw new Error('Test error...')
     }
 
-    const {asFragment} = render(
+    const { asFragment } = render(
       <ErrorBoundary>
         <ThrowError />
       </ErrorBoundary>
