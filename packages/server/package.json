@@ -8,7 +8,7 @@
     "preview": "node ./dist/index.js",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "test": "jest ."
+    "test": "jest -u"
   },
   "dependencies": {
     "cookie-parser": "^1.4.6",
