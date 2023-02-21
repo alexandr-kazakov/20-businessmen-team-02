@@ -5,7 +5,6 @@ import helmet from 'helmet'
 import serialize from 'serialize-javascript'
 import * as fs from 'fs'
 import * as path from 'path'
-import { createServer as createViteServer } from 'vite'
 import type { ViteDevServer } from 'vite'
 import { dbConnect } from './db'
 import routers from './routers'
@@ -35,6 +34,8 @@ const startServer = async () => {
   app.use('/api', routers)
 
   if (isDev()) {
+    const { createServer: createViteServer } = await import('vite')
+
     vite = await createViteServer({
       root: srcPath,
       server: { middlewareMode: true },
