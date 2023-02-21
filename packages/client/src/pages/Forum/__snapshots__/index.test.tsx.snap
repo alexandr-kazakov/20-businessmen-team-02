@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Forum should render ForumList component 1`] = `
+<DocumentFragment>
+  <div>
+    <div>
+      <button
+        class=""
+      >
+        Создать топик
+      </button>
+    </div>
+    <ul>
+      <p>
+        Список пуст
+      </p>
+    </ul>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Forum should render ForumView component 1`] = `
+<DocumentFragment>
+  <div>
+    <form>
+      <div>
+        <input
+          class=""
+          name="title"
+          placeholder="Название"
+          type="text"
+          value=""
+        />
+        <textarea
+          class=""
+          name="description"
+          placeholder="Описание"
+        />
+      </div>
+      <button
+        class=""
+      >
+        Опубликовать
+      </button>
+    </form>
+  </div>
+</DocumentFragment>
+`;
