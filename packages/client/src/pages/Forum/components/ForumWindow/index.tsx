@@ -7,6 +7,7 @@ import { ForumComments } from '../ForumComments'
 import { ForumEmpty } from '../ForumEmpty'
 import { Input } from '../../../../components/UI/Input'
 import { Button } from '../../../../components/UI/Button'
+import { purify } from '../../../../helpers'
 
 import styles from './styles.module.scss'
 
@@ -35,7 +36,7 @@ export const ForumWindow: React.FC = () => {
         id_topic: selectedTopic?.id,
         id_author: user?.id,
         login_author: user?.login,
-        text: value,
+        text: purify(value),
       }
 
       await dispatch(createComment(comment))

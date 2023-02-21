@@ -1,6 +1,8 @@
 import dotenv from 'dotenv'
 import cors from 'cors'
 import express from 'express'
+import helmet from 'helmet'
+import serialize from 'serialize-javascript'
 import * as fs from 'fs'
 import * as path from 'path'
 import { createServer as createViteServer } from 'vite'
@@ -27,6 +29,8 @@ const startServer = async () => {
   app.use(cors())
   app.use(express.json())
   app.use(cookieParser)
+
+  app.use(helmet.xssFilter())
 
   app.use('/api', routers)
 
@@ -71,7 +75,9 @@ const startServer = async () => {
 
       const state = store.getState()
 
-      const stateHtml = `<script>window.__PRELOADED_STATE__=${JSON.stringify(state).replace(/</g, '\\u003c')}</script>`
+      const serializeState = serialize(state)
+
+      const stateHtml = `<script>window.__PRELOADED_STATE__=${serializeState}</script>`
 
       const html = template.replace(`<!--ssr-outlet-->`, appHtml + stateHtml)
 

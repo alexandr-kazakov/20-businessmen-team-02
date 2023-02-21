@@ -9,6 +9,7 @@
     "dev": "lerna run dev",
     "dev:client": "lerna run dev --scope=client",
     "dev:server": "lerna run dev --scope=server",
+    "ssr": "yarn build && yarn preview:server",
     "test": "lerna run test",
     "lint": "lerna run lint",
     "format": "lerna run format",

@@ -25,6 +25,7 @@ const ChangePassword: React.FC = () => {
 
       try {
         const { newPassword, oldPassword } = values
+
         await api.put('user/password/', { login: user?.login, newPassword, oldPassword })
         /** TODO: показывать успешное выполнение в <Snackbar/> */
       } catch (e) {
