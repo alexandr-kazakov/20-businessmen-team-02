@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ErrorBoundary /> should component render 1`] = `
+<DocumentFragment>
+  <div
+    data-testid="errorboundary"
+  >
+    <div>
+      Что то пошло не так... ( ˘︹˘ )
+    </div>
+    <div>
+      Текст ошибки: Test error...
+    </div>
+  </div>
+</DocumentFragment>
+`;
