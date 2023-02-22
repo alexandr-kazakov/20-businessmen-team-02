@@ -36,3 +36,18 @@ svg:not(:root) {
 a{
   text-decoration: none;
 }
+
+:root[data-theme="light"] {
+  --background-color: #ececec;
+  --text-color: #142d4c;
+}
+
+:root[data-theme="dark"] {
+  --background-color: #204969;
+  --text-color: #f5f6f7;
+}
+
+body {
+  background: var(--background-color);
+  color: var(--text-color);
+}
