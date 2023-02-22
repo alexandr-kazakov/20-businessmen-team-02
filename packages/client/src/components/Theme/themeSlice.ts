@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const getTheme = () => {
   const theme = `${window?.localStorage?.getItem('theme')}`
 
-  return theme ? theme : 'light'
+  return theme === 'light' ? theme : 'dark'
 }
 
 export const themeSlice = createSlice({
