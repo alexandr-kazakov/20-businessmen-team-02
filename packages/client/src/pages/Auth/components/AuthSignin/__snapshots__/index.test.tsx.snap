@@ -9,23 +9,18 @@ exports[`should render AuthSignIn component 1`] = `
     <div>
       <input
         class=""
-        name="login"
         placeholder="Логин"
-        type="text"
         value=""
       />
       <input
         class=""
-        name="password"
         placeholder="Пароль"
-        type="password"
         value=""
       />
     </div>
     <div>
       <button
         class=""
-        disabled=""
         type="submit"
       >
         Войти
