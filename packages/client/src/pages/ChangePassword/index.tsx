@@ -1,9 +1,11 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React from 'react'
+import { Controller, type FieldValues, useForm } from 'react-hook-form'
+import { showSnackBar } from '../../components/Snackbar/redux/snackbarSlice'
 
+import { PASSWORD_REGEXP } from '../../lib/regexp'
 import { Button } from '../../components/UI/Button'
 import { Input } from '../../components/UI/Input'
-
-import { useAppSelector } from '../../app/redux/hooks'
+import { useAppDispatch, useAppSelector } from '../../app/redux/hooks'
 import { api } from '../../app/api'
 
 import styles from './styles.module.scss'
@@ -15,79 +17,76 @@ const INIT_VALUES = {
 }
 
 const ChangePassword: React.FC = () => {
-  const [values, setValues] = useState(INIT_VALUES)
-
+  const dispatch = useAppDispatch()
   const { user } = useAppSelector(state => state.auth)
 
-  const onSubmit = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault()
+  const { control, handleSubmit, watch } = useForm({ defaultValues: INIT_VALUES })
 
-      try {
-        const { newPassword, oldPassword } = values
-
-        await api.put('user/password/', { login: user?.login, newPassword, oldPassword })
-        /** TODO: показывать успешное выполнение в <Snackbar/> */
-      } catch (e) {
-        /** TODO: показывать ошибку в <Snackbar/> */
-        console.error(e)
-      }
-    },
-    [user, values]
-  )
-
-  const onChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target
-      setValues({
-        ...values,
-        [name]: value,
-      })
-    },
-    [values]
-  )
-
-  /** TODO: прикрутить нормальную валидацию после уточнения требований */
-  const disabled = useMemo(
-    () =>
-      !values.newPassword ||
-      !values.oldPassword ||
-      !values.repeatPassword ||
-      values.newPassword !== values.repeatPassword,
-    [values]
-  )
+  const onSubmit = async (data: FieldValues): Promise<void> => {
+    try {
+      const { newPassword, oldPassword } = data
+      await api.put('user/password/', { login: user?.login, newPassword, oldPassword })
+    } catch (e) {
+      dispatch(showSnackBar('Что то пошло не так...'))
+    }
+  }
 
   return (
     <div className={styles.container}>
-      <form className={styles.form} onSubmit={onSubmit}>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <span className={styles.title}>Изменить пароль</span>
         <div className={styles.inputs}>
-          <Input
-            onChange={onChange}
-            type="password"
+          <Controller
             name="oldPassword"
-            placeholder="Старый пароль"
-            value={values.oldPassword}
+            control={control}
+            rules={{ required: true, pattern: PASSWORD_REGEXP }}
+            render={({ field, fieldState }) => (
+              <Input
+                type="password"
+                value={field.value}
+                onChange={field.onChange}
+                placeholder="Старый пароль"
+                isValid={!(fieldState.error && 'error')}
+              />
+            )}
           />
-          <Input
-            onChange={onChange}
-            type="password"
+
+          <Controller
             name="newPassword"
-            placeholder="Новый пароль"
-            value={values.newPassword}
+            control={control}
+            rules={{ required: true, pattern: PASSWORD_REGEXP }}
+            render={({ field, fieldState }) => (
+              <Input
+                type="password"
+                value={field.value}
+                onChange={field.onChange}
+                placeholder="Новый пароль"
+                isValid={!(fieldState.error && 'error')}
+              />
+            )}
           />
-          <Input
-            onChange={onChange}
-            type="password"
+
+          <Controller
             name="repeatPassword"
-            placeholder="Повторить новый пароль"
-            value={values.repeatPassword}
+            control={control}
+            rules={{
+              required: true,
+              pattern: PASSWORD_REGEXP,
+              validate: val => watch('newPassword') === val,
+            }}
+            render={({ field, fieldState }) => (
+              <Input
+                type="password"
+                value={field.value}
+                onChange={field.onChange}
+                placeholder="Повторить новый пароль"
+                isValid={!(fieldState.error && 'error')}
+              />
+            )}
           />
         </div>
         <div className={styles.buttons}>
-          <Button disabled={disabled} type="submit">
-            Изменить пароль
-          </Button>
+          <Button type="submit">Изменить пароль</Button>
         </div>
       </form>
     </div>

@@ -1,36 +1,32 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { useAppDispatch } from '../../../../app/redux/hooks'
+import { Controller, type FieldValues, useForm } from 'react-hook-form'
 
+import { useAppDispatch } from '../../../../app/redux/hooks'
 import { signin, setIsSigninView, getOAuthUrl } from '../../redux/authSlice'
 import { showSnackBar } from '../../../../components/Snackbar/redux/snackbarSlice'
 import { Input } from '../../../../components/UI/Input'
 import { Button, ButtonVariant } from '../../../../components/UI/Button'
-import type { IAuthSignIn } from '../../types'
 import { RoutersPaths } from '../../../../components/Routers/types'
+import { LOGIN_REGEXP, PASSWORD_REGEXP } from '../../../../lib/regexp'
 
 import styles from './styles.module.scss'
+
+const INIT_VALUES = {
+  login: '',
+  password: '',
+}
 
 export const AuthSignIn: React.FC = () => {
   const history = useHistory()
   const dispatch = useAppDispatch()
 
-  const [values, setValues] = useState<IAuthSignIn>({ login: '', password: '' })
-  const [disabled, setDisabled] = useState(true)
   const [oAuthYandexUrl, setOAuthYandexUrl] = useState('')
 
-  const handlerChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = event.target
-      setValues({ ...values, [name]: value })
-    },
-    [values]
-  )
+  const { control, handleSubmit } = useForm({ defaultValues: INIT_VALUES })
 
-  const handlerSubmit = async (event: React.FormEvent) => {
-    event.preventDefault()
-
-    const response = await dispatch(signin(values))
+  const onSubmit = async (data: FieldValues): Promise<void> => {
+    const response = await dispatch(signin(data))
 
     if (response.error) {
       dispatch(showSnackBar(response.error.message))
@@ -50,25 +46,40 @@ export const AuthSignIn: React.FC = () => {
     }
   }, [oAuthYandexUrl])
 
-  useEffect(() => {
-    if (!values.login || !values.password) {
-      setDisabled(true)
-    } else {
-      setDisabled(false)
-    }
-  }, [values])
-
   return (
-    <form className={styles.form} onSubmit={handlerSubmit}>
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <span className={styles.title}>Вход</span>
       <div className={styles.inputs}>
-        <Input onChange={handlerChange} type="text" name="login" value={values.login} placeholder="Логин" />
-        <Input onChange={handlerChange} type="password" name="password" value={values.password} placeholder="Пароль" />
+        <Controller
+          name="login"
+          control={control}
+          rules={{ required: true, pattern: LOGIN_REGEXP }}
+          render={({ field, fieldState }) => (
+            <Input
+              value={field.value}
+              onChange={field.onChange}
+              placeholder="Логин"
+              isValid={!(fieldState.error && 'error')}
+            />
+          )}
+        />
+
+        <Controller
+          name="password"
+          control={control}
+          rules={{ required: true, pattern: PASSWORD_REGEXP }}
+          render={({ field, fieldState }) => (
+            <Input
+              value={field.value}
+              onChange={field.onChange}
+              placeholder="Пароль"
+              isValid={!(fieldState.error && 'error')}
+            />
+          )}
+        />
       </div>
       <div className={styles.buttons}>
-        <Button type="submit" disabled={disabled}>
-          Войти
-        </Button>
+        <Button type="submit">Войти</Button>
         <a href={oAuthYandexUrl} className={styles.yandexButton}>
           <Button type="button">Войти через YandexId</Button>
         </a>

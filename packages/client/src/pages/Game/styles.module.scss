@@ -60,7 +60,7 @@
 }
 
 .selectLabel {
-  color: white;
+  color: var(--text-color);
   margin-right: 10px;
 }
 
@@ -74,9 +74,9 @@
 
 .dropZone {
   height: 100px;
-  color: white;
+  color: var(--text-color);
   text-align: center;
-  border: 2px dashed white;
+  border: 2px dashed var(--text-color);
 }
 
 .dropZoneLabel {

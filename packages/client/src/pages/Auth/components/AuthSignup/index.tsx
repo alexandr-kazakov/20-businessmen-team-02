@@ -1,21 +1,19 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React from 'react'
 import { useHistory } from 'react-router-dom'
+import { Controller, type FieldValues, useForm } from 'react-hook-form'
+
 import { useAppDispatch } from '../../../../app/redux/hooks'
 
+import { EMAIL_REGEXP, NAME_REGEXP, LOGIN_REGEXP, PHONE_REGEXP, PASSWORD_REGEXP } from '../../../../lib/regexp'
 import { signup, setIsSigninView } from '../../redux/authSlice'
 import { showSnackBar } from '../../../../components/Snackbar/redux/snackbarSlice'
 import { Input } from '../../../../components/UI/Input'
 import { Button, ButtonVariant } from '../../../../components/UI/Button'
-import type { IAuthSignup } from '../../types'
 import { RoutersPaths } from '../../../../components/Routers/types'
 
 import styles from './styles.module.scss'
 
-interface IValues extends IAuthSignup {
-  check_password: string
-}
-
-const INIT_VALUES: IValues = {
+const INIT_VALUES = {
   email: '',
   login: '',
   first_name: '',
@@ -29,33 +27,15 @@ export const AuthSignUp: React.FC = () => {
   const history = useHistory()
   const dispatch = useAppDispatch()
 
-  const [values, setValues] = useState(INIT_VALUES)
-  const [disabled, setDisabled] = useState(true)
-  const [isValidPasswords, setIsValidPasswords] = useState(true)
+  const { control, handleSubmit, watch } = useForm({ defaultValues: INIT_VALUES })
 
-  const handlerChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = event.target
-      setValues({ ...values, [name]: value })
-    },
-    [values]
-  )
+  const onSubmit = async (data: FieldValues): Promise<void> => {
+    const response = await dispatch(signup(data))
 
-  const handlerSubmit = async (event: React.FormEvent) => {
-    event.preventDefault()
-
-    if (values.password !== values.check_password) {
-      setIsValidPasswords(false)
+    if (response.error) {
+      dispatch(showSnackBar(response.error.message))
     } else {
-      const { email, login, first_name, second_name, phone, password } = values
-
-      const response = await dispatch(signup({ email, login, first_name, second_name, phone, password }))
-
-      if (response.error) {
-        dispatch(showSnackBar(response.error.message))
-      } else {
-        history.push(RoutersPaths.main)
-      }
+      history.push(RoutersPaths.main)
     }
   }
 
@@ -64,66 +44,116 @@ export const AuthSignUp: React.FC = () => {
     dispatch(setIsSigninView())
   }
 
-  const resetErrors = () => {
-    if (!isValidPasswords) {
-      setIsValidPasswords(true)
-    }
-  }
-
-  useEffect(() => {
-    if (
-      !values.email ||
-      !values.login ||
-      !values.first_name ||
-      !values.second_name ||
-      !values.phone ||
-      !values.password ||
-      !values.check_password
-    ) {
-      setDisabled(true)
-    } else {
-      setDisabled(false)
-    }
-  }, [values])
-
   return (
-    <form className={styles.form} onSubmit={handlerSubmit}>
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <span className={styles.title}>Регистрация</span>
       <div className={styles.inputs}>
-        <Input onChange={handlerChange} type="email" name="email" value={values.email} placeholder="Почта" />
-        <Input onChange={handlerChange} type="text" name="login" value={values.login} placeholder="Логин" />
-        <Input onChange={handlerChange} type="text" name="first_name" value={values.first_name} placeholder="Имя" />
-        <Input
-          onChange={handlerChange}
-          type="text"
+        <Controller
+          name="email"
+          control={control}
+          rules={{ required: true, pattern: EMAIL_REGEXP }}
+          render={({ field, fieldState }) => (
+            <Input
+              value={field.value}
+              onChange={field.onChange}
+              placeholder="Почта"
+              isValid={!(fieldState.error && 'error')}
+            />
+          )}
+        />
+
+        <Controller
+          name="login"
+          control={control}
+          rules={{ required: true, pattern: LOGIN_REGEXP }}
+          render={({ field, fieldState }) => (
+            <Input
+              value={field.value}
+              onChange={field.onChange}
+              placeholder="Логин"
+              isValid={!(fieldState.error && 'error')}
+            />
+          )}
+        />
+
+        <Controller
+          name="first_name"
+          control={control}
+          rules={{ required: true, pattern: NAME_REGEXP }}
+          render={({ field, fieldState }) => (
+            <Input
+              value={field.value}
+              onChange={field.onChange}
+              placeholder="Имя"
+              isValid={!(fieldState.error && 'error')}
+            />
+          )}
+        />
+
+        <Controller
           name="second_name"
-          value={values.second_name}
-          placeholder="Фамилия"
+          control={control}
+          rules={{ required: true, pattern: NAME_REGEXP }}
+          render={({ field, fieldState }) => (
+            <Input
+              value={field.value}
+              onChange={field.onChange}
+              placeholder="Фамилия"
+              isValid={!(fieldState.error && 'error')}
+            />
+          )}
         />
-        <Input onChange={handlerChange} type="text" name="phone" value={values.phone} placeholder="Телефон" />
-        <Input
-          onChange={handlerChange}
-          onFocus={resetErrors}
-          type="password"
+
+        <Controller
+          name="phone"
+          control={control}
+          rules={{ required: true, pattern: PHONE_REGEXP }}
+          render={({ field, fieldState }) => (
+            <Input
+              value={field.value}
+              onChange={field.onChange}
+              placeholder="Телефон"
+              isValid={!(fieldState.error && 'error')}
+            />
+          )}
+        />
+
+        <Controller
           name="password"
-          value={values.password}
-          placeholder="Пароль"
-          isValid={isValidPasswords}
+          control={control}
+          rules={{ required: true, pattern: PASSWORD_REGEXP }}
+          render={({ field, fieldState }) => (
+            <Input
+              type="password"
+              value={field.value}
+              onChange={field.onChange}
+              placeholder="Пароль"
+              isValid={!(fieldState.error && 'error')}
+            />
+          )}
         />
-        <Input
-          onChange={handlerChange}
-          onFocus={resetErrors}
-          type="password"
+
+        <Controller
           name="check_password"
-          value={values.check_password}
-          placeholder="Пароль (ещё раз)"
-          isValid={isValidPasswords}
+          control={control}
+          rules={{
+            required: true,
+            pattern: PASSWORD_REGEXP,
+            validate: val => watch('password') === val,
+          }}
+          render={({ field, fieldState }) => (
+            <Input
+              type="password"
+              value={field.value}
+              onChange={field.onChange}
+              placeholder="Пароль (ещё раз)"
+              isValid={!(fieldState.error && 'error')}
+            />
+          )}
         />
       </div>
       <div className={styles.buttons}>
-        <Button type="submit" disabled={disabled}>
-          Зарегистрироваться
-        </Button>
+        <Button type="submit">Зарегистрироваться</Button>
         <Button onClick={handlerToggle} variant={ButtonVariant.SECONDARY}>
           Войти
         </Button>

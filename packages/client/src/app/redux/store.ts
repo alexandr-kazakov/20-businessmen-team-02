@@ -3,6 +3,7 @@ import authSlice from '../../pages/Auth/redux/authSlice'
 import forumSlice from '../../pages/Forum/redux/forumSlice'
 import leaderboardSlice from '../../pages/Leaderboard/redux/leaderboardSlice'
 import snackSlice from '../../components/Snackbar/redux/snackbarSlice'
+import themeSlice from '../../components/Theme/themeSlice'
 
 export const createStore = (preloadedState: any) => {
   return configureStore({
@@ -11,6 +12,7 @@ export const createStore = (preloadedState: any) => {
       forum: forumSlice,
       snack: snackSlice,
       leaderboard: leaderboardSlice,
+      theme: themeSlice,
     },
     preloadedState,
   })
