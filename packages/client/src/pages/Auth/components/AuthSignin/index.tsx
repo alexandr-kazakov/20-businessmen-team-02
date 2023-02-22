@@ -70,6 +70,7 @@ export const AuthSignIn: React.FC = () => {
           rules={{ required: true, pattern: PASSWORD_REGEXP }}
           render={({ field, fieldState }) => (
             <Input
+              type="password"
               value={field.value}
               onChange={field.onChange}
               placeholder="Пароль"
