@@ -2,5 +2,7 @@ node_modules/
 .env
 .idea
 .vscode
+.key.json
+.env.sample
 dist
 tmp
