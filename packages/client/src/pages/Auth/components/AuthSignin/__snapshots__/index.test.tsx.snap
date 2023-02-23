@@ -15,7 +15,6 @@ exports[`should render AuthSignIn component 1`] = `
       <input
         class=""
         placeholder="Пароль"
-        type="password"
         value=""
       />
     </div>
